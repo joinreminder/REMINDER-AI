@@ -90,7 +90,7 @@ export default function LeadForm() {
           base_de_pacientes: data.consultas,
           faturacao_anual: data.faturacao,
           maior_problema: data.dor,
-          _subject: `[Remindr] ✅ Lead qualificada — ${data.nome} · ${data.tipo} · ${data.faturacao}`,
+          _subject: `[Reminder] ✅ Lead qualificada — ${data.nome} · ${data.tipo} · ${data.faturacao}`,
         }),
       })
     } catch (_) { /* lead já guardada no Supabase */ }
@@ -106,7 +106,7 @@ export default function LeadForm() {
           Honestidade antes de tudo
         </h3>
         <p style={{ color: '#555', fontSize: '15px', lineHeight: 1.7, maxWidth: '360px', margin: '0 auto 16px' }}>
-          Com base nas suas respostas, o perfil da sua clínica ainda não está no ponto ideal para tirar o máximo da Remindr.
+          Com base nas suas respostas, o perfil da sua clínica ainda não está no ponto ideal para tirar o máximo da Reminder.
         </p>
         <p style={{ color: '#888', fontSize: '14px', lineHeight: 1.6, maxWidth: '340px', margin: '0 auto 28px' }}>
           O nosso sistema foi desenhado para clínicas com uma base de pacientes já consolidada.

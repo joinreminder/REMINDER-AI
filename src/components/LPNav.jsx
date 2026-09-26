@@ -30,10 +30,10 @@ export default function LPNav() {
           <a href="/" className="lp-nav__logo">
             <img
               src="/logotipo-editado.png"
-              alt="Remindr"
+              alt="Reminder"
               style={{ height: '30px', width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain' }}
             />
-            <span>Remindr</span>
+            <span>Reminder</span>
           </a>
           <a href="/diagnostico" className="lp-nav__cta">
             Pedir Diagnóstico →

@@ -63,7 +63,7 @@ const PLANS = [
       'Relatório mensal de crescimento',
       'Otimização contínua das automações',
       'Novas campanhas de reativação',
-      'Suporte direto com a equipa Remindr',
+      'Suporte direto com a equipa Reminder',
     ],
     cta: 'Saber mais →',
     ctaStyle: 'outline',

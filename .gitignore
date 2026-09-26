@@ -3,3 +3,6 @@ dist
 .vercel
 .env.local
 .env
+.env*
+.mcp.json
+supabase/.temp/

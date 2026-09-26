@@ -1,16 +1,33 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
+import KpiView from '../components/KpiView'
+import DeliveryView from '../components/DeliveryView'
+import OutboundView from '../components/OutboundView'
+import CoachView from '../components/CoachView'
+import DiscoveryView from '../components/DiscoveryView'
 
 const CRM_PASSWORD = import.meta.env.VITE_CRM_PASSWORD || 'remindr2024'
 const CALENDLY_BASE = import.meta.env.VITE_CALENDLY_URL || 'https://calendly.com/remindr/diagnostico'
 
 const STAGES = [
-  { id: 'nova',      label: 'Nova Lead',         color: '#6366f1', bg: '#eef2ff' },
-  { id: 'contactar', label: 'A Contactar',        color: '#f59e0b', bg: '#fffbeb' },
-  { id: 'reuniao',   label: 'Reunião Marcada',    color: '#217FF1', bg: '#eff6ff' },
+  { id: 'nova',      label: 'Lead Nova',          color: '#6366f1', bg: '#eef2ff' },
+  { id: 'contactar', label: 'Outreach Enviado',   color: '#f59e0b', bg: '#fffbeb' },
+  { id: 'reuniao',   label: 'Audit Agendado',     color: '#217FF1', bg: '#eff6ff' },
   { id: 'proposta',  label: 'Proposta Enviada',   color: '#8b5cf6', bg: '#f5f3ff' },
   { id: 'cliente',   label: 'Cliente',            color: '#10b981', bg: '#ecfdf5' },
   { id: 'perdida',   label: 'Perdida',            color: '#ef4444', bg: '#fef2f2' },
+]
+
+const SECTORS = [
+  'Serviços B2B',
+  'Construção / AVAC / Engenharia',
+  'Saúde / Clínicas',
+  'Imobiliário',
+  'E-commerce / Retalho',
+  'Serviços Profissionais (Jurídico, Contabilidade)',
+  'Tecnologia / SaaS',
+  'Indústria / Manufactura',
+  'Outro',
 ]
 
 const EMPTY_LEAD = {
@@ -42,6 +59,31 @@ function Field({ label, value, onChange, type = 'text', placeholder = '', requir
   )
 }
 
+/* ── Select field component ── */
+function SelectField({ label, value, onChange, options, required = false }) {
+  return (
+    <div>
+      <label style={{ fontSize: '11px', fontWeight: 700, color: '#999', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '5px' }}>
+        {label}
+      </label>
+      <select
+        value={value || ''}
+        onChange={e => onChange(e.target.value)}
+        required={required}
+        style={{
+          width: '100%', padding: '10px 13px', border: '1.5px solid #e8edf5',
+          borderRadius: '10px', fontSize: '14px', color: value ? '#111' : '#aaa',
+          boxSizing: 'border-box', outline: 'none', cursor: 'pointer',
+          background: 'white',
+        }}
+      >
+        <option value="">Seleccionar…</option>
+        {options.map(o => <option key={o} value={o}>{o}</option>)}
+      </select>
+    </div>
+  )
+}
+
 /* ── Password gate ── */
 function PasswordGate({ onAuth }) {
   const [pw, setPw] = useState('')
@@ -62,7 +104,7 @@ function PasswordGate({ onAuth }) {
       }}>
         <div style={{ fontSize: '40px', marginBottom: '16px' }}>🔐</div>
         <h2 style={{ fontFamily: 'Sora, sans-serif', fontSize: '22px', fontWeight: 700, color: '#111', marginBottom: '8px' }}>
-          Remindr CRM
+          Reminder CRM
         </h2>
         <p style={{ color: '#888', fontSize: '14px', marginBottom: '28px' }}>Acesso restrito à equipa interna</p>
         <input
@@ -109,7 +151,7 @@ function LeadCard({ lead, onClick }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
         <div>
           <div style={{ fontWeight: 700, fontSize: '14px', color: '#111' }}>{lead.nome || '—'}</div>
-          <div style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>{lead.clinica || lead.tipo || '—'}</div>
+          <div style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>{[lead.clinica, lead.tipo].filter(Boolean).join(' · ') || '—'}</div>
         </div>
         <span style={{ fontSize: '11px', color: '#ccc', whiteSpace: 'nowrap', marginLeft: '8px' }}>
           {daysAgo === 0 ? 'hoje' : `${daysAgo}d atrás`}
@@ -123,7 +165,7 @@ function LeadCard({ lead, onClick }) {
         )}
         {lead.consultas && (
           <span style={{ padding: '3px 9px', background: '#F3F6FB', borderRadius: '6px', fontSize: '11px', color: '#555', fontWeight: 500 }}>
-            {lead.consultas}
+            {lead.consultas} colaboradores
           </span>
         )}
       </div>
@@ -170,7 +212,7 @@ function LeadDetailModal({ lead, onClose, onUpdate, onDelete }) {
               {lead.nome || 'Lead sem nome'}
             </h3>
             <p style={{ color: '#888', fontSize: '13px' }}>
-              {[lead.clinica, lead.tipo, lead.faturacao].filter(Boolean).join(' · ')}
+              {[lead.clinica, lead.tipo, lead.faturacao].filter(Boolean).join(' · ') || 'Sem empresa registada'}
             </p>
           </div>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
@@ -221,11 +263,11 @@ function LeadDetailModal({ lead, onClose, onUpdate, onDelete }) {
           <Field label="Nome" value={form.nome} onChange={v => set('nome', v)} />
           <Field label="WhatsApp" value={form.whatsapp} onChange={v => set('whatsapp', v)} type="tel" />
           <Field label="Email" value={form.email} onChange={v => set('email', v)} type="email" />
-          <Field label="Clínica" value={form.clinica} onChange={v => set('clinica', v)} />
-          <Field label="Tipo de clínica" value={form.tipo} onChange={v => set('tipo', v)} />
-          <Field label="Pacientes na base" value={form.consultas} onChange={v => set('consultas', v)} />
-          <Field label="Faturação" value={form.faturacao} onChange={v => set('faturacao', v)} />
-          <Field label="Problema principal" value={form.dor} onChange={v => set('dor', v)} />
+          <Field label="Empresa" value={form.clinica} onChange={v => set('clinica', v)} />
+          <SelectField label="Sector" value={form.tipo} onChange={v => set('tipo', v)} options={SECTORS} />
+          <Field label="Nº de colaboradores" value={form.consultas} onChange={v => set('consultas', v)} placeholder="Ex: 10-30" />
+          <Field label="Faturação anual" value={form.faturacao} onChange={v => set('faturacao', v)} placeholder="Ex: €500k–1M" />
+          <Field label="Principal dor / problema" value={form.dor} onChange={v => set('dor', v)} placeholder="Ex: follow-ups manuais" />
         </div>
 
         {/* Meeting */}
@@ -345,9 +387,9 @@ function AddLeadModal({ onClose, onAdd }) {
           <Field label="Nome *" value={form.nome} onChange={v => set('nome', v)} required />
           <Field label="WhatsApp *" value={form.whatsapp} onChange={v => set('whatsapp', v)} type="tel" required />
           <Field label="Email" value={form.email} onChange={v => set('email', v)} type="email" />
-          <Field label="Clínica" value={form.clinica} onChange={v => set('clinica', v)} />
-          <Field label="Tipo de clínica" value={form.tipo} onChange={v => set('tipo', v)} />
-          <Field label="Faturação" value={form.faturacao} onChange={v => set('faturacao', v)} />
+          <Field label="Empresa" value={form.clinica} onChange={v => set('clinica', v)} />
+          <SelectField label="Sector" value={form.tipo} onChange={v => set('tipo', v)} options={SECTORS} />
+          <Field label="Faturação anual" value={form.faturacao} onChange={v => set('faturacao', v)} placeholder="Ex: €500k–1M" />
         </div>
         <div style={{ marginBottom: '20px' }}>
           <label style={{ fontSize: '11px', fontWeight: 700, color: '#999', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '8px' }}>
@@ -378,6 +420,7 @@ function AddLeadModal({ onClose, onAdd }) {
 /* ── Main CRM ── */
 export default function CrmPage() {
   const [authed, setAuthed] = useState(() => sessionStorage.getItem('crm_auth') === '1')
+  const [tab, setTab] = useState('pipeline')
   const [leads, setLeads] = useState([])
   const [loading, setLoading] = useState(true)
   const [selected, setSelected] = useState(null)
@@ -440,42 +483,90 @@ export default function CrmPage() {
       {/* Top header */}
       <div style={{ background: 'white', borderBottom: '1px solid #e8edf5' }}>
         <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '60px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '18px', color: '#217FF1' }}>Remindr</span>
-            <span style={{ fontSize: '13px', color: '#bbb' }}>/ CRM</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '18px', color: '#217FF1' }}>Reminder</span>
+              <span style={{ fontSize: '13px', color: '#bbb' }}>/ CRM</span>
+            </div>
+            {/* Tab switcher */}
+            <div style={{ display: 'flex', gap: '2px', background: '#F3F6FB', borderRadius: '10px', padding: '3px' }}>
+              {[
+                { id: 'pipeline', label: 'Pipeline' },
+                { id: 'delivery', label: 'Delivery' },
+                { id: 'outbound', label: 'Outbound' },
+                { id: 'kpis', label: 'KPIs Semanais' },
+                { id: 'coach', label: '✦ Coach IA' },
+                { id: 'discovery', label: 'Discovery' },
+              ].map(t => (
+                <button
+                  key={t.id}
+                  onClick={() => setTab(t.id)}
+                  style={{
+                    padding: '6px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer',
+                    fontSize: '13px', fontWeight: 700,
+                    background: tab === t.id ? 'white' : 'transparent',
+                    color: tab === t.id ? '#111' : '#999',
+                    boxShadow: tab === t.id ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
+                    transition: 'all 0.12s',
+                  }}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
           </div>
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-            <input
-              type="text"
-              placeholder="Pesquisar lead…"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              style={{
-                padding: '8px 14px', border: '1.5px solid #e8edf5', borderRadius: '10px',
-                fontSize: '14px', outline: 'none', width: '200px',
-              }}
-            />
-            <button
-              onClick={fetchLeads}
-              style={{
-                padding: '8px 14px', background: '#F3F6FB', color: '#555',
-                border: '1.5px solid #e8edf5', borderRadius: '10px', fontSize: '13px', fontWeight: 600, cursor: 'pointer',
-              }}
-            >
-              ↻ Atualizar
-            </button>
-            <button
-              onClick={() => setShowAdd(true)}
-              style={{
-                padding: '8px 18px', background: '#217FF1', color: 'white',
-                border: 'none', borderRadius: '10px', fontSize: '13px', fontWeight: 700, cursor: 'pointer',
-              }}
-            >
-              + Nova Lead
-            </button>
-          </div>
+          {tab === 'pipeline' && (
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              <input
+                type="text"
+                placeholder="Pesquisar lead…"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                style={{
+                  padding: '8px 14px', border: '1.5px solid #e8edf5', borderRadius: '10px',
+                  fontSize: '14px', outline: 'none', width: '200px',
+                }}
+              />
+              <button
+                onClick={fetchLeads}
+                style={{
+                  padding: '8px 14px', background: '#F3F6FB', color: '#555',
+                  border: '1.5px solid #e8edf5', borderRadius: '10px', fontSize: '13px', fontWeight: 600, cursor: 'pointer',
+                }}
+              >
+                ↻ Atualizar
+              </button>
+              <button
+                onClick={() => setShowAdd(true)}
+                style={{
+                  padding: '8px 18px', background: '#217FF1', color: 'white',
+                  border: 'none', borderRadius: '10px', fontSize: '13px', fontWeight: 700, cursor: 'pointer',
+                }}
+              >
+                + Nova Lead
+              </button>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* KPIs tab */}
+      {tab === 'kpis' && <KpiView />}
+
+      {/* Delivery tab */}
+      {tab === 'delivery' && <DeliveryView />}
+
+      {/* Outbound tab */}
+      {tab === 'outbound' && <OutboundView onLeadCreated={lead => setLeads(ls => [lead, ...ls])} />}
+
+      {/* Coach tab */}
+      {tab === 'coach' && <CoachView leads={leads} />}
+
+      {/* Discovery tab */}
+      {tab === 'discovery' && <DiscoveryView leads={leads} />}
+
+      {/* Pipeline tab content */}
+      {tab === 'pipeline' && <>
 
       {/* Stats / filter bar */}
       <div style={{ background: 'white', borderBottom: '1px solid #e8edf5', overflowX: 'auto' }}>
@@ -577,6 +668,9 @@ export default function CrmPage() {
           </button>
         </div>
       )}
+
+      {/* End pipeline tab */}
+      </>}
 
       {/* Modals */}
       {selected && (

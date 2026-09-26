@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './ailyx.css'
 import './remindr.css'
+import './co.css'
 import App from './App.jsx'
 
 gsap.registerPlugin(ScrollTrigger)

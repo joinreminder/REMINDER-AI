@@ -3,26 +3,16 @@ import gsap from 'gsap'
 
 export default function AilyxHero() {
   const contentRef = useRef(null)
-  const robotRef   = useRef(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const el = contentRef.current
       if (!el) return
-
       const siblings = Array.from(el.children)
       gsap.fromTo(siblings,
         { y: 28, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.95, ease: 'power3.out', stagger: 0.11, delay: 0.2 }
       )
-
-      if (robotRef.current) {
-        gsap.fromTo(robotRef.current,
-          { x: 60, opacity: 0 },
-          { x: 0, opacity: 1, duration: 1.2, ease: 'power3.out', delay: 0.8 }
-        )
-        gsap.to(robotRef.current, { y: -14, duration: 3.5, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 2.2 })
-      }
     })
     return () => ctx.revert()
   }, [])
@@ -74,71 +64,56 @@ export default function AilyxHero() {
         }} />
       </div>
 
-      {/* Main content */}
+      {/* Main content — centered */}
       <div style={{
         flex: 1,
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'center',
         width: '100%',
         padding: 'calc(var(--nav-h, 72px) + 32px) 0 48px',
         position: 'relative',
         zIndex: 2,
       }}>
         <div className="ayl-container">
-          <div className="ayl-hero-grid" style={{ display: 'grid', alignItems: 'center' }}>
+          <div ref={contentRef} style={{
+            display: 'flex', flexDirection: 'column',
+            alignItems: 'center', textAlign: 'center',
+            gap: '24px', maxWidth: '780px', margin: '0 auto',
+          }}>
 
-            {/* LEFT — copy */}
-            <div ref={contentRef} className="ayl-hero-content-col" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-
-                <h1 className="hero-h1" style={{
-                fontFamily: 'Sora, sans-serif', fontWeight: 700,
-                fontSize: 'clamp(26px, 3vw, 44px)',
-                lineHeight: 1.1, letterSpacing: '-0.045em',
-                color: '#fff', margin: 0,
-              }}>
-                Faça a sua empresa crescer sem contratar mais pessoas.
-              </h1>
-
-              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '17px', lineHeight: 1.7, maxWidth: '480px', margin: 0 }}>
-                Identificamos os processos que estão a consumir mais tempo e dinheiro, transformamo-los em sistemas automatizados com IA e medimos o impacto real no seu negócio.
-              </p>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-                <a href="/diagnostico" style={{
-                  background: '#217FF1', color: '#fff',
-                  fontFamily: 'Sora, sans-serif', fontWeight: 700,
-                  fontSize: '15px', padding: '16px 32px',
-                  borderRadius: '14px', textDecoration: 'none',
-                  display: 'inline-flex', alignItems: 'center',
-                  boxShadow: '0 8px 32px rgba(33,127,241,0.45)',
-                  transition: 'transform 0.18s ease, box-shadow 0.18s ease',
-                }}
-                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 14px 40px rgba(33,127,241,0.55)' }}
-                  onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 8px 32px rgba(33,127,241,0.45)' }}
-                >
-                  Descobrir onde podemos criar impacto →
-                </a>
-              </div>
-
-              <span style={{ fontSize: '12.5px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.02em' }}>
-                Diagnóstico gratuito · 60 min · Sem compromisso
+            <h1 style={{
+              fontFamily: 'Sora, sans-serif', fontWeight: 800,
+              fontSize: 'clamp(30px, 4.5vw, 58px)',
+              letterSpacing: '-0.04em', lineHeight: 1.1,
+              color: '#fff', margin: 0,
+            }}>
+              Descubra Como Transformar Mais Leads em Reuniões{' '}
+              <span style={{ color: '#5aabff' }}>
+                — Grátis e em Menos de 60 Segundos.
               </span>
+            </h1>
 
-              {/* Mobile-only logo strip */}
-              <MobileLogoStrip />
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '17px', lineHeight: 1.65, maxWidth: '540px', margin: 0 }}>
+              Responda a algumas perguntas e receba o seu Roadmap Personalizado de Conversão, com os principais pontos onde está a perder oportunidades e o que deve fazer para os corrigir.
+            </p>
 
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <a href="/diagnostico" className="ayl-btn ayl-btn--primary" style={{ fontSize: '17px', padding: '18px 40px' }}>
+                Receber o Meu Roadmap Grátis →
+              </a>
             </div>
 
-            {/* RIGHT — Robot visual */}
-            <div ref={robotRef} className="ayl-hero-robot" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-              <RobotVisual />
-            </div>
+            <span style={{ fontSize: '12.5px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.02em' }}>
+              Grátis · Personalizado · 14 perguntas · Resultados instantâneos · Sem compromisso
+            </span>
+
+            {/* Mobile-only logo strip */}
+            <MobileLogoStrip />
 
           </div>
         </div>
       </div>
-
-
     </section>
   )
 }
@@ -162,7 +137,7 @@ function MobileLogoStrip() {
       borderTop: '1px solid rgba(255,255,255,0.08)',
     }}>
       <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 auto' }}>
-        Empresas que já trabalham com a Reminder
+        Empresas que já confiam na Reminder
       </p>
       <div className="logo-ticker__track-wrap hero-logo-single">
         <div className="logo-ticker__track">
@@ -173,197 +148,6 @@ function MobileLogoStrip() {
           ))}
         </div>
       </div>
-    </div>
-  )
-}
-
-// Hub center in the 440×440 space. Robot head is centered at ~(220,200).
-const HUB_CX = 220, HUB_CY = 200
-const HERO_CARDS = [
-  { label: 'Novo lead recebido',   sub: 'respondido em segundos', color: '#5aabff', icon: '📩', px: 290, py: 28,  dur: '2.2s', delay: '0s'   },
-  { label: 'Proposta enviada',     sub: 'sem intervenção manual', color: '#4ade80', icon: '📄', px: 320, py: 185, dur: '2.8s', delay: '0.5s'  },
-  { label: 'Reunião marcada',      sub: 'automaticamente',        color: '#a78bfa', icon: '📅', px: 270, py: 355, dur: '2.0s', delay: '1.0s'  },
-  { label: 'Follow-up enviado',    sub: 'no momento certo',       color: '#fb7185', icon: '↗',  px: 30,  py: 330, dur: '3.0s', delay: '0.3s'  },
-  { label: 'Cliente atendido',     sub: 'sem espera',             color: '#f59e0b', icon: '💬', px: 10,  py: 150, dur: '2.5s', delay: '0.7s'  },
-]
-const heroCx = c => c.px + 80  // card ~160px wide
-const heroCy = c => c.py + 24  // card ~48px tall
-
-function RobotVisual() {
-  return (
-    <div className="ayl-robot-canvas" style={{ position: 'relative', width: '440px', height: '440px' }}>
-
-      {/* Deep glow behind robot */}
-      <div style={{
-        position: 'absolute', top: '20%', left: '20%', width: '60%', height: '60%',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(33,127,241,0.28) 0%, transparent 70%)',
-        filter: 'blur(32px)',
-        animation: 'robot-ring-pulse 3s ease-in-out infinite',
-      }} />
-
-      {/* SVG: orbit rings + connection lines + data pulses */}
-      <svg
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', overflow: 'visible' }}
-        viewBox="0 0 440 440"
-        preserveAspectRatio="xMidYMid meet"
-      >
-        {/* Orbit rings */}
-        <circle cx={HUB_CX} cy={HUB_CY} r="80"  stroke="rgba(33,127,241,0.18)" strokeWidth="1" fill="none" strokeDasharray="3 8" />
-        <circle cx={HUB_CX} cy={HUB_CY} r="130" stroke="rgba(33,127,241,0.08)" strokeWidth="1" fill="none" />
-
-        {HERO_CARDS.map((c, i) => {
-          const x2 = heroCx(c), y2 = heroCy(c)
-          const path = `M${HUB_CX},${HUB_CY} L${x2},${y2}`
-          return (
-            <g key={i}>
-              {/* Dashed connector */}
-              <line
-                x1={HUB_CX} y1={HUB_CY} x2={x2} y2={y2}
-                stroke={`${c.color}28`} strokeWidth="1.5" strokeDasharray="5 7"
-              />
-              {/* Primary pulse */}
-              <circle r="3.5" fill={c.color} opacity="0.9">
-                <animateMotion dur={c.dur} repeatCount="indefinite" begin={c.delay} path={path} />
-              </circle>
-              {/* Secondary pulse (offset) */}
-              <circle r="2" fill={c.color} opacity="0.45">
-                <animateMotion dur={c.dur} repeatCount="indefinite" begin={`calc(${c.delay} + ${parseFloat(c.dur) / 2}s)`} path={path} />
-              </circle>
-              {/* Node dot at card end */}
-              <circle cx={x2} cy={y2} r="4" fill={`${c.color}50`} stroke={c.color} strokeWidth="1" opacity="0.6" />
-            </g>
-          )
-        })}
-      </svg>
-
-      {/* Main sphere — chrome robot head */}
-      <div style={{
-        position: 'absolute',
-        top: '50%', left: '50%',
-        transform: 'translate(-50%, -54%)',
-        width: '240px', height: '280px',
-        borderRadius: '50% 50% 45% 45% / 55% 55% 45% 45%',
-        background: `
-          radial-gradient(ellipse at 35% 28%, rgba(180,220,255,0.95) 0%, rgba(100,170,255,0.7) 22%, rgba(33,100,200,0.82) 52%, rgba(10,30,90,0.95) 82%, #040d20 100%)
-        `,
-        boxShadow: `
-          0 0 90px rgba(33,127,241,0.5),
-          0 0 180px rgba(10,60,180,0.2),
-          inset 0 -30px 60px rgba(0,10,40,0.8),
-          inset 30px 0 60px rgba(0,0,0,0.3),
-          inset -10px 0 30px rgba(100,180,255,0.15)
-        `,
-        overflow: 'hidden',
-        zIndex: 4,
-      }}>
-        {/* Specular highlight */}
-        <div style={{
-          position: 'absolute', top: '10%', left: '18%',
-          width: '55%', height: '28%',
-          background: 'radial-gradient(ellipse at 50% 40%, rgba(255,255,255,0.6) 0%, rgba(200,230,255,0.25) 50%, transparent 75%)',
-          borderRadius: '50%',
-          transform: 'rotate(-15deg)',
-        }} />
-        {/* Scan line sweep */}
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0,
-          height: '2px',
-          background: 'linear-gradient(90deg, transparent, rgba(100,200,255,0.8), transparent)',
-          animation: 'hero-scan-line 3s linear infinite',
-        }} />
-        {/* Eyes */}
-        <div style={{ position: 'absolute', top: '41%', left: '20%', display: 'flex', gap: '48px' }}>
-          {[0, 1].map(i => (
-            <div key={i} style={{
-              width: '38px', height: '13px',
-              borderRadius: '3px',
-              background: 'rgba(150,210,255,0.92)',
-              boxShadow: '0 0 14px rgba(100,190,255,1), 0 0 28px rgba(33,127,241,0.9)',
-              animation: `eye-glow 2.5s ease-in-out infinite ${i * 0.3}s`,
-            }} />
-          ))}
-        </div>
-        {/* Processing dots row */}
-        <div style={{
-          position: 'absolute', bottom: '28%', left: '50%', transform: 'translateX(-50%)',
-          display: 'flex', gap: '6px',
-        }}>
-          {[0,1,2].map(i => (
-            <div key={i} style={{
-              width: 5, height: 5, borderRadius: '50%',
-              background: 'rgba(100,190,255,0.7)',
-              animation: `hero-pulse ${1.2 + i * 0.3}s ease-in-out infinite ${i * 0.2}s`,
-            }} />
-          ))}
-        </div>
-        {/* Chin line */}
-        <div style={{
-          position: 'absolute', bottom: '20%', left: '28%', right: '28%',
-          height: '2px',
-          background: 'linear-gradient(90deg, transparent, rgba(100,180,255,0.5), transparent)',
-          borderRadius: '1px',
-        }} />
-      </div>
-
-      {/* Pulsing rings around hub */}
-      <div style={{
-        position: 'absolute',
-        top: '50%', left: '50%',
-        transform: 'translate(-50%, -54%)',
-        width: '240px', height: '240px',
-        borderRadius: '50%',
-        border: '1px solid rgba(33,127,241,0.3)',
-        animation: 'robot-ring-pulse 2.5s ease-in-out infinite',
-        zIndex: 3,
-        pointerEvents: 'none',
-      }} />
-      <div style={{
-        position: 'absolute',
-        top: '50%', left: '50%',
-        transform: 'translate(-50%, -54%)',
-        width: '290px', height: '290px',
-        borderRadius: '50%',
-        border: '1px solid rgba(33,127,241,0.12)',
-        animation: 'robot-ring-pulse 2.5s ease-in-out infinite 0.7s',
-        zIndex: 3,
-        pointerEvents: 'none',
-      }} />
-
-      {/* Action cards */}
-      {HERO_CARDS.map((c, i) => (
-        <div
-          key={i}
-          style={{
-            position: 'absolute',
-            left: `${c.px}px`,
-            top: `${c.py}px`,
-            background: 'rgba(255,255,255,0.055)',
-            border: `1px solid ${c.color}35`,
-            backdropFilter: 'blur(14px)',
-            borderRadius: '12px',
-            padding: '8px 12px',
-            display: 'flex', alignItems: 'center', gap: '8px',
-            zIndex: 5,
-            minWidth: '160px',
-            animation: `float-card-${['a','b','c','a','b'][i]} ${3.5 + i * 0.6}s ease-in-out infinite ${i * 0.4}s`,
-          }}
-        >
-          <span style={{
-            width: '24px', height: '24px', borderRadius: '6px',
-            background: `${c.color}18`, border: `1px solid ${c.color}44`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '12px', flexShrink: 0,
-          }}>
-            {c.icon}
-          </span>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: '11px', fontWeight: 700, color: '#fff', fontFamily: 'Sora, sans-serif', whiteSpace: 'nowrap' }}>{c.label}</div>
-            <div style={{ fontSize: '9.5px', color: `${c.color}cc`, marginTop: '1px', whiteSpace: 'nowrap' }}>{c.sub}</div>
-          </div>
-          <span style={{ width: 5, height: 5, borderRadius: '50%', background: c.color, opacity: 0.85, animation: `hero-pulse ${1.4 + i * 0.25}s ease-in-out infinite`, flexShrink: 0 }} />
-        </div>
-      ))}
     </div>
   )
 }

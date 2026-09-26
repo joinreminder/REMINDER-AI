@@ -20,7 +20,7 @@ function AuditForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
-          _subject: `[Remindr] AUDITORIA €497 — ${data.nome}`,
+          _subject: `[Reminder] AUDITORIA €497 — ${data.nome}`,
           nome: data.nome,
           telemovel: data.telemovel,
           email: data.email,

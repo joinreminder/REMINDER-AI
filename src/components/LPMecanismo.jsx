@@ -137,7 +137,7 @@ export default function LPMecanismo() {
             marginTop: '16px', fontSize: '11px', color: 'rgba(255,255,255,0.25)',
             textAlign: 'center', lineHeight: 1.55, maxWidth: '340px',
           }}>
-            Exemplo ilustrativo do fluxo Remindr. A automação é configurada segundo as regras da empresa.
+            Exemplo ilustrativo do fluxo Reminder. A automação é configurada segundo as regras da empresa.
           </p>
         </div>
 

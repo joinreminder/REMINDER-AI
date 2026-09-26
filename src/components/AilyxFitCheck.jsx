@@ -44,7 +44,7 @@ export default function AilyxFitCheck() {
       <div className="ayl-container">
         <div className="ayl-section-label">Perfil do cliente</div>
         <h2 className="ayl-h2" style={{ marginBottom: '8px' }}>
-          A Remindr é para a sua empresa?
+          A Reminder é para a sua empresa?
         </h2>
         <p style={{ color: '#555', fontSize: '17px', maxWidth: '540px', lineHeight: 1.6, marginBottom: '40px' }}>
           Leia antes de pedir o diagnóstico — para não perdermos o tempo de nenhum dos dois.

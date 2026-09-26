@@ -9,8 +9,7 @@ export default function RFooter() {
           REMIN<span>DR</span>
         </Link>
         <p className="rfooter__copy">
-          © {year} Remindr. Todos os direitos reservados.<br />
-          Business Leak Audit™ e Revenue & Operations System™ são marcas da Remindr.
+          © {year} Reminder. Todos os direitos reservados.
         </p>
         <ul className="rfooter__links">
           <li><a href="mailto:hello@remindr-ai.com">hello@remindr-ai.com</a></li>

@@ -312,20 +312,21 @@ body {
 /* ─── LOGO TICKER ───────────────────────────────────────────────── */
 .logo-ticker {
   background: #06102a;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  padding: 52px 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 40px 0;
   overflow: hidden;
 }
 
 .logo-ticker__label {
   text-align: center;
   font-family: 'Sora', sans-serif;
-  font-size: 10px;
+  font-size: 12px;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: rgba(255,255,255,0.35);
-  margin: 0 0 32px;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.45);
+  margin: 0 0 28px;
 }
 
 .logo-ticker__track-wrap {
@@ -339,7 +340,7 @@ body {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 140px;
+  width: 100px;
   z-index: 2;
   pointer-events: none;
 }
@@ -357,7 +358,7 @@ body {
   align-items: center;
   gap: 0;
   width: max-content;
-  animation: logo-ticker 18s linear infinite;
+  animation: logo-ticker 20s linear infinite;
 }
 
 .logo-ticker__item {
@@ -365,33 +366,25 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 72px;
-  padding: 0 28px;
-  opacity: 0.7;
+  height: 80px;
+  padding: 0 20px;
+  opacity: 0.85;
   filter: brightness(0) invert(1);
   transition: opacity 0.3s;
 }
 .logo-ticker__item:hover { opacity: 1; }
 
-.logo-ticker__divider {
-  display: inline-block;
-  width: 1px;
-  height: 32px;
-  background: rgba(255,255,255,0.1);
-  flex-shrink: 0;
-}
-
 .logo-ticker__img {
-  height: 48px;
+  height: 56px;
   width: auto;
-  max-width: 160px;
+  max-width: 180px;
   object-fit: contain;
   display: block;
 }
 
 @keyframes logo-ticker {
   0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  100% { transform: translateX(-33.333%); }
 }
 /* ── Process 2x2 card grid ── */
 .ayl-process-grid {
@@ -559,21 +552,22 @@ body {
 
 /* Slide-up text animation */
 .ayl-nav__link-inner {
-  display: flex;
-  flex-direction: column;
-  height: 1.2em;
+  display: block;
+  height: 1.4em;
+  line-height: 1.4;
   overflow: hidden;
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .ayl-nav__link-inner > span {
   display: block;
-  height: 1.2em;
-  line-height: 1.2em;
+  height: 1.4em;
+  line-height: 1.4em;
+  white-space: nowrap;
 }
 
 .ayl-nav__link:hover .ayl-nav__link-inner {
-  transform: translateY(-50%);
+  transform: translateY(-1.4em);
 }
 
 .ayl-nav__link-inner > span:nth-child(2) {
@@ -3919,17 +3913,17 @@ html, body {
   .logo-ticker {
     display: none !important;
   }
-  /* Logo strip: 1 logo at a time */
+  /* Logo strip: show all logos together */
   .hero-logo-single .logo-ticker__item {
-    min-width: calc(100vw - 40px);
-    padding: 0;
+    min-width: auto;
+    padding: 0 12px;
     justify-content: center;
   }
   .hero-logo-single .logo-ticker__divider {
     display: none;
   }
   .hero-logo-single .logo-ticker__img {
-    height: 36px;
+    height: 28px;
   }
   /* Content column: min-width:0 prevents logo ticker (width:max-content)
      from inflating the grid column beyond the viewport */
@@ -3949,6 +3943,12 @@ html, body {
   /* Robot hidden on mobile — logo strip shows instead */
   .ayl-hero-robot { display: none !important; }
   .hero-mobile-proof { display: flex !important; }
+
+  /* H1 second line: allow wrap on mobile so it doesn't overflow */
+  .hero-h1-line2 {
+    white-space: normal !important;
+    font-size: clamp(36px, 10vw, 52px) !important;
+  }
   .ayl-hero-trustbar {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 0 !important;
@@ -3966,10 +3966,35 @@ html, body {
   }
   .ayl-services-visual { display: none !important; }
 
-  /* ── Solution 3 passos ── */
+  /* ── Solution flow diagram ── */
+  .ayl-flow-diagram {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    padding: 16px !important;
+  }
+  .ayl-flow-diagram > div {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .ayl-flow-diagram > div > div:first-child {
+    width: 100%;
+    text-align: center;
+  }
+  .ayl-flow-diagram svg {
+    transform: rotate(90deg);
+    margin: 6px 0 !important;
+  }
+
+  /* ── Solution sticky cards ── */
   .ayl-solution-grid {
     grid-template-columns: 1fr !important;
     gap: 16px !important;
+  }
+  /* On mobile, disable sticky and make cards stack normally */
+  #mechanism .ayl-card--hover {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
   }
 
   /* ── Audit ── */
@@ -4029,6 +4054,24 @@ html, body {
     flex-wrap: wrap !important;
     gap: 6px !important;
     border-radius: 14px !important;
+  }
+
+  /* ── Metrics grid ── */
+  .ayl-metrics-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  /* ── Integrations grid ── */
+  .ayl-integrations-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  /* ── ForWho grid ── */
+  .ayl-forwho-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
   }
 
   /* ── Hermes chat ── */

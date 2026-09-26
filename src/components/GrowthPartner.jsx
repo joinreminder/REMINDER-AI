@@ -95,7 +95,7 @@ export default function GrowthPartner() {
         {/* Header */}
         <div className="anim" style={{ maxWidth: 680, marginBottom: 64 }}>
           <span className="label" style={{ color: 'rgba(255,255,255,0.55)', marginBottom: 16, display: 'block' }}>
-            Clinic Growth Partner · Remindr
+            Clinic Growth Partner · Reminder
           </span>
           <h2 className="h2" style={{ color: 'white', marginBottom: 20, lineHeight: 1.1 }}>
             Não vendemos software.<br />
@@ -125,7 +125,7 @@ export default function GrowthPartner() {
               <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(220,38,38,0.8)' }}>Antes</span>
             </div>
             <div style={{ padding: '12px 20px', background: 'rgba(22,163,74,0.1)', borderBottom: '1px solid rgba(255,255,255,0.06)', borderLeft: '1px solid rgba(255,255,255,0.06)' }}>
-              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(22,163,74,0.9)' }}>Com a Remindr</span>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(22,163,74,0.9)' }}>Com a Reminder</span>
             </div>
             {BEFORE_AFTER.map((row, i) => (
               <div key={i} style={{ display: 'contents' }}>

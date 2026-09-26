@@ -4,122 +4,131 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const GUARANTEES = [
-  {
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-    ),
-    title: 'Diagnóstico sem risco',
-    body: '60 minutos gratuitos. Recebe o mapa completo da empresa — independentemente de avançar ou não.',
-  },
-  {
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="20 6 9 17 4 12"/>
-      </svg>
-    ),
-    title: 'Implementação garantida',
-    body: 'Se o sistema não estiver funcional dentro do prazo acordado, continuamos até estar. Sem custo adicional.',
-  },
-  {
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/>
-      </svg>
-    ),
-    title: 'Devolução total em 90 dias',
-    body: 'Se em 90 dias o sistema não estiver a funcionar conforme o âmbito definido, devolvemos 100% do valor pago.',
-  },
-]
-
 export default function AilyxGuarantee() {
-  const ref = useRef(null)
+  const sectionRef = useRef(null)
+  const contentRef = useRef(null)
+  const cardRef    = useRef(null)
 
   useEffect(() => {
     if (window.innerWidth <= 768) return
     const ctx = gsap.context(() => {
-      gsap.from(ref.current.children, {
-        y: 36, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.12,
-        scrollTrigger: { trigger: ref.current, start: 'top 78%', once: true },
+      gsap.from(contentRef.current.children, {
+        y: 36, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1,
+        scrollTrigger: { trigger: contentRef.current, start: 'top 78%', once: true },
       })
-    })
+      gsap.fromTo(cardRef.current,
+        { scale: 0.92, opacity: 0 },
+        {
+          scale: 1, opacity: 1, duration: 1.0, ease: 'power3.out',
+          scrollTrigger: { trigger: cardRef.current, start: 'top 78%', once: true },
+        }
+      )
+    }, sectionRef)
     return () => ctx.revert()
   }, [])
 
   return (
-    <section style={{ background: '#06102a', padding: 'clamp(80px, 10vw, 120px) 0' }}>
+    <section ref={sectionRef} style={{ background: '#fff', padding: 'clamp(80px, 10vw, 120px) 0', borderTop: '1px solid #e8edf5' }}>
       <div className="ayl-container">
-        <div ref={ref} style={{ display: 'flex', flexDirection: 'column', gap: '48px', alignItems: 'center', textAlign: 'center' }}>
+        <div ref={contentRef} style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
 
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: '6px',
-            background: 'rgba(74,222,128,0.1)', border: '1px solid rgba(74,222,128,0.25)',
-            borderRadius: '100px', padding: '5px 14px',
+          <div className="ayl-section-label" style={{ marginBottom: '0' }}>Próximo passo</div>
+
+          <h2 className="ayl-h2" style={{ marginBottom: '0', color: '#0a1c42' }}>
+            Quer transformar o Roadmap em execução?
+          </h2>
+
+          <p style={{ color: '#666', fontSize: '16px', lineHeight: 1.65, maxWidth: '560px', margin: 0 }}>
+            O Roadmap mostra-lhe onde pode estar a perder oportunidades. O próximo passo é testar o processo com leads reais.
+          </p>
+
+          {/* Pilot Card */}
+          <div ref={cardRef} style={{
+            width: '100%', maxWidth: '600px',
+            background: '#06142e',
+            borderRadius: '20px',
+            padding: 'clamp(32px, 4vw, 48px)',
+            border: '1px solid rgba(33,127,241,0.2)',
+            textAlign: 'center',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px',
           }}>
-            <span style={{ fontSize: '11px', fontWeight: 700, color: '#4ade80', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-              A nossa garantia
-            </span>
-          </div>
 
-          <div style={{ maxWidth: '720px' }}>
-            <h2 style={{
-              fontFamily: 'Sora, sans-serif', fontWeight: 700,
-              fontSize: 'clamp(32px, 5vw, 56px)',
-              color: '#fff', letterSpacing: '-0.04em', lineHeight: 1.15,
-              margin: '0 0 24px 0',
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: '8px',
+              background: 'rgba(33,127,241,0.15)', border: '1px solid rgba(33,127,241,0.3)',
+              borderRadius: '100px', padding: '8px 22px',
             }}>
-              Se não funcionar,<br />
-              <span style={{ color: '#5aabff' }}>não pagou nada.</span>
-            </h2>
-            <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, margin: 0 }}>
-              O diagnóstico é sempre gratuito. Só avança para implementação se quiser — e se o sistema não estiver funcional conforme o acordado em 90 dias, devolvemos tudo.
+              <span style={{ fontSize: '14px', fontWeight: 700, color: '#94c4ff', letterSpacing: '0.04em', fontFamily: 'Sora, sans-serif' }}>
+                Reminder 30-Day Pilot
+              </span>
+            </div>
+
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', lineHeight: 1.6, margin: 0, maxWidth: '480px' }}>
+              Durante 30 dias, a Reminder implementa e executa o processo entre:
             </p>
+
+            <div style={{
+              display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px',
+            }}>
+              {['Lead', 'Contacto', 'Follow-up', 'Qualificação', 'Reunião'].map((step, i, arr) => (
+                <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{
+                    padding: '6px 14px', borderRadius: '100px',
+                    background: 'rgba(33,127,241,0.15)',
+                    border: '1px solid rgba(33,127,241,0.25)',
+                    fontSize: '13px', fontWeight: 600, color: '#94c4ff',
+                    fontFamily: 'Sora, sans-serif',
+                  }}>
+                    {step}
+                  </span>
+                  {i < arr.length - 1 && (
+                    <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '14px', fontWeight: 600 }}>→</span>
+                  )}
+                </span>
+              ))}
+            </div>
+
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', lineHeight: 1.6, margin: 0, maxWidth: '480px' }}>
+              Enquanto a sua equipa continua focada em:
+            </p>
+
+            <div style={{
+              display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px',
+            }}>
+              {['Reuniões', 'Propostas', 'Negociação', 'Closing'].map((step, i, arr) => (
+                <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{
+                    padding: '6px 14px', borderRadius: '100px',
+                    background: 'rgba(255,255,255,0.08)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    fontSize: '13px', fontWeight: 600, color: 'rgba(255,255,255,0.6)',
+                    fontFamily: 'Sora, sans-serif',
+                  }}>
+                    {step}
+                  </span>
+                  {i < arr.length - 1 && (
+                    <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '14px', fontWeight: 600 }}>→</span>
+                  )}
+                </span>
+              ))}
+            </div>
+
+            <div style={{
+              marginTop: '8px', padding: '16px 24px',
+              background: 'rgba(255,255,255,0.04)',
+              borderRadius: '12px',
+              border: '1px solid rgba(255,255,255,0.06)',
+            }}>
+              <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, margin: 0 }}>
+                O objetivo não é enviar mais mensagens. É transformar mais da procura que já existe em oportunidades comerciais.
+              </p>
+            </div>
+
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', width: '100%', textAlign: 'left' }}>
-            {GUARANTEES.map((g, i) => (
-              <div key={i} style={{
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                borderRadius: '16px',
-                padding: '24px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
-              }}>
-                <div style={{ color: '#5aabff' }}>{g.icon}</div>
-                <div style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '15px', color: '#fff' }}>
-                  {g.title}
-                </div>
-                <p style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, margin: 0 }}>
-                  {g.body}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
-            <a
-              href="/diagnostico"
-              style={{
-                background: '#217FF1', color: '#fff',
-                fontFamily: 'Sora, sans-serif', fontWeight: 700,
-                fontSize: '15px', padding: '16px 36px',
-                borderRadius: '14px', textDecoration: 'none',
-                display: 'inline-flex', alignItems: 'center',
-                transition: 'transform 0.18s ease',
-              }}
-              onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
-              onMouseLeave={e => e.currentTarget.style.transform = ''}
-            >
-              Marcar diagnóstico gratuito →
-            </a>
-            <span style={{ fontSize: '12.5px', color: 'rgba(255,255,255,0.25)' }}>
-              Sem compromisso · Apenas 4 vagas por mês
-            </span>
-          </div>
+          <a href="/diagnostico" className="ayl-btn ayl-btn--primary" style={{ textAlign: 'center', justifyContent: 'center', fontSize: '15px', padding: '16px 36px', marginTop: '8px' }}>
+            CANDIDATAR-ME AO 30-DAY PILOT →
+          </a>
 
         </div>
       </div>

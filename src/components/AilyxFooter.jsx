@@ -12,26 +12,25 @@ export default function AilyxFooter() {
               <span className="ayl-footer__logo-ai"> AI</span>
             </span>
           </span>
-          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '14px', marginTop: '12px', fontStyle: 'italic' }}>
-            Não vendemos IA. Construímos capacidade.
+          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '14px', marginTop: '12px' }}>
+            Transforme mais leads em oportunidades comerciais.
+          </p>
+          <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '13px', marginTop: '6px' }}>
+            A sua equipa fecha. Nós fazemos o trabalho antes da reunião.
           </p>
         </div>
 
         <div className="ayl-footer__nav">
           <div className="ayl-footer__col">
             <div className="ayl-footer__col-title">Começar</div>
-            <a href="/diagnostico" className="ayl-footer__link">Diagnóstico Gratuito</a>
+            <a href="/diagnostico" className="ayl-footer__link">Roadmap Gratuito</a>
             <a href="/diagnostico" className="ayl-footer__link">Falar com a equipa</a>
           </div>
           <div className="ayl-footer__col">
             <div className="ayl-footer__col-title">O que fazemos</div>
-            <a href="#audit" className="ayl-footer__link">Diagnóstico de Processos</a>
-            <a href="#build" className="ayl-footer__link">Implementação de Sistemas</a>
-            <a href="#method" className="ayl-footer__link">A Nossa Metodologia</a>
-          </div>
-          <div className="ayl-footer__col">
-            <div className="ayl-footer__col-title">Empresa</div>
-            <a href="#systems" className="ayl-footer__link">Sistemas</a>
+            <a href="#mechanism" className="ayl-footer__link">Como funciona</a>
+            <a href="#audit" className="ayl-footer__link">As 5 Dimensões</a>
+            <a href="#about" className="ayl-footer__link">Para quem é</a>
             <a href="#faq" className="ayl-footer__link">FAQ</a>
           </div>
           <div className="ayl-footer__col">
@@ -43,7 +42,7 @@ export default function AilyxFooter() {
 
         <div className="ayl-footer__bottom">
           <span className="ayl-footer__copy">Reminder AI {year}. Todos os direitos reservados.</span>
-          <span className="ayl-footer__design">Não vendemos IA. Construímos capacidade.</span>
+          <span className="ayl-footer__design">A sua equipa fecha. Nós fazemos o trabalho antes da reunião.</span>
         </div>
 
       </div>

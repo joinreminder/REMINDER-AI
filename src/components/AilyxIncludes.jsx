@@ -4,47 +4,28 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const DELIVERABLES = [
-  {
-    num: '01',
-    title: 'Revenue & Capacity Map',
-    desc: 'Em 60 minutos mapeamos os fluxos de trabalho da sua empresa e identificamos exatamente onde está o desperdício de tempo, leads perdidos e capacidade não aproveitada.',
-    outcome: 'Sabe onde está o problema antes de gastar um euro.',
-  },
-  {
-    num: '02',
-    title: 'Plano de ação priorizado',
-    desc: 'Entregamos uma lista ordenada por impacto: quais os sistemas a implementar primeiro, o que automatizam e qual o resultado esperado para o seu negócio.',
-    outcome: 'Clareza total sobre o que atacar e porquê.',
-  },
-  {
-    num: '03',
-    title: 'Implementação de ponta a ponta',
-    desc: 'Construímos o sistema completo — integrações, automações, lógica de negócio. A sua equipa não toca em nada técnico. Nós tratamos de tudo.',
-    outcome: 'Sistema a funcionar, não um relatório esquecido.',
-  },
-  {
-    num: '04',
-    title: 'Impacto documentado',
-    desc: 'Medimos o antes e o depois. Horas recuperadas, leads que já não escapam, processos que deixaram de depender de alguém para acontecer.',
-    outcome: 'Números concretos, não estimativas.',
-  },
+const FLOW_STEPS = [
+  'Lead recebida',
+  'Contacto iniciado',
+  'Follow-up executado',
+  'Lead qualificada',
+  'Reunião marcada',
 ]
 
 export default function AilyxIncludes() {
-  const headRef = useRef(null)
+  const headRef  = useRef(null)
   const cardsRef = useRef([])
 
   useEffect(() => {
     if (window.innerWidth <= 768) return
     const ctx = gsap.context(() => {
       gsap.from(headRef.current.children, {
-        y: 28, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1,
+        y: 20, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1,
         scrollTrigger: { trigger: headRef.current, start: 'top 78%', once: true },
       })
       cardsRef.current.filter(Boolean).forEach((card, i) => {
         gsap.from(card, {
-          y: 40, opacity: 0, duration: 0.65, ease: 'power3.out', delay: i * 0.09,
+          y: 32, opacity: 0, duration: 0.65, ease: 'power3.out', delay: i * 0.09,
           scrollTrigger: { trigger: headRef.current, start: 'top 72%', once: true },
         })
       })
@@ -53,99 +34,100 @@ export default function AilyxIncludes() {
   }, [])
 
   return (
-    <section style={{ background: '#fff', padding: 'clamp(80px, 10vw, 120px) 0', borderTop: '1px solid #e8edf5' }} id="processo">
+    <section style={{ background: '#fff', padding: 'clamp(80px, 10vw, 120px) 0', borderTop: '1px solid #e8edf5' }} id="systems">
       <div className="ayl-container">
 
         {/* Header */}
-        <div ref={headRef} style={{ marginBottom: '52px' }}>
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: '6px',
-            background: '#EEF4FF', border: '1px solid rgba(33,127,241,0.25)',
-            borderRadius: '100px', padding: '5px 14px', marginBottom: '20px',
-          }}>
-            <span style={{ fontSize: '11px', fontWeight: 700, color: '#217FF1', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-              Como funciona
-            </span>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', alignItems: 'end' }}>
-            <h2 className="ayl-h2" style={{ color: '#0a1c42', margin: 0 }}>
-              Do diagnóstico ao sistema a funcionar.
-            </h2>
-            <p style={{ color: '#888', fontSize: '16px', lineHeight: 1.7, margin: 0 }}>
-              Não entregamos relatórios. Entregamos sistemas que funcionam — e que a equipa não tem de gerir manualmente.
-            </p>
-          </div>
+        <div ref={headRef} style={{ textAlign: 'center', marginBottom: '48px' }}>
+          <div className="ayl-section-label" style={{ marginBottom: '16px', display: 'inline-block' }}>O mecanismo</div>
+          <h2 className="ayl-h2" style={{ marginBottom: '12px' }}>
+            O caminho entre uma lead e uma reunião
+          </h2>
+          <p style={{ fontSize: '16px', color: '#666', lineHeight: 1.65, maxWidth: '520px', margin: '0 auto' }}>
+            Uma conversão não acontece num único passo.
+          </p>
         </div>
 
-        {/* Cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
-          {DELIVERABLES.map((d, i) => (
-            <div
-              key={i}
-              ref={el => cardsRef.current[i] = el}
-              className="ayl-card--hover"
-              style={{
-                background: i === 2 ? '#06102a' : '#F8FAFF',
-                border: i === 2 ? '1.5px solid rgba(33,127,241,0.25)' : '1.5px solid #e8edf5',
-                borderRadius: '20px',
-                padding: '32px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px',
-              }}
-            >
+        {/* Conversion flow */}
+        <div style={{
+          display: 'flex', flexDirection: 'column', alignItems: 'center',
+          gap: '0', maxWidth: '480px', margin: '0 auto',
+        }}>
+          {FLOW_STEPS.map((step, i) => (
+            <div key={i} ref={el => cardsRef.current[i] = el} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <div style={{
-                fontFamily: 'Sora, sans-serif', fontWeight: 800,
-                fontSize: '48px', lineHeight: 1,
-                color: i === 2 ? 'rgba(33,127,241,0.25)' : 'rgba(33,127,241,0.12)',
-                letterSpacing: '-0.04em', userSelect: 'none',
+                width: '100%',
+                padding: '18px 24px',
+                background: i === FLOW_STEPS.length - 1 ? '#EEF4FF' : '#F8FAFF',
+                border: `1.5px solid ${i === FLOW_STEPS.length - 1 ? 'rgba(33,127,241,0.3)' : '#e8edf5'}`,
+                borderRadius: '12px',
+                textAlign: 'center',
               }}>
-                {d.num}
-              </div>
-              <div>
-                <div style={{
-                  fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '17px',
-                  color: i === 2 ? '#fff' : '#0a1c42',
-                  marginBottom: '10px', lineHeight: 1.3,
+                <span style={{
+                  fontFamily: 'Sora, sans-serif', fontWeight: 700,
+                  fontSize: i === FLOW_STEPS.length - 1 ? '16px' : '14px',
+                  color: i === FLOW_STEPS.length - 1 ? '#217FF1' : '#0a1c42',
                 }}>
-                  {d.title}
-                </div>
-                <p style={{ fontSize: '14px', color: i === 2 ? 'rgba(255,255,255,0.55)' : '#777', lineHeight: 1.65, margin: 0 }}>
-                  {d.desc}
-                </p>
+                  {step}
+                </span>
               </div>
-              <div style={{
-                marginTop: 'auto',
-                fontSize: '13px', fontWeight: 700,
-                color: i === 2 ? '#5aabff' : '#217FF1',
-                paddingTop: '16px',
-                borderTop: `1px solid ${i === 2 ? 'rgba(255,255,255,0.08)' : '#e8edf5'}`,
-              }}>
-                → {d.outcome}
-              </div>
+              {i < FLOW_STEPS.length - 1 && (
+                <svg width="12" height="24" viewBox="0 0 12 24" fill="none" style={{ margin: '6px 0' }}>
+                  <path d="M6 0v18M2 14l4 4 4-4" stroke="#217FF1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.35" />
+                </svg>
+              )}
             </div>
           ))}
         </div>
 
-        {/* CTA strip */}
+        {/* Statement box: what the team should focus on */}
         <div style={{
-          marginTop: '40px',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          gap: '24px', flexWrap: 'wrap',
-          padding: '24px 32px',
-          background: '#F0F5FF',
-          borderRadius: '16px',
-          border: '1.5px solid rgba(33,127,241,0.15)',
+          marginTop: '48px', textAlign: 'center',
+          padding: '24px 28px',
+          background: '#F8FAFF',
+          border: '1.5px solid #e8edf5',
+          borderRadius: '14px',
+          maxWidth: '600px', margin: '48px auto 0',
         }}>
-          <div style={{ fontSize: '15px', fontWeight: 600, color: '#0a1c42' }}>
-            O diagnóstico é gratuito e sem compromisso.
-            <span style={{ fontWeight: 400, color: '#888', marginLeft: '8px' }}>
-              Decide depois se quer avançar.
-            </span>
-          </div>
-          <a href="/diagnostico" className="ayl-btn ayl-btn--primary" style={{ flexShrink: 0 }}>
-            Marcar diagnóstico →
-          </a>
+          <p style={{
+            fontSize: '15px', color: '#666', lineHeight: 1.6, margin: '0 0 12px',
+          }}>
+            A sua equipa comercial deve concentrar-se onde cria mais valor:
+          </p>
+          <p style={{
+            fontFamily: 'Sora, sans-serif', fontWeight: 700,
+            fontSize: 'clamp(17px, 2vw, 22px)',
+            color: '#217FF1', lineHeight: 1.4, margin: 0,
+          }}>
+            Reuniões {'\u00B7'} Propostas {'\u00B7'} Negociação {'\u00B7'} Closing
+          </p>
+        </div>
+
+        {/* Supporting text */}
+        <p style={{
+          textAlign: 'center', marginTop: '28px',
+          fontSize: '15px', color: '#666', lineHeight: 1.6,
+          maxWidth: '520px', margin: '28px auto 0',
+        }}>
+          O processo anterior à reunião precisa de acontecer de forma consistente.
+        </p>
+
+        {/* Tagline */}
+        <div style={{
+          marginTop: '32px', textAlign: 'center',
+          padding: '20px 28px',
+          background: '#06142e',
+          border: '1px solid rgba(33,127,241,0.2)',
+          borderRadius: '14px',
+          maxWidth: '600px', margin: '32px auto 0',
+        }}>
+          <p style={{
+            fontFamily: 'Sora, sans-serif', fontWeight: 700,
+            fontSize: 'clamp(15px, 1.8vw, 18px)',
+            color: '#5aabff', lineHeight: 1.5, margin: 0,
+          }}>
+            A sua equipa vende. Nós fazemos o trabalho antes da reunião.
+          </p>
         </div>
 
       </div>

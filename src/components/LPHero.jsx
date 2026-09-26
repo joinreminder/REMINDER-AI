@@ -14,7 +14,7 @@ export default function LPHero() {
           </h1>
 
           <p className="lp-hero__sub">
-            A Remindr identifica onde pedidos e propostas ficam esquecidos e, se houver retorno, instala um processo de resposta, qualificação e follow-up para que cada oportunidade tenha responsável e próximo passo.
+            A Reminder identifica onde pedidos e propostas ficam esquecidos e, se houver retorno, instala um processo de resposta, qualificação e follow-up para que cada oportunidade tenha responsável e próximo passo.
           </p>
 
           <div className="lp-hero__cta-wrap">

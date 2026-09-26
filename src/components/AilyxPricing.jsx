@@ -25,12 +25,12 @@ const PLANS = [
     desc: 'O sistema que garante que nenhuma oportunidade é esquecida por falta de processo:',
     pill: 'A oferta',
     features: [
-      'Diagnóstico Remindr gratuito — onde estão as fugas',
+      'Diagnóstico Reminder gratuito — onde estão as fugas',
       'Inbox unificado — todos os canais num único lugar',
       'Resposta estruturada a cada novo pedido',
       'Qualificação, encaminhamento e follow-up sistemático',
       'Dashboard com oportunidades, conversões e perdas',
-      'Setup e formação feitos pela Remindr — Done-For-You',
+      'Setup e formação feitos pela Reminder — Done-For-You',
     ],
     cta: 'Quero o diagnóstico gratuito →',
     highlight: true,
@@ -43,7 +43,7 @@ const PLANS = [
     pill: null,
     features: [
       'Se o sistema não ficar operacional no prazo, não paga mensalidade até estar',
-      'Diagnóstico Remindr 100% gratuito — sem compromisso',
+      'Diagnóstico Reminder 100% gratuito — sem compromisso',
       'Não precisa de mudar de software nem contratar ninguém',
       'A equipa fica formada — não depende só de nós',
       'Sem contrato de longo prazo na fase inicial',

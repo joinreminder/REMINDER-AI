@@ -1,89 +1,145 @@
-const scenarios = [
+import { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const problems = [
   {
-    channel: 'Receita — Resposta',
-    icon: '📩',
-    tag: 'Fuga de Receita',
-    text: 'Um pedido entra pelo WhatsApp enquanto o técnico está numa instalação. Ninguém responde nesse dia. No dia seguinte, o cliente já contratou outra empresa.',
-    outcome: 'Oportunidade perdida. Sem aviso. Sem registo.',
+    title: 'Leads sem resposta',
+    text: 'A oportunidade chega. Sem processo, fica à espera de que alguém a veja — quando a equipa tiver tempo.',
   },
   {
-    channel: 'Receita — Follow-up',
-    icon: '📄',
-    tag: 'Fuga de Receita',
-    dark: true,
-    text: 'O orçamento é enviado. O cliente diz que vai pensar. Não há follow-up sistemático. Dois dias depois, silêncio. O trabalho vai para a concorrência.',
-    outcome: 'Semanas de trabalho comercial. Resultado zero.',
+    title: 'Propostas esquecidas',
+    text: 'Enviada. Sem follow-up. A concorrência fecha antes de você se lembrar de ligar de volta.',
   },
   {
-    channel: 'Cash Flow — Faturação',
-    icon: '🧾',
-    tag: 'Fuga de Cash Flow',
-    text: 'O técnico termina o trabalho. As informações ficam no telemóvel ou no bloco de notas. A fatura atrasa dias — às vezes semanas. O dinheiro também.',
-    outcome: 'Trabalho feito. Dinheiro parado.',
+    title: 'Horas em trabalho repetitivo',
+    text: 'Copiar dados. Confirmar reuniões. Emails de rotina. Todos os dias. Sem valor acrescentado.',
   },
   {
-    channel: 'Cash Flow — Pagamentos',
-    icon: '💸',
-    tag: 'Fuga de Cash Flow',
-    dark: true,
-    text: 'A fatura é emitida. Ninguém acompanha. O cliente não paga dentro do prazo. Ninguém se lembra de ligar. A fatura fica em aberto.',
-    outcome: 'Faturado mas não recebido. Durante meses.',
+    title: 'Informação espalhada',
+    text: 'CRM, Excel, WhatsApp, email. Ninguém tem a visão completa sem ir buscar tudo manualmente.',
   },
   {
-    channel: 'Recorrência — Retenção',
-    icon: '🔁',
-    tag: 'Fuga de Recorrência',
-    text: 'A empresa instala um sistema AVAC. O cliente fica satisfeito. Mas nunca mais é contactado para manutenção, revisão ou upgrade. A recorrência que podia existir, não existe.',
-    outcome: 'Um cliente satisfeito que a concorrência vai reconquistar.',
+    title: 'Clientes que saem em silêncio',
+    text: 'Sem processo de retenção, um cliente satisfeito é um cliente que a concorrência vai reconquistar.',
   },
   {
-    channel: 'Produtividade — Operações',
-    icon: '⚙️',
-    tag: 'Fuga de Tempo',
-    dark: true,
-    text: 'A equipa administrativa passa horas a inserir informação manualmente, a ligar para saber o estado dos trabalhos, a criar OT no Excel. Tempo que podia estar em trabalho de valor.',
-    outcome: 'Horas perdidas por dia. Em trabalho repetitivo evitável.',
+    title: 'Crescer obriga a contratar',
+    text: 'Mais negócio, mais pessoas. A margem não melhora. O risco estrutural aumenta a cada contratação.',
   },
 ]
 
 export default function RProblem() {
+  const navigate  = useNavigate()
+  const headRef   = useRef(null)
+  const gridRef   = useRef(null)
+  const closeRef  = useRef(null)
+
+  useEffect(() => {
+    if (window.innerWidth <= 768) return
+    const ctx = gsap.context(() => {
+      gsap.from(headRef.current.children, {
+        y: 28, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1,
+        scrollTrigger: { trigger: headRef.current, start: 'top 80%', once: true },
+      })
+      Array.from(gridRef.current.children).forEach((el, i) => {
+        gsap.from(el, {
+          y: 32, opacity: 0, duration: 0.7, ease: 'power3.out',
+          delay: (i % 3) * 0.08,
+          scrollTrigger: { trigger: el, start: 'top 82%', once: true },
+        })
+      })
+      gsap.from(closeRef.current.children, {
+        y: 20, opacity: 0, duration: 0.7, ease: 'power3.out', stagger: 0.12,
+        scrollTrigger: { trigger: closeRef.current, start: 'top 84%', once: true },
+      })
+    })
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section className="rproblem">
-      <div className="r-container">
-        <div className="rproblem__top">
-          <p className="r-label anim">O Problema Real</p>
-          <h2 className="r-h2 anim anim--d1">
-            O problema não é falta<br />de ferramentas.<br />É o que acontece entre elas.
+    <section style={{ background: '#fff', padding: 'clamp(80px, 10vw, 120px) 0' }}>
+      <div className="ayl-container">
+
+        {/* Header */}
+        <div ref={headRef} style={{ maxWidth: '720px', marginBottom: 'clamp(48px, 6vw, 72px)' }}>
+          <div className="ayl-section-label" style={{ marginBottom: '20px' }}>O Problema</div>
+          <h2 className="ayl-h2" style={{ marginBottom: '20px' }}>
+            O problema não é falta de trabalho.<br />É que o crescimento começa a depender de mais pessoas.
           </h2>
-          <p className="r-body anim anim--d2">
-            A empresa já tem CRM, email, WhatsApp, ERP e calendário. Mas entre uma ferramenta e outra — alguém copia informação, alguém envia um email, alguém se lembra de fazer follow-up. É aí que a capacidade desaparece.
+          <p style={{ fontSize: 'clamp(15px, 1.5vw, 17px)', color: '#666', lineHeight: 1.75, maxWidth: '580px' }}>
+            Quando o negócio cresce, o instinto é contratar. Mas muitas vezes a solução não é mais pessoas — é eliminar o trabalho que a equipa actual não devia estar a fazer.
           </p>
         </div>
 
-        <div className="rproblem__scenarios">
-          {scenarios.map((s, i) => (
-            <div
-              key={i}
-              className={`rproblem__card anim anim--d${(i % 4) + 1}${s.dark ? ' rproblem__card--dark' : ''}`}
-            >
-              <div className="rproblem__channel">
-                <span>{s.icon}</span>
-                {s.channel}
-              </div>
-              <p className="rproblem__scenario">{s.text}</p>
-              <p className="rproblem__outcome">{s.outcome}</p>
+        {/* Grid */}
+        <div ref={gridRef} style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '1px',
+          background: 'rgba(0,0,0,0.07)',
+          border: '1px solid rgba(0,0,0,0.07)',
+          borderRadius: '16px',
+          overflow: 'hidden',
+          marginBottom: 'clamp(48px, 6vw, 72px)',
+        }}>
+          {problems.map((p, i) => (
+            <div key={i} className="ayl-card--hover" style={{
+              background: '#fff',
+              padding: 'clamp(24px, 3vw, 36px)',
+              display: 'flex', flexDirection: 'column', gap: '12px',
+              transition: 'background 0.2s',
+            }}>
+              <div style={{
+                width: 8, height: 8, borderRadius: '50%', background: '#f87171', flexShrink: 0,
+              }} />
+              <p style={{
+                fontFamily: 'Sora, sans-serif', fontWeight: 600,
+                fontSize: 'clamp(14px, 1.4vw, 17px)',
+                color: '#111', letterSpacing: '-0.02em', lineHeight: 1.3,
+              }}>
+                {p.title}
+              </p>
+              <p style={{ fontSize: '13.5px', color: '#666', lineHeight: 1.65, margin: 0 }}>
+                {p.text}
+              </p>
             </div>
           ))}
         </div>
 
-        <div className="rproblem__bottom anim">
-          <p className="rproblem__bottom-text">
-            Cada passo manual parece pequeno. Em conjunto, são dezenas de milhares de euros por ano a sair pela porta — em silêncio.
+        {/* Close */}
+        <div ref={closeRef} style={{
+          background: '#F4F7FB', borderRadius: '16px',
+          padding: 'clamp(28px, 3.5vw, 44px)',
+          display: 'flex', alignItems: 'center',
+          justifyContent: 'space-between', gap: '32px', flexWrap: 'wrap',
+        }}>
+          <p style={{
+            fontSize: 'clamp(15px, 1.5vw, 18px)', color: '#333',
+            maxWidth: '540px', lineHeight: 1.65, margin: 0,
+            fontFamily: 'Sora, sans-serif', fontWeight: 500, letterSpacing: '-0.02em',
+          }}>
+            Antes de contratar mais pessoas, descubra quanta capacidade a sua equipa já está a perder.
           </p>
-          <p className="rproblem__bottom-sub">
-            O Diagnóstico de Execução mapeia os eventos que geram trabalho manual recorrente na sua empresa e calcula quais os fluxos com maior potencial de impacto.
-          </p>
+          <button
+            className="ayl-btn"
+            style={{
+              background: '#217FF1', color: '#fff', border: 'none',
+              borderRadius: '12px', padding: '15px 28px',
+              fontSize: '14px', fontWeight: 700, cursor: 'pointer',
+              fontFamily: 'Sora, sans-serif', letterSpacing: '-0.01em',
+              whiteSpace: 'nowrap', flexShrink: 0,
+              boxShadow: '0 6px 24px rgba(33,127,241,0.3)',
+            }}
+            onClick={() => navigate('/diagnostico')}
+          >
+            Ver onde estou a perder capacidade →
+          </button>
         </div>
+
       </div>
     </section>
   )

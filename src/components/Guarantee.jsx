@@ -41,7 +41,7 @@ export default function Guarantee() {
           <div className={`guarantee2__left${visible ? ' guarantee2--in' : ''}`}>
             <div className="guarantee2__badge">
               <span className="guarantee2__badge-dot" />
-              Clinic Growth Partner · Remindr
+              Clinic Growth Partner · Reminder
             </div>
 
             <h2 className="guarantee2__title">

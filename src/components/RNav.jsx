@@ -12,8 +12,6 @@ export default function RNav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const goToAudit = () => navigate('/diagnostico')
-
   const scrollTo = (id) => {
     if (location.pathname !== '/') {
       navigate('/')
@@ -31,14 +29,35 @@ export default function RNav() {
         </Link>
 
         <ul className="rnav__links">
-          <li><a href="#como-funciona" onClick={e => { e.preventDefault(); scrollTo('como-funciona') }}>Como Funciona</a></li>
-          <li><a href="#o-que-inclui" onClick={e => { e.preventDefault(); scrollTo('o-que-inclui') }}>O Que Inclui</a></li>
-          <li><a href="#garantia" onClick={e => { e.preventDefault(); scrollTo('garantia') }}>Garantia</a></li>
-          <li><a href="#faq" onClick={e => { e.preventDefault(); scrollTo('faq') }}>FAQ</a></li>
+          <li>
+            <a href="#diagnostico" onClick={e => { e.preventDefault(); scrollTo('diagnostico') }}>
+              Diagnóstico
+            </a>
+          </li>
+          <li>
+            <a href="#o-que-construimos" onClick={e => { e.preventDefault(); scrollTo('o-que-construimos') }}>
+              O Que Construímos
+            </a>
+          </li>
+          <li>
+            <a href="#como-funciona" onClick={e => { e.preventDefault(); scrollTo('como-funciona') }}>
+              Como Funciona
+            </a>
+          </li>
+          <li>
+            <a href="#para-quem" onClick={e => { e.preventDefault(); scrollTo('para-quem') }}>
+              Para Quem É
+            </a>
+          </li>
+          <li>
+            <a href="#faq" onClick={e => { e.preventDefault(); scrollTo('faq') }}>
+              FAQ
+            </a>
+          </li>
         </ul>
 
-        <button className="r-btn r-btn--primary" onClick={goToAudit}>
-          Auditoria gratuita →
+        <button className="r-btn r-btn--primary" onClick={() => navigate('/diagnostico')}>
+          Ver onde estou a perder capacidade →
         </button>
       </div>
     </nav>

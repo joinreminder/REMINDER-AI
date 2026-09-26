@@ -27,7 +27,7 @@ export default function LPMechanism() {
             Não é mais um CRM. É um processo que acontece sem depender da memória.
           </h2>
           <p className="lp-mech__intro">
-            A Remindr liga os canais e regras que a empresa já usa. A automação trata tarefas repetitivas; a equipa entra quando precisa de contexto, julgamento técnico e relação comercial.
+            A Reminder liga os canais e regras que a empresa já usa. A automação trata tarefas repetitivas; a equipa entra quando precisa de contexto, julgamento técnico e relação comercial.
           </p>
         </div>
 
@@ -42,7 +42,7 @@ export default function LPMechanism() {
         </div>
 
         <div className="lp-mech__control">
-          A equipa mantém controlo sobre mensagens, regras de escalonamento e decisões de fecho. A Remindr não substitui técnicos nem vendedores.
+          A equipa mantém controlo sobre mensagens, regras de escalonamento e decisões de fecho. A Reminder não substitui técnicos nem vendedores.
         </div>
 
       </div>

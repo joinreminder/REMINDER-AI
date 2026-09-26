@@ -41,7 +41,7 @@ export default function Founder() {
 
           {/* Right — copy */}
           <div className="founder__right">
-            <span className="label" style={{ display: 'block', marginBottom: 18 }}>Quem está por trás da Remindr</span>
+            <span className="label" style={{ display: 'block', marginBottom: 18 }}>Quem está por trás da Reminder</span>
 
             <h2 className="h2" style={{ marginBottom: 24 }}>
               Não somos uma agência.<br />
@@ -49,7 +49,7 @@ export default function Founder() {
             </h2>
 
             <p className="founder__bio">
-              A Remindr nasceu da frustração de ver clínicas excelentes a perder receita por razões evitáveis.
+              A Reminder nasceu da frustração de ver clínicas excelentes a perder receita por razões evitáveis.
               Não por falta de pacientes — mas por falta de sistemas. Faltas que ninguém confirma,
               tratamentos que ficam por fechar, pacientes que desaparecem sem que ninguém vá buscar.
             </p>

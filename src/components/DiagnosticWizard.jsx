@@ -79,7 +79,7 @@ export default function DiagnosticWizard({ open, onClose }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
-          _subject: `[Remindr] Diagnóstico grátis — ${data.clinica} (${data.tipo} · ${data.faturacao})`,
+          _subject: `[Reminder] Diagnóstico grátis — ${data.clinica} (${data.tipo} · ${data.faturacao})`,
           nome: data.nome,
           email: data.email,
           telemovel: data.telemovel,

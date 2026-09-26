@@ -183,7 +183,7 @@ function RobotCore({ idPrefix = '' }) {
         }}>
           <img
             src="/logotipo-editado.png"
-            alt="Remindr"
+            alt="Reminder"
             style={{ width: '44px', height: '44px', objectFit: 'contain', filter: 'brightness(0) invert(1)', opacity: 0.9 }}
           />
         </div>

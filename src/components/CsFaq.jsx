@@ -2,38 +2,13 @@ import { useState, useRef, useEffect } from 'react'
 import gsap from 'gsap'
 
 const FAQS = [
-  {
-    q: 'Precisamos de substituir pessoas?',
-    a: 'Não. O objetivo é retirar da equipa trabalho repetitivo e de baixo valor — para que as pessoas possam fazer mais daquilo que realmente importa.',
-  },
-  {
-    q: 'Precisamos de mudar as ferramentas que já usamos?',
-    a: 'Não necessariamente. Começamos por perceber o que já existe e tentamos aproveitar a infraestrutura atual. Só recomendamos mudanças quando fizerem sentido.',
-  },
-  {
-    q: 'A equipa precisa de perceber de tecnologia?',
-    a: 'Não. A implementação é feita por nós. A equipa aprende apenas o necessário para usar o sistema no dia-a-dia.',
-  },
-  {
-    q: 'Podem melhorar qualquer processo?',
-    a: 'Nem tudo deve ser automatizado. Primeiro avaliamos se faz sentido. Por vezes, a melhor resposta é simplificar o processo — e dizemos isso claramente.',
-  },
-  {
-    q: 'Quanto custa a implementação?',
-    a: 'Depende da oportunidade e da complexidade. O investimento é definido depois do diagnóstico, quando sabemos exatamente o que vamos construir.',
-  },
-  {
-    q: 'Quanto tempo demora o diagnóstico?',
-    a: 'É uma reunião de 60 minutos. No final apresentamos as oportunidades identificadas, a prioridade e o caminho recomendado.',
-  },
-  {
-    q: 'E a implementação?',
-    a: 'O prazo depende do sistema a construir. O objetivo é colocar a primeira solução a funcionar rapidamente — sem transformar isto num projeto interminável.',
-  },
-  {
-    q: 'O diagnóstico obriga-nos a avançar com a implementação?',
-    a: 'Não. O objetivo é perceber se existe uma oportunidade real. Se não houver uma solução que faça sentido económico para a empresa, dizemos isso.',
-  },
+  { q: 'Quanto custa o Roadmap?', a: 'Nada. O Roadmap é gratuito.' },
+  { q: 'Quanto tempo demora?', a: 'Menos de 60 segundos para responder às 14 perguntas.' },
+  { q: 'Preciso de marcar uma reunião?', a: 'Não. Pode receber o seu Roadmap sem falar com a nossa equipa.' },
+  { q: 'Preciso de dar acesso ao meu CRM?', a: 'Não. O diagnóstico inicial é feito através das respostas do formulário.' },
+  { q: 'O Roadmap é realmente personalizado?', a: 'Sim. O resultado é baseado nas respostas que fornece sobre o seu negócio e processo atual.' },
+  { q: 'O que acontece depois?', a: 'Pode simplesmente utilizar o Roadmap. Se identificar uma oportunidade que queira explorar, poderá candidatar-se ao nosso 30-Day Pilot.' },
+  { q: 'O Pilot é obrigatório?', a: 'Não. O Roadmap é uma oferta gratuita e independente.' },
 ]
 
 function FaqItem({ item, isOpen, onToggle }) {
@@ -77,7 +52,7 @@ export default function CsFaq() {
           </div>
           <div className="cs-faq__content">
             <h2 className="ayl-h2 cs-faq__h2" style={{ color: '#0a1c42' }}>
-              As perguntas<br />que provavelmente<br />está a fazer
+              Perguntas frequentes
             </h2>
             <div className="cs-faq__list">
               {FAQS.map((item, i) => (

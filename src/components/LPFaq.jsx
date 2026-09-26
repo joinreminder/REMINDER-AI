@@ -7,7 +7,7 @@ const FAQS = [
   },
   {
     q: 'Já tenho CRM.',
-    a: 'A Remindr não começa por substituir o CRM. O diagnóstico identifica se existem falhas entre os canais de entrada, a resposta inicial, o registo e o seguimento; a implementação liga-se ao processo atual sempre que fizer sentido.',
+    a: 'A Reminder não começa por substituir o CRM. O diagnóstico identifica se existem falhas entre os canais de entrada, a resposta inicial, o registo e o seguimento; a implementação liga-se ao processo atual sempre que fizer sentido.',
   },
   {
     q: 'Os meus clientes não querem falar com IA.',

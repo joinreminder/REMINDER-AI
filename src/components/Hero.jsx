@@ -97,12 +97,12 @@ function HeroNotifPanel() {
   }, [])
 
   return (
-    <div className="hero-notif" role="img" aria-label="Sistema Remindr em funcionamento — notificações em tempo real">
+    <div className="hero-notif" role="img" aria-label="Sistema Reminder em funcionamento — notificações em tempo real">
 
       <div className="hero-notif__header">
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span className="hero-notif__live-dot" />
-          <span className="hero-notif__title">Remindr · Sistema ao vivo</span>
+          <span className="hero-notif__title">Reminder · Sistema ao vivo</span>
         </div>
         <span className="hero-notif__badge">Ativo</span>
       </div>

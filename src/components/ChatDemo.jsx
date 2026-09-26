@@ -99,9 +99,9 @@ export default function ChatDemo() {
   }, [items])
 
   return (
-    <div className="chat-panel" role="img" aria-label="Demonstração do Recall by Remindr a responder a uma lead em 18 segundos">
+    <div className="chat-panel" role="img" aria-label="Demonstração do Recall by Reminder a responder a uma lead em 18 segundos">
       <div className="chat-panel__header">
-        <span className="chat-panel__title">Recall by Remindr — ao vivo</span>
+        <span className="chat-panel__title">Recall by Reminder — ao vivo</span>
         <span className="chat-panel__tag">
           <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#16C784', display: 'inline-block', marginRight: 4 }}></span>
           Sistema ativo
@@ -113,7 +113,7 @@ export default function ChatDemo() {
         <div className="wa-header">
           <div className="wa-avatar" aria-hidden="true">R</div>
           <div className="wa-info">
-            <div className="wa-name">Recall by Remindr</div>
+            <div className="wa-name">Recall by Reminder</div>
             <div className="wa-status">online · WhatsApp Business</div>
           </div>
         </div>

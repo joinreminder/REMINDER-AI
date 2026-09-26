@@ -16,7 +16,7 @@ export default function Loader({ onDone }) {
       <div className="loader__inner">
         <img
           src="/logotipo-editado.png"
-          alt="Remindr"
+          alt="Reminder"
           className="loader__bird"
         />
         <p className="loader__text">A iniciar<span className="loader__dots" /></p>

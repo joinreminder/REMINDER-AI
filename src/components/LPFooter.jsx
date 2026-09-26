@@ -14,7 +14,7 @@ export default function LPFooter() {
         {/* Top */}
         <div className="lp-footer__top">
           <div className="lp-footer__brand">
-            <a href="/" className="lp-footer__logo">Remindr</a>
+            <a href="/" className="lp-footer__logo">Reminder</a>
             <p className="lp-footer__tagline">
               Sistema de Resposta e Follow-up<br />para Empresas de Serviços Técnicos.
             </p>
@@ -49,7 +49,7 @@ export default function LPFooter() {
         {/* Bottom */}
         <div className="lp-footer__bottom">
           <p className="lp-footer__copy">
-            © {new Date().getFullYear()} Remindr. Todos os direitos reservados.
+            © {new Date().getFullYear()} Reminder. Todos os direitos reservados.
           </p>
           <p className="lp-footer__disclaimer">
             Os dados partilhados no diagnóstico são tratados com confidencialidade e utilizados exclusivamente para preparar a análise.

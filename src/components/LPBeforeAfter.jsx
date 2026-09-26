@@ -73,7 +73,7 @@ export default function LPBeforeAfter() {
               <span className="lpba__th-badge lpba__th-badge--before">Sem processo</span>
             </div>
             <div className="lpba__th lpba__th--after">
-              <span className="lpba__th-badge lpba__th-badge--after">Com Remindr</span>
+              <span className="lpba__th-badge lpba__th-badge--after">Com Reminder</span>
             </div>
           </div>
 

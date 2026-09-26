@@ -9,7 +9,7 @@ const BLOCKS = [
   },
   {
     title: 'Risco operacional',
-    text: 'Se avançarmos e a implementação atrasar por responsabilidade da Remindr, a mensalidade só começa quando o sistema acordado estiver operacional.',
+    text: 'Se avançarmos e a implementação atrasar por responsabilidade da Reminder, a mensalidade só começa quando o sistema acordado estiver operacional.',
   },
   {
     title: 'Transparência',

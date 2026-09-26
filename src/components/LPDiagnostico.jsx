@@ -44,7 +44,7 @@ export default function LPDiagnostico() {
               Primeiro encontramos as fugas. Só depois decide se vale a pena corrigir.
             </h2>
             <p className="lp-diag__intro">
-              O Diagnóstico de Fugas de Receita Remindr é uma análise orientada ao processo comercial atual — não é uma demo genérica nem uma apresentação de software.
+              O Diagnóstico de Fugas de Receita Reminder é uma análise orientada ao processo comercial atual — não é uma demo genérica nem uma apresentação de software.
             </p>
 
             <div className="lp-diag__criteria">

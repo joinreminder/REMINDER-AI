@@ -14,9 +14,9 @@ export default function Nav() {
       <nav className={`nav${scrolled ? ' nav--scrolled' : ''}`}>
         <div className="container">
           <div className="nav__inner">
-            <a href="#" className="nav__logo" aria-label="Remindr — página inicial" style={{ display: 'flex', alignItems: 'center', gap: 4, textDecoration: 'none' }}>
+            <a href="#" className="nav__logo" aria-label="Reminder — página inicial" style={{ display: 'flex', alignItems: 'center', gap: 4, textDecoration: 'none' }}>
               <img src="/logotipo-editado.png" alt="" style={{ height: 64, width: 'auto' }} />
-              <span style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.02em', lineHeight: 1 }}>Remindr</span>
+              <span style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.02em', lineHeight: 1 }}>Reminder</span>
             </a>
 
             <div className="nav__trust-strip">

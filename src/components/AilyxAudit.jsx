@@ -4,152 +4,162 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const AREAS = [
-  { label: 'Crescimento e Vendas',   sub: 'Vendas, Marketing e Acompanhamento de Clientes', desc: 'Leads, follow-ups, propostas, oportunidades, campanhas e acompanhamento de clientes.' },
-  { label: 'Operações e Execução',   sub: 'Operações, Administração e Compras',             desc: 'Tarefas manuais, coordenação, documentos, compras e processos que dependem de pessoas.' },
-  { label: 'Clientes e Comunicação', sub: 'Suporte, Comunicação e Retenção',                desc: 'Respostas repetitivas, triagem, comunicação, onboarding, acompanhamento e reativação.' },
-  { label: 'Gestão e Controlo',      sub: 'Financeiro, RH, Pesquisa e Conformidade',        desc: 'Relatórios, cobrança, recrutamento, pesquisa, documentação e processos administrativos.' },
-]
-
-const ROADMAP = [
-  { opp: 'Acompanhamento de propostas', impact: 'Alto',  complexity: 'Baixa', priority: '01' },
-  { opp: 'Suporte automatizado',        impact: 'Alto',  complexity: 'Média', priority: '02' },
-  { opp: 'Relatórios automáticos',      impact: 'Médio', complexity: 'Baixa', priority: '03' },
-  { opp: 'Gestão de conhecimento',      impact: 'Médio', complexity: 'Média', priority: '04' },
-  { opp: 'Automatização de CRM',        impact: 'Baixo', complexity: 'Alta',  priority: '05' },
+const DIMENSIONS = [
+  {
+    num: '01',
+    title: 'Tempo de resposta',
+    question: 'Com que rapidez está a contactar os novos leads?',
+    desc: 'Quanto mais tempo passa entre a entrada do lead e o primeiro contacto, maior pode ser a oportunidade de melhoria.',
+  },
+  {
+    num: '02',
+    title: 'Follow-up',
+    question: 'O que acontece quando o lead não responde?',
+    desc: 'Um contacto único raramente representa um processo completo.',
+  },
+  {
+    num: '03',
+    title: 'Qualificação',
+    question: 'Como determina se existe uma oportunidade real?',
+    desc: 'Critérios claros tornam o processo mais consistente.',
+  },
+  {
+    num: '04',
+    title: 'Lead \u2192 Reunião',
+    question: 'Quantos leads chegam efetivamente ao calendário da equipa comercial?',
+    desc: 'É aqui que o esforço de aquisição começa a transformar-se em pipeline.',
+  },
+  {
+    num: '05',
+    title: 'Consistência do processo',
+    question: 'Existe um processo definido ou cada lead é tratado de forma diferente?',
+    desc: 'Quanto mais consistente o processo, mais fácil é medir e melhorar.',
+  },
 ]
 
 export default function AilyxAudit() {
-  const leftRef  = useRef(null)
-  const rightRef = useRef(null)
+  const headRef  = useRef(null)
+  const cardsRef = useRef([])
 
   useEffect(() => {
     if (window.innerWidth <= 768) return
     const ctx = gsap.context(() => {
-      gsap.from(leftRef.current, {
-        x: -40, opacity: 0, duration: 0.9, ease: 'power3.out',
-        scrollTrigger: { trigger: leftRef.current, start: 'top 75%', once: true },
+      gsap.from(headRef.current.children, {
+        y: 32, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1,
+        scrollTrigger: { trigger: headRef.current, start: 'top 76%', once: true },
       })
-      gsap.from(rightRef.current, {
-        x: 40, opacity: 0, duration: 0.9, ease: 'power3.out', delay: 0.1,
-        scrollTrigger: { trigger: rightRef.current, start: 'top 75%', once: true },
+      cardsRef.current.filter(Boolean).forEach((card) => {
+        gsap.fromTo(card,
+          { y: 120, opacity: 0 },
+          {
+            y: 0, opacity: 1, duration: 1, ease: 'power2.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 95%',
+              end: 'top 60%',
+              scrub: 0.5,
+            },
+          }
+        )
       })
     })
     return () => ctx.revert()
   }, [])
 
   return (
-    <section style={{ background: '#F3F6FB', padding: 'clamp(80px, 10vw, 120px) 0', borderTop: '1px solid #e8edf5' }} id="audit">
+    <section style={{ background: '#F3F6FB', padding: 'clamp(80px, 10vw, 120px) 0 0', borderTop: '1px solid #e8edf5' }} id="audit">
       <div className="ayl-container">
-
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+        <div ref={headRef} style={{ textAlign: 'center', marginBottom: '48px' }}>
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: '8px',
             background: '#217FF1', borderRadius: '100px', padding: '6px 18px', marginBottom: '20px',
           }}>
             <span style={{ fontSize: '11px', fontWeight: 700, color: 'white', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-              Passo 1 — Diagnóstico de Execução
+              Análise completa
             </span>
           </div>
           <h2 className="ayl-h2" style={{ marginBottom: '12px', color: '#0a1c42' }}>
-            Descubra numa sessão de 60 min quais os processos<br />que a Reminder pode assumir primeiro.
+            O seu Roadmap analisa 5 dimensões do processo
           </h2>
-          <p style={{ color: '#666', fontSize: '17px', maxWidth: '520px', margin: '0 auto', lineHeight: 1.65 }}>
-            Analisamos os eventos que geram trabalho manual recorrente na sua empresa e calculamos quais os fluxos com maior potencial de impacto imediato.
-          </p>
         </div>
+      </div>
 
-        <div className="ayl-audit-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 'clamp(40px, 6vw, 80px)', alignItems: 'start' }}>
-
-          {/* Left — areas de análise */}
-          <div ref={leftRef}>
-            <div style={{ background: 'white', border: '1.5px solid #e8edf5', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 4px 24px rgba(33,127,241,0.06)' }}>
-              <div style={{ padding: '20px 28px', borderBottom: '1px solid #e8edf5', background: '#EEF4FF' }}>
-                <div style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '12px', color: '#217FF1', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                  O que analisamos
-                </div>
-              </div>
-              <div style={{ padding: '8px 28px' }}>
-                {AREAS.map((item, i) => (
-                  <div key={i} style={{
-                    display: 'flex', alignItems: 'flex-start', gap: '12px',
-                    padding: '14px 0',
-                    borderBottom: i < AREAS.length - 1 ? '1px solid #f0f2f8' : 'none',
-                  }}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#217FF1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '3px' }}>
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                    <div>
-                      <div style={{ fontSize: '14px', color: '#333', fontWeight: 700, marginBottom: '1px' }}>{item.label}</div>
-                      <div style={{ fontSize: '11px', color: '#217FF1', fontWeight: 600, marginBottom: '3px' }}>{item.sub}</div>
-                      <div style={{ fontSize: '12px', color: '#888', lineHeight: 1.45 }}>{item.desc}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div style={{ padding: '20px 28px', borderTop: '1px solid #e8edf5' }}>
-                <a href="/diagnostico" className="ayl-btn ayl-btn--primary" style={{ display: 'block', textAlign: 'center', justifyContent: 'center' }}>
-                  Começar o diagnóstico →
-                </a>
-                <p style={{ textAlign: 'center', marginTop: '10px', fontSize: '12px', color: '#aaa', marginBottom: 0 }}>
-                  Gratuito · 60 min · Sem compromisso
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Right — o que recebe */}
-          <div ref={rightRef} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            <div>
-              <h3 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 600, fontSize: 'clamp(20px, 2.5vw, 28px)', color: '#111', letterSpacing: '-0.03em', marginBottom: '12px' }}>
-                Não recebe uma lista de ideias.<br />Recebe um plano com prioridades.
-              </h3>
-              <p style={{ fontSize: '15px', color: '#666', lineHeight: 1.65, marginBottom: 0 }}>
-                O que fazer, em que ordem e porquê — com base nos seus processos reais.
-              </p>
-            </div>
-
-            {/* Tabela de exemplo */}
-            <div style={{ background: 'white', border: '1.5px solid #e8edf5', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 2px 16px rgba(33,127,241,0.04)' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr auto auto auto', padding: '12px 20px', background: '#F8FAFF', borderBottom: '1px solid #e8edf5', gap: '12px' }}>
-                {['Oportunidade', 'Impacto', 'Complexidade', 'Prioridade'].map((h, i) => (
-                  <div key={i} style={{ fontSize: '10px', fontWeight: 700, color: '#aaa', letterSpacing: '0.08em', textTransform: 'uppercase', textAlign: i > 0 ? 'center' : 'left' }}>
-                    {h}
-                  </div>
-                ))}
-              </div>
-              {ROADMAP.map((row, i) => (
-                <div key={i} style={{
-                  display: 'grid', gridTemplateColumns: '1fr auto auto auto', padding: '14px 20px', gap: '12px',
-                  borderBottom: i < ROADMAP.length - 1 ? '1px solid #f0f2f8' : 'none',
+      {/* Sticky stacking cards */}
+      <div style={{ position: 'relative' }}>
+        {DIMENSIONS.map((dim, i) => (
+          <div
+            key={i}
+            ref={el => cardsRef.current[i] = el}
+            style={{
+              position: 'sticky',
+              top: `${100 + i * 28}px`,
+              marginBottom: '40px',
+              zIndex: i + 1,
+            }}
+          >
+            <div className="ayl-container">
+              <div
+                className="ayl-card--hover"
+                style={{
+                  background: '#fff',
+                  border: '1.5px solid #e8edf5',
+                  borderRadius: '24px',
+                  padding: 'clamp(32px, 4vw, 48px) clamp(28px, 4vw, 56px)',
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1.5fr',
+                  gap: '40px',
                   alignItems: 'center',
-                  background: i === 0 ? '#EEF4FF' : 'transparent',
-                }}>
-                  <span style={{ fontSize: '13px', fontWeight: 600, color: '#111' }}>{row.opp}</span>
-                  <span style={{ fontSize: '12px', color: row.impact === 'Alto' ? '#217FF1' : row.impact === 'Médio' ? '#888' : '#bbb', fontWeight: 600, textAlign: 'center' }}>{row.impact}</span>
-                  <span style={{ fontSize: '12px', color: '#888', textAlign: 'center' }}>{row.complexity}</span>
-                  <span style={{ fontSize: '12px', fontWeight: 800, color: i === 0 ? '#217FF1' : '#ccc', fontFamily: 'Sora, sans-serif', textAlign: 'center' }}>{row.priority}</span>
+                  boxShadow: '0 8px 40px rgba(0,0,0,0.08)',
+                  minHeight: '200px',
+                }}
+              >
+                {/* Left — number + title */}
+                <div>
+                  <div style={{
+                    fontFamily: 'Sora, sans-serif', fontWeight: 800,
+                    fontSize: 'clamp(56px, 6vw, 80px)',
+                    color: 'rgba(33,127,241,0.12)',
+                    lineHeight: 1, letterSpacing: '-0.04em',
+                    marginBottom: '12px',
+                  }}>
+                    {dim.num}
+                  </div>
+                  <h3 style={{
+                    fontFamily: 'Sora, sans-serif', fontWeight: 700,
+                    fontSize: 'clamp(22px, 2.5vw, 32px)',
+                    color: '#0a1c42',
+                    letterSpacing: '-0.03em', lineHeight: 1.2, margin: 0,
+                  }}>
+                    {dim.title}
+                  </h3>
                 </div>
-              ))}
-            </div>
 
-            <div style={{ padding: '16px 20px', background: '#EEF4FF', borderRadius: '12px', borderLeft: '3px solid #217FF1' }}>
-              <p style={{ fontSize: '14px', fontWeight: 700, color: '#0a1c42', lineHeight: 1.55, margin: '0 0 4px 0' }}>
-                A questão não é "o que se pode automatizar?"
-              </p>
-              <p style={{ fontSize: '14px', color: '#217FF1', fontWeight: 700, lineHeight: 1.55, margin: 0 }}>
-                É "o que deve acontecer primeiro?"
-              </p>
+                {/* Right — question + description */}
+                <div>
+                  <p style={{
+                    fontFamily: 'Sora, sans-serif', fontWeight: 600,
+                    fontSize: '17px', color: '#217FF1',
+                    lineHeight: 1.5, margin: '0 0 12px 0',
+                  }}>
+                    {dim.question}
+                  </p>
+                  <p style={{
+                    fontSize: '16px', color: '#555',
+                    lineHeight: 1.7, margin: 0, maxWidth: '520px',
+                  }}>
+                    {dim.desc}
+                  </p>
+                  <div style={{
+                    marginTop: '20px',
+                    width: '40px', height: '3px', borderRadius: '2px',
+                    background: '#217FF1', opacity: 0.6,
+                  }} />
+                </div>
+              </div>
             </div>
-
-            <a href="/diagnostico" className="ayl-btn ayl-btn--primary" style={{ display: 'inline-flex' }}>
-              Quero fazer o diagnóstico →
-            </a>
-            <p style={{ marginTop: '-12px', fontSize: '12px', color: '#aaa', marginBottom: 0 }}>Gratuito · 60 min · Sem compromisso</p>
           </div>
-
-        </div>
+        ))}
+        <div style={{ height: '100px' }} />
       </div>
     </section>
   )

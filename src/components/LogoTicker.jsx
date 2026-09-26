@@ -6,18 +6,15 @@ const LOGOS = [
 ]
 
 export default function LogoTicker() {
-  const items = [...LOGOS, ...LOGOS]
+  const items = [...LOGOS, ...LOGOS, ...LOGOS]
   return (
     <div className="logo-ticker">
-      <p className="logo-ticker__label">Empresas que já trabalham com a Reminder</p>
+      <p className="logo-ticker__label">Empresas que já confiam na Reminder</p>
       <div className="logo-ticker__track-wrap">
         <div className="logo-ticker__track">
           {items.map((l, i) => (
             <div key={i} className="logo-ticker__item">
               <img src={l.src} alt={l.alt} className="logo-ticker__img" />
-              {i < items.length - 1 && (
-                <span className="logo-ticker__divider" />
-              )}
             </div>
           ))}
         </div>

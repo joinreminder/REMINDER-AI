@@ -1,120 +1,193 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
-/* ── Data ── */
+/* ── Form Data ── */
 const SETORES = [
+  'Agência / Marketing',
+  'Consultoria',
+  'SaaS / Tecnologia',
   'Serviços B2B',
-  'Construção / AVAC / Engenharia',
-  'Saúde / Clínicas',
+  'Educação / Formação',
   'Imobiliário',
-  'E-commerce / Retalho',
-  'Indústria / Manufactura',
-  'Serviços Profissionais (Jurídico, Contabilidade)',
-  'Tecnologia / Software',
+  'Saúde / Clínicas',
+  'Financeiro',
+  'E-commerce',
   'Outro',
 ]
 
-const EQUIPA = ['1–5', '6–10', '11–25', '26–50', '51–100', '100+']
-
-const FATURACAO = [
-  '< €250k',
-  '€250k – €500k',
-  '€500k – €1M',
-  '€1M – €3M',
-  '€3M – €10M',
-  '€10M+',
+const LEADS_MES = [
+  { id: '1-20',    label: '1\u201320' },
+  { id: '21-50',   label: '21\u201350' },
+  { id: '51-100',  label: '51\u2013100' },
+  { id: '101-250', label: '101\u2013250' },
+  { id: '251-500', label: '251\u2013500' },
+  { id: '500+',    label: '500+' },
 ]
 
-const PROBLEMAS = [
-  { id: 'leads',      label: 'Gerar mais leads' },
-  { id: 'vendas',     label: 'Converter mais vendas' },
-  { id: 'followup',   label: 'Follow-up de leads / orçamentos' },
-  { id: 'atendimento',label: 'Atendimento ao cliente' },
-  { id: 'admin',      label: 'Trabalho administrativo' },
-  { id: 'operacoes',  label: 'Operações internas' },
-  { id: 'info',       label: 'Processamento de informação' },
-  { id: 'relatorios', label: 'Relatórios / gestão' },
-  { id: 'outro',      label: 'Outro' },
+const FONTES_LEADS = [
+  { id: 'meta-ads',    label: 'Meta Ads' },
+  { id: 'google-ads',  label: 'Google Ads' },
+  { id: 'website',     label: 'Website' },
+  { id: 'linkedin',    label: 'LinkedIn' },
+  { id: 'whatsapp',    label: 'WhatsApp' },
+  { id: 'email',       label: 'Email' },
+  { id: 'referencias', label: 'Referências' },
+  { id: 'eventos',     label: 'Eventos' },
+  { id: 'outro',       label: 'Outro' },
 ]
 
-const IA_MATURIDADE = [
-  { id: 'nao',           label: 'Não utilizamos IA' },
-  { id: 'a_comecar',     label: 'Estamos a começar a explorar' },
-  { id: 'algumas',       label: 'Já usamos algumas ferramentas' },
-  { id: 'regularmente',  label: 'Usamos IA regularmente' },
-  { id: 'varios',        label: 'Temos vários sistemas de IA' },
+const VALOR_CLIENTE = [
+  { id: '<500',       label: '< \u20AC500' },
+  { id: '500-1500',   label: '\u20AC500\u2013\u20AC1.500' },
+  { id: '1500-5000',  label: '\u20AC1.500\u2013\u20AC5.000' },
+  { id: '5000-15000', label: '\u20AC5.000\u2013\u20AC15.000' },
+  { id: '15000+',     label: '\u20AC15.000+' },
 ]
 
-const INTENCAO = [
-  { id: 'sim',           label: 'Sim, se o ROI fizer sentido' },
-  { id: 'possivelmente', label: 'Possivelmente — quero primeiro perceber o potencial' },
-  { id: 'nao',           label: 'Não estou a considerar investimento agora' },
+const TEMPO_RESPOSTA = [
+  { id: '<5min',    label: 'Menos de 5 minutos', score: 0 },
+  { id: '5-30min',  label: '5\u201330 minutos',  score: 1 },
+  { id: '30m-2h',   label: '30 minutos\u20132 horas', score: 2 },
+  { id: '2-24h',    label: '2\u201324 horas',    score: 3 },
+  { id: '>24h',     label: 'Mais de 24 horas',   score: 4 },
+  { id: 'nao-sabe', label: 'Não sabemos',        score: 4 },
+]
+
+const QUEM_CONTACTA = [
+  { id: 'founder',    label: 'Founder / CEO',                    score: 2 },
+  { id: 'comercial',  label: 'Equipa comercial',                 score: 0 },
+  { id: 'sdr',        label: 'SDR / BDR',                        score: 0 },
+  { id: 'marketing',  label: 'Marketing',                        score: 2 },
+  { id: 'cs',         label: 'Customer Success',                 score: 2 },
+  { id: 'ninguem',    label: 'Não existe uma pessoa específica', score: 4 },
+  { id: 'outro',      label: 'Outro',                            score: 3 },
+]
+
+const FOLLOWUP = [
+  { id: 'nenhum',       label: 'Não fazemos follow-up',              score: 4 },
+  { id: '1-vez',        label: '1 vez',                              score: 3 },
+  { id: '2-3',          label: '2\u20133 vezes',                     score: 2 },
+  { id: '4+',           label: '4+ vezes',                           score: 1 },
+  { id: 'sequencia',    label: 'Temos uma sequência estruturada',    score: 0 },
+  { id: 'nao-sabe',     label: 'Não sabemos',                       score: 4 },
+]
+
+const QUALIFICACAO = [
+  { id: 'estruturado',  label: 'Temos um processo estruturado',                        score: 0 },
+  { id: 'parcial',      label: 'Temos algumas perguntas, mas não é consistente',       score: 2 },
+  { id: 'cada-vendedor',label: 'Cada vendedor faz de forma diferente',                 score: 3 },
+  { id: 'nenhum',       label: 'Não fazemos qualificação',                             score: 4 },
+  { id: 'nao-sabe',     label: 'Não sabemos',                                          score: 4 },
+]
+
+const TAXA_CONVERSAO = [
+  { id: '<5',       label: '< 5%',             score: 4 },
+  { id: '5-10',     label: '5\u201310%',       score: 3 },
+  { id: '10-20',    label: '10\u201320%',      score: 2 },
+  { id: '20-30',    label: '20\u201330%',      score: 1 },
+  { id: '30+',      label: '30%+',             score: 0 },
+  { id: 'nao-sabe', label: 'Não sabemos',      score: 4 },
+]
+
+const SITUACAO = [
+  { id: 'poucos-meetings',    label: 'Temos muitos leads, mas poucas reuniões.' },
+  { id: 'resposta-lenta',     label: 'Geramos leads, mas demoramos demasiado a responder.' },
+  { id: 'sem-followup',       label: 'Perdemos leads por falta de follow-up.' },
+  { id: 'tempo-perdido',      label: 'A equipa comercial perde demasiado tempo a contactar e qualificar leads.' },
+  { id: 'melhorar-conversao', label: 'Temos um processo, mas queremos aumentar a conversão.' },
+  { id: 'nao-sabe',           label: 'Não sabemos exatamente onde estamos a perder oportunidades.' },
+]
+
+const INTERESSE_PILOTO = [
+  { id: 'sim',    label: 'Sim, quero saber mais' },
+  { id: 'talvez', label: 'Talvez' },
+  { id: 'nao',    label: 'Neste momento não' },
 ]
 
 const STEPS = [
-  { id: 'identidade',    title: 'Sobre si e a empresa',    desc: 'Só precisamos do básico para começar.' },
-  { id: 'qualificacao',  title: 'Contexto do negócio',     desc: 'Para perceber onde existe maior oportunidade.' },
+  { id: 'empresa',   title: 'Empresa',              desc: 'Contexto básico para personalizar o seu roadmap.' },
+  { id: 'leads',     title: 'Leads',                 desc: 'Volume, origem e valor dos seus leads.' },
+  { id: 'conversao', title: 'Conversão',             desc: 'O que acontece entre a lead chegar e a reunião ser marcada.' },
+  { id: 'intencao',  title: 'Problema & Contacto',   desc: 'Para personalizar e enviar o seu roadmap.' },
 ]
 
-/* ── Lead scoring (hidden from user) ── */
-function calcScore(v) {
-  let s = 0
-
-  // Team size — sweet spot 11–50
-  const eq = { '1–5': 0, '6–10': 8, '11–25': 20, '26–50': 25, '51–100': 18, '100+': 10 }
-  s += eq[v.equipa] || 0
-
-  // Revenue — higher is better
-  const fat = {
-    '< €250k': 0,
-    '€250k – €500k': 8,
-    '€500k – €1M': 18,
-    '€1M – €3M': 28,
-    '€3M – €10M': 35,
-    '€10M+': 20,
-  }
-  s += fat[v.faturacao] || 0
-
-  // Problems selected (up to 2)
-  s += Math.min((v.problemas || []).length * 8, 16)
-
-  // AI maturity — starting/some = ideal buyer
-  const ia = { nao: 5, a_comecar: 20, algumas: 15, regularmente: 8, varios: 4 }
-  s += ia[v.ia_maturidade] || 0
-
-  // Investment intent — biggest signal
-  const intent = { sim: 30, possivelmente: 15, nao: 0 }
-  s += intent[v.intencao] || 0
-
-  // Open field answered
-  if (v.prioridade?.trim().length > 25) s += 10
-
-  if (s >= 80) return { score: s, tier: 'A', label: 'Lead ideal — agendar directo' }
-  if (s >= 45) return { score: s, tier: 'B', label: 'Lead potencial — follow-up' }
-  return         { score: s, tier: 'C', label: 'Lead fraco — baixa prioridade' }
+/* ── Scoring (higher = more opportunity) ── */
+const DIM_LABELS = {
+  response:      'Velocidade de resposta',
+  followup:      'Follow-up',
+  qualification: 'Qualificação',
+  leadToMeeting: 'Conversão Lead \u2192 Reunião',
+  consistency:   'Consistência do processo',
 }
 
+const PRIORITY_LABELS = {
+  response:      'Melhorar a velocidade de resposta',
+  followup:      'Criar uma sequência estruturada de follow-up',
+  qualification: 'Definir critérios de qualificação claros',
+  leadToMeeting: 'Medir e melhorar a conversão Lead \u2192 Reunião',
+  consistency:   'Definir um processo e responsável claro',
+}
+
+const ROADMAP_TYPES = {
+  response:      { letter: 'A', name: 'RESPONSE',      desc: 'Com base nas suas respostas, existe uma oportunidade clara de melhorar a velocidade com que os novos leads são contactados.' },
+  followup:      { letter: 'B', name: 'FOLLOW-UP',      desc: 'Com base nas suas respostas, existe uma oportunidade clara de melhorar a forma como os leads são acompanhados depois do primeiro contacto.' },
+  qualification: { letter: 'C', name: 'QUALIFICATION',  desc: 'Com base nas suas respostas, existe uma oportunidade clara de melhorar a consistência com que os leads são qualificados antes da reunião.' },
+  leadToMeeting: { letter: 'D', name: 'APPOINTMENT',    desc: 'Com base nas suas respostas, existe uma oportunidade clara de melhorar a passagem de leads qualificados para reuniões agendadas.' },
+}
+
+const ROADMAP_FLOWS = {
+  response:      ['Lead', 'Contacto imediato', 'Conversa', 'Qualificação'],
+  followup:      ['Primeiro contacto', 'Follow-up 1', 'Follow-up 2', 'Follow-up 3', 'Reengagement'],
+  qualification: ['Contacto', 'Discovery', 'Critérios', 'Qualified / Not Qualified', 'Meeting'],
+  leadToMeeting: ['Qualified Lead', 'Meeting Offer', 'Scheduling', 'Confirmation', 'Meeting'],
+}
+
+function calcScore(v) {
+  const response      = TEMPO_RESPOSTA.find(t => t.id === v.tempo_resposta)?.score ?? 0
+  const followup      = FOLLOWUP.find(f => f.id === v.followup)?.score ?? 0
+  const qualification = QUALIFICACAO.find(q => q.id === v.qualificacao)?.score ?? 0
+  const leadToMeeting = TAXA_CONVERSAO.find(t => t.id === v.taxa_conversao)?.score ?? 0
+  const consistency   = QUEM_CONTACTA.find(q => q.id === v.quem_contacta)?.score ?? 0
+
+  const scores = { response, followup, qualification, leadToMeeting, consistency }
+  const total = response + followup + qualification + leadToMeeting + consistency
+
+  // Roadmap type: dimension with highest score (excl consistency)
+  const roadmapDims = { response, followup, qualification, leadToMeeting }
+  let roadmapKey = 'response'
+  let maxScore = -1
+  for (const [key, val] of Object.entries(roadmapDims)) {
+    if (val > maxScore) { maxScore = val; roadmapKey = key }
+  }
+
+  // Priorities: all 5 dims sorted by score descending, take top 4
+  const priorities = Object.entries(scores)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 4)
+    .map(([key]) => key)
+
+  return { scores, total, maxTotal: 20, roadmapKey, priorities }
+}
+
+/* ── Component ── */
 export default function DiagnosticoPage() {
-  const navigate = useNavigate()
   const [step, setStep]             = useState(0)
-  const [values, setValues]         = useState({ problemas: [] })
+  const [values, setValues]         = useState({ fontes: [] })
   const [submitting, setSubmitting] = useState(false)
+  const [result, setResult]         = useState(null)
 
   const set = (k, v) => setValues(prev => ({ ...prev, [k]: v }))
 
-  const toggleProblema = id => {
-    const current = values.problemas || []
-    if (current.includes(id)) {
-      set('problemas', current.filter(p => p !== id))
-    } else if (current.length < 2) {
-      set('problemas', [...current, id])
-    }
+  const toggleFonte = id => {
+    const current = values.fontes || []
+    set('fontes', current.includes(id) ? current.filter(f => f !== id) : [...current, id])
   }
 
   const canProceed = () => {
-    if (step === 0) return values.nome?.trim() && values.email?.trim() && values.empresa?.trim() && values.setor
-    if (step === 1) return values.equipa && values.faturacao && values.problemas?.length > 0 && values.intencao
+    if (step === 0) return values.empresa?.trim() && values.setor
+    if (step === 1) return values.leads_mes && values.fontes?.length > 0 && values.valor_cliente
+    if (step === 2) return values.tempo_resposta && values.quem_contacta && values.followup && values.qualificacao && values.taxa_conversao
+    if (step === 3) return values.situacao && values.interesse_piloto && values.nome?.trim() && values.email?.trim()
     return false
   }
 
@@ -130,47 +203,67 @@ export default function DiagnosticoPage() {
   const handleSubmit = async () => {
     setSubmitting(true)
     const scoring = calcScore(values)
-    const problemasLabels = (values.problemas || [])
-      .map(id => PROBLEMAS.find(p => p.id === id)?.label)
+
+    const fontesLabels = (values.fontes || [])
+      .map(id => FONTES_LEADS.find(f => f.id === id)?.label)
       .join(', ')
-    const iaMaturidadeLabel = IA_MATURIDADE.find(i => i.id === values.ia_maturidade)?.label || '—'
-    const intencaoLabel = INTENCAO.find(i => i.id === values.intencao)?.label || '—'
 
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_Yfcy8gQeR25U6j45ZU0dzQwHzaEXtcdXm8BzcXo2MPiqNBrezJlEeaFXpiZv0Q1PPQ/exec'
 
-    // 1. Google Sheets + email (existente)
     try {
       fetch(APPS_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({
-          nome:           values.nome,
-          email:          values.email,
-          empresa:        values.empresa,
-          website:        values.website || '—',
-          setor:          values.setor,
-          equipa:         values.equipa,
-          faturacao:      values.faturacao,
-          problemas:      problemasLabels,
-          ia_maturidade:  iaMaturidadeLabel,
-          intencao:       intencaoLabel,
-          prioridade:     values.prioridade || '—',
-          _score:         scoring.score,
-          _tier:          scoring.tier,
-          _tier_label:    scoring.label,
-          _subject: `[TIER ${scoring.tier}] Diagnóstico — ${values.empresa} (${values.setor}) · Score ${scoring.score}`,
+          nome:            values.nome,
+          cargo:           values.cargo || '',
+          email:           values.email,
+          empresa:         values.empresa,
+          website:         values.website || '',
+          setor:           values.setor,
+          leads_mes:       LEADS_MES.find(l => l.id === values.leads_mes)?.label || '',
+          fontes:          fontesLabels,
+          valor_cliente:   VALOR_CLIENTE.find(v => v.id === values.valor_cliente)?.label || '',
+          tempo_resposta:  TEMPO_RESPOSTA.find(t => t.id === values.tempo_resposta)?.label || '',
+          quem_contacta:   QUEM_CONTACTA.find(q => q.id === values.quem_contacta)?.label || '',
+          followup:        FOLLOWUP.find(f => f.id === values.followup)?.label || '',
+          qualificacao:    QUALIFICACAO.find(q => q.id === values.qualificacao)?.label || '',
+          taxa_conversao:  TAXA_CONVERSAO.find(t => t.id === values.taxa_conversao)?.label || '',
+          situacao:        SITUACAO.find(s => s.id === values.situacao)?.label || '',
+          interesse_piloto: INTERESSE_PILOTO.find(i => i.id === values.interesse_piloto)?.label || '',
+          _roadmap_type:   ROADMAP_TYPES[scoring.roadmapKey].name,
+          _score_total:    scoring.total,
+          _response:       scoring.scores.response,
+          _followup:       scoring.scores.followup,
+          _qualification:  scoring.scores.qualification,
+          _lead_to_meeting: scoring.scores.leadToMeeting,
+          _consistency:    scoring.scores.consistency,
+          _subject: `[Roadmap ${ROADMAP_TYPES[scoring.roadmapKey].letter}] ${values.empresa} (${scoring.total}/${scoring.maxTotal})`,
         }),
       })
     } catch (_) {}
 
-    // 2. CRM Supabase (novo)
     try {
       const notesLines = [
-        `IA: ${iaMaturidadeLabel}`,
-        `Intenção: ${intencaoLabel}`,
-        values.prioridade ? `Prioridade: ${values.prioridade}` : null,
-      ].filter(Boolean).join('\n')
+        `Leads/mês: ${LEADS_MES.find(l => l.id === values.leads_mes)?.label}`,
+        `Fontes: ${fontesLabels}`,
+        `Valor cliente: ${VALOR_CLIENTE.find(v => v.id === values.valor_cliente)?.label}`,
+        `Tempo resposta: ${TEMPO_RESPOSTA.find(t => t.id === values.tempo_resposta)?.label}`,
+        `Quem contacta: ${QUEM_CONTACTA.find(q => q.id === values.quem_contacta)?.label}`,
+        `Follow-up: ${FOLLOWUP.find(f => f.id === values.followup)?.label}`,
+        `Qualificação: ${QUALIFICACAO.find(q => q.id === values.qualificacao)?.label}`,
+        `Taxa conversão: ${TAXA_CONVERSAO.find(t => t.id === values.taxa_conversao)?.label}`,
+        `Situação: ${SITUACAO.find(s => s.id === values.situacao)?.label}`,
+        `Interesse piloto: ${INTERESSE_PILOTO.find(i => i.id === values.interesse_piloto)?.label}`,
+        `---`,
+        `Roadmap: ${ROADMAP_TYPES[scoring.roadmapKey].name} (${scoring.total}/${scoring.maxTotal})`,
+        `Response: ${scoring.scores.response}/4`,
+        `Follow-up: ${scoring.scores.followup}/4`,
+        `Qualification: ${scoring.scores.qualification}/4`,
+        `Lead>Meeting: ${scoring.scores.leadToMeeting}/4`,
+        `Consistency: ${scoring.scores.consistency}/4`,
+      ].join('\n')
 
       supabase.from('leads').insert({
         nome:      values.nome,
@@ -178,34 +271,279 @@ export default function DiagnosticoPage() {
         email:     values.email,
         website:   values.website || null,
         setor:     values.setor,
-        equipa:    values.equipa,
-        faturacao: values.faturacao,
-        problema:  problemasLabels,
+        problema:  SITUACAO.find(s => s.id === values.situacao)?.label,
         fonte:     'Inbound',
         stage:     'nova',
-        score:     scoring.tier,
+        score:     scoring.total >= 14 ? 'A' : scoring.total >= 8 ? 'B' : 'C',
         notes:     notesLines,
       })
     } catch (_) {}
 
-    // Navega para /obrigado com o tier como query param
-    navigate(`/obrigado?tier=${scoring.tier}`)
+    // 3. HubSpot — create/update contact + note
+    try {
+      fetch('/api/hubspot-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          lead: {
+            nome:            values.nome,
+            cargo:           values.cargo || '',
+            email:           values.email,
+            empresa:         values.empresa,
+            website:         values.website || '',
+            setor:           values.setor,
+            leads_mes:       LEADS_MES.find(l => l.id === values.leads_mes)?.label || '',
+            fontes:          fontesLabels,
+            valor_cliente:   VALOR_CLIENTE.find(v => v.id === values.valor_cliente)?.label || '',
+            tempo_resposta:  TEMPO_RESPOSTA.find(t => t.id === values.tempo_resposta)?.label || '',
+            quem_contacta:   QUEM_CONTACTA.find(q => q.id === values.quem_contacta)?.label || '',
+            followup:        FOLLOWUP.find(f => f.id === values.followup)?.label || '',
+            qualificacao:    QUALIFICACAO.find(q => q.id === values.qualificacao)?.label || '',
+            taxa_conversao:  TAXA_CONVERSAO.find(t => t.id === values.taxa_conversao)?.label || '',
+            situacao:        SITUACAO.find(s => s.id === values.situacao)?.label || '',
+            interesse_piloto: INTERESSE_PILOTO.find(i => i.id === values.interesse_piloto)?.label || '',
+          },
+          scoring: {
+            roadmapKey:   scoring.roadmapKey,
+            roadmapName:  ROADMAP_TYPES[scoring.roadmapKey].name,
+            total:        scoring.total,
+            maxTotal:     scoring.maxTotal,
+            scores:       scoring.scores,
+          },
+        }),
+      })
+    } catch (_) {}
+
+    setResult(scoring)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  /* ═══════════════════════════════════════════
+     RESULTS PAGE
+     ═══════════════════════════════════════════ */
+  if (result) {
+    const roadmap = ROADMAP_TYPES[result.roadmapKey]
+    const flow = ROADMAP_FLOWS[result.roadmapKey]
+
+    return (
+      <div className="raudit" style={{ background: '#06102a', minHeight: '100vh' }}>
+        <div className="raudit__header" style={{ paddingTop: 'calc(var(--nav-h, 72px) + 40px)' }}>
+          <div className="r-container" style={{ textAlign: 'center' }}>
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: '6px',
+              background: 'rgba(74,222,128,0.15)', border: '1px solid rgba(74,222,128,0.3)',
+              borderRadius: '100px', padding: '5px 16px', marginBottom: '20px',
+            }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', animation: 'hero-pulse 2s ease-in-out infinite' }} />
+              <span style={{ fontSize: '11px', fontWeight: 700, color: '#4ade80', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Roadmap pronto
+              </span>
+            </div>
+
+            <h2 className="r-h2" style={{ color: '#fff', marginBottom: '8px' }}>
+              O seu Roadmap está pronto.
+            </h2>
+          </div>
+        </div>
+
+        <div className="raudit__body" style={{ paddingBottom: '80px' }}>
+          <div style={{ maxWidth: '640px', margin: '0 auto', padding: '0 20px' }}>
+
+            {/* Main bottleneck */}
+            <div style={{
+              background: 'rgba(33,127,241,0.1)', border: '1.5px solid rgba(33,127,241,0.25)',
+              borderRadius: '20px', padding: '32px', marginBottom: '28px', textAlign: 'center',
+            }}>
+              <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 12px' }}>
+                O seu principal ponto de oportunidade
+              </p>
+              <h3 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '28px', color: '#5aabff', margin: '0 0 16px', letterSpacing: '-0.02em' }}>
+                {roadmap.name}
+              </h3>
+              <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, margin: 0 }}>
+                {roadmap.desc}
+              </p>
+            </div>
+
+            {/* Recommended flow */}
+            <div style={{
+              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '16px', padding: '24px 28px', marginBottom: '28px',
+            }}>
+              <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 16px' }}>
+                Processo recomendado
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0' }}>
+                {flow.map((s, i) => (
+                  <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div style={{
+                      padding: '10px 24px',
+                      background: i === 0 || i === flow.length - 1 ? 'rgba(33,127,241,0.2)' : 'rgba(255,255,255,0.06)',
+                      border: `1px solid ${i === 0 || i === flow.length - 1 ? 'rgba(33,127,241,0.4)' : 'rgba(255,255,255,0.1)'}`,
+                      borderRadius: '10px', width: '100%', textAlign: 'center',
+                    }}>
+                      <span style={{
+                        fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '14px',
+                        color: i === 0 || i === flow.length - 1 ? '#5aabff' : 'rgba(255,255,255,0.7)',
+                      }}>
+                        {s}
+                      </span>
+                    </div>
+                    {i < flow.length - 1 && (
+                      <svg width="12" height="20" viewBox="0 0 12 20" fill="none" style={{ margin: '4px 0' }}>
+                        <path d="M6 0v16M2 12l4 4 4-4" stroke="rgba(33,127,241,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Profile summary */}
+            <div style={{
+              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '16px', padding: '24px 28px', marginBottom: '28px',
+            }}>
+              <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 16px' }}>
+                O seu perfil
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {[
+                  ['Leads/mês', LEADS_MES.find(l => l.id === values.leads_mes)?.label],
+                  ['Valor médio', VALOR_CLIENTE.find(v => v.id === values.valor_cliente)?.label],
+                  ['Resposta', TEMPO_RESPOSTA.find(t => t.id === values.tempo_resposta)?.label],
+                  ['Follow-up', FOLLOWUP.find(f => f.id === values.followup)?.label],
+                  ['Qualificação', QUALIFICACAO.find(q => q.id === values.qualificacao)?.label],
+                ].map(([label, value], i) => (
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: i < 4 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
+                    <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.45)', fontFamily: 'Sora, sans-serif' }}>{label}</span>
+                    <span style={{ fontSize: '14px', fontWeight: 600, color: 'rgba(255,255,255,0.85)', fontFamily: 'Sora, sans-serif' }}>{value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Priorities */}
+            <div style={{
+              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '16px', padding: '24px 28px', marginBottom: '28px',
+            }}>
+              <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 16px' }}>
+                As suas prioridades
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {result.priorities.map((key, i) => (
+                  <div key={key} style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
+                    <span style={{
+                      width: '28px', height: '28px', borderRadius: '8px', flexShrink: 0,
+                      background: i === 0 ? 'rgba(33,127,241,0.2)' : 'rgba(255,255,255,0.06)',
+                      border: `1px solid ${i === 0 ? 'rgba(33,127,241,0.35)' : 'rgba(255,255,255,0.1)'}`,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '12px', fontWeight: 700, color: i === 0 ? '#5aabff' : 'rgba(255,255,255,0.5)',
+                      fontFamily: 'Sora, sans-serif',
+                    }}>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span style={{ fontSize: '14px', color: i === 0 ? '#fff' : 'rgba(255,255,255,0.65)', fontWeight: i === 0 ? 700 : 400, lineHeight: 1.5 }}>
+                      {PRIORITY_LABELS[key]}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Next step */}
+            <div style={{
+              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '16px', padding: '24px 28px', marginBottom: '32px',
+            }}>
+              <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, margin: '0 0 4px' }}>
+                <strong style={{ color: '#fff' }}>E depois:</strong>
+              </p>
+              <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, margin: 0 }}>
+                O próximo passo recomendado: testar este processo com leads reais durante 30 dias.
+              </p>
+            </div>
+
+            {/* CTA — 30-Day Pilot */}
+            <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+              <a
+                href="https://calendly.com/remindr/diagnostico"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '8px',
+                  background: '#217FF1', color: '#fff',
+                  fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '16px',
+                  padding: '18px 40px', borderRadius: '14px', textDecoration: 'none',
+                  boxShadow: '0 8px 32px rgba(33,127,241,0.45)',
+                  transition: 'transform 0.18s ease, box-shadow 0.18s ease',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 14px 40px rgba(33,127,241,0.55)' }}
+                onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 8px 32px rgba(33,127,241,0.45)' }}
+              >
+                CANDIDATAR-ME AO 30-DAY PILOT \u2192
+              </a>
+              <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)', marginTop: '12px' }}>
+                Conversa de 15 min \u00B7 Sem compromisso
+              </p>
+            </div>
+
+            <div style={{ textAlign: 'center' }}>
+              <a href="/" style={{
+                fontSize: '13px', color: 'rgba(255,255,255,0.4)', textDecoration: 'none',
+                fontFamily: 'Sora, sans-serif', transition: 'color 0.15s',
+              }}
+                onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.4)'}
+              >
+                \u2190 Voltar ao início
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  /* ═══════════════════════════════════════════
+     FORM (4 pages, 14 questions)
+     ═══════════════════════════════════════════ */
   return (
-    <div className="raudit">
-      {/* Header */}
-      <div className="raudit__header">
-        <div className="r-container">
-          <p className="r-label" style={{ marginBottom: '12px', color: '#217FF1' }}>
-            Diagnóstico Gratuito
-          </p>
-          <h2 className="r-h2" style={{ marginBottom: '12px', color: '#0a1c42' }}>
-            Veja se a sua empresa é elegível<br />para o Diagnóstico Gratuito
+    <div className="raudit" style={{ paddingTop: 0 }}>
+      <div className="raudit__header" style={{
+        background: 'linear-gradient(135deg, #06102a 0%, #0e2a5e 55%, #143a7a 100%)',
+        borderBottom: '1px solid rgba(33,127,241,0.2)',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        {/* Dot grid overlay */}
+        <div style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)',
+          backgroundSize: '28px 28px',
+        }} />
+        {/* Glow */}
+        <div style={{
+          position: 'absolute', top: '-40%', left: '20%', width: '60%', height: '100%',
+          background: 'radial-gradient(ellipse, rgba(33,127,241,0.2) 0%, transparent 65%)',
+          filter: 'blur(60px)', pointerEvents: 'none',
+        }} />
+        <div className="r-container" style={{ position: 'relative', zIndex: 1 }}>
+          {/* Logo */}
+          <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', textDecoration: 'none', marginBottom: '28px' }}>
+            <img src="/logotipo-editado.png" alt="" style={{ width: '32px', height: 'auto', filter: 'brightness(0) invert(1)', opacity: 0.9 }} />
+            <span style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+              <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '16px', color: '#fff', letterSpacing: '-0.02em' }}>Reminder</span>
+              <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 600, fontSize: '14px', color: '#5aabff' }}> AI</span>
+            </span>
+          </a>
+          <h2 className="r-h2" style={{ marginBottom: '12px', color: '#fff' }}>
+            Roadmap Personalizado de Conversão <span style={{ color: '#5aabff' }}>— Grátis</span>
           </h2>
-          <p className="r-body" style={{ maxWidth: '520px', margin: '0 auto', color: '#666' }}>
-            O diagnóstico é gratuito, mas trabalhamos apenas com empresas onde acreditamos
-            que a IA pode gerar impacto real. Se não houver oportunidade clara, dizemos-lhe — sem rodeios.
+          <p className="r-body" style={{ maxWidth: '520px', margin: '0 auto', color: 'rgba(255,255,255,0.5)' }}>
+            14 perguntas. Menos de 60 segundos. Resultados instantâneos.
           </p>
         </div>
       </div>
@@ -220,18 +558,11 @@ export default function DiagnosticoPage() {
               <span className="raudit__progress-counter">{step + 1} / {STEPS.length}</span>
             </div>
             <div className="raudit__progress-track">
-              <div
-                className="raudit__progress-fill"
-                style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
-              />
+              <div className="raudit__progress-fill" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
             </div>
             <div className="raudit__progress-steps">
               {STEPS.map((s, i) => (
-                <div
-                  key={s.id}
-                  className={`raudit__progress-pip${i < step ? ' is-done' : i === step ? ' is-active' : ''}`}
-                  title={s.title}
-                />
+                <div key={s.id} className={`raudit__progress-pip${i < step ? ' is-done' : i === step ? ' is-active' : ''}`} title={s.title} />
               ))}
             </div>
           </div>
@@ -241,185 +572,172 @@ export default function DiagnosticoPage() {
               <h3 className="raudit__step-title">{STEPS[step].title}</h3>
               <p className="raudit__step-desc">{STEPS[step].desc}</p>
 
-              {/* ── PASSO 0 — Identidade ── */}
+              {/* ── BLOCO 1 — EMPRESA ── */}
               {step === 0 && <>
                 <div className="raudit__field">
-                  <label>O seu nome <span style={{ color: 'var(--blue)' }}>*</span></label>
-                  <input
-                    type="text"
-                    placeholder="João Silva"
-                    value={values.nome || ''}
-                    onChange={e => set('nome', e.target.value)}
-                    autoFocus
-                  />
+                  <label>Qual é o nome da sua empresa? <span style={{ color: 'var(--blue)' }}>*</span></label>
+                  <input type="text" placeholder="Empresa Exemplo, Lda." value={values.empresa || ''} onChange={e => set('empresa', e.target.value)} autoFocus />
                 </div>
                 <div className="raudit__field">
-                  <label>Email profissional <span style={{ color: 'var(--blue)' }}>*</span></label>
-                  <input
-                    type="email"
-                    placeholder="joao@empresa.pt"
-                    value={values.email || ''}
-                    onChange={e => set('email', e.target.value)}
-                  />
+                  <label>Qual é o website da sua empresa? <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(opcional)</span></label>
+                  <input type="url" placeholder="https://empresa.pt" value={values.website || ''} onChange={e => set('website', e.target.value)} />
                 </div>
                 <div className="raudit__field">
-                  <label>Nome da empresa <span style={{ color: 'var(--blue)' }}>*</span></label>
-                  <input
-                    type="text"
-                    placeholder="Empresa Exemplo, Lda."
-                    value={values.empresa || ''}
-                    onChange={e => set('empresa', e.target.value)}
-                  />
-                </div>
-                <div className="raudit__field">
-                  <label>Website <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(opcional)</span></label>
-                  <input
-                    type="url"
-                    placeholder="https://empresa.pt"
-                    value={values.website || ''}
-                    onChange={e => set('website', e.target.value)}
-                  />
-                </div>
-                <div className="raudit__field">
-                  <label>Setor de actividade <span style={{ color: 'var(--blue)' }}>*</span></label>
+                  <label>Em que setor trabalha? <span style={{ color: 'var(--blue)' }}>*</span></label>
                   <select value={values.setor || ''} onChange={e => set('setor', e.target.value)}>
-                    <option value="">Seleccionar...</option>
+                    <option value="">Selecionar...</option>
                     {SETORES.map(s => <option key={s} value={s}>{s}</option>)}
                   </select>
                 </div>
               </>}
 
-              {/* ── PASSO 1 — Qualificação ── */}
+              {/* ── BLOCO 2 — LEADS ── */}
               {step === 1 && <>
-
-                {/* Equipa */}
                 <div className="raudit__field">
-                  <label>Quantas pessoas trabalham na empresa? <span style={{ color: 'var(--blue)' }}>*</span></label>
+                  <label>Quantos leads recebem aproximadamente por mês? <span style={{ color: 'var(--blue)' }}>*</span></label>
                   <div className="raudit__card-grid raudit__card-grid--3">
-                    {EQUIPA.map(e => (
-                      <button key={e} type="button"
-                        className={`raudit__card-opt${values.equipa === e ? ' is-selected' : ''}`}
-                        onClick={() => set('equipa', e)}>
-                        {e}
+                    {LEADS_MES.map(l => (
+                      <button key={l.id} type="button" className={`raudit__card-opt${values.leads_mes === l.id ? ' is-selected' : ''}`} onClick={() => set('leads_mes', l.id)}>
+                        {l.label}
                       </button>
                     ))}
                   </div>
                 </div>
-
-                {/* Faturação */}
                 <div className="raudit__field" style={{ marginTop: '28px' }}>
-                  <label>Faturação anual aproximada <span style={{ color: 'var(--blue)' }}>*</span></label>
-                  <div className="raudit__card-grid raudit__card-grid--3">
-                    {FATURACAO.map(f => (
-                      <button key={f} type="button"
-                        className={`raudit__card-opt${values.faturacao === f ? ' is-selected' : ''}`}
-                        onClick={() => set('faturacao', f)}>
-                        {f}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Problemas — pick up to 2 */}
-                <div className="raudit__field" style={{ marginTop: '28px' }}>
-                  <label>
-                    Onde sente maior potencial de melhoria? <span style={{ color: 'var(--blue)' }}>*</span>
-                  </label>
-                  <p className="raudit__field-hint">Escolha até 2 áreas.</p>
+                  <label>De onde vêm principalmente esses leads? <span style={{ color: 'var(--blue)' }}>*</span></label>
+                  <p className="raudit__field-hint">Selecione todas as que se aplicam.</p>
                   <div className="raudit__check-grid">
-                    {PROBLEMAS.map(p => {
-                      const selected = (values.problemas || []).includes(p.id)
-                      const maxed = (values.problemas || []).length >= 2 && !selected
-                      return (
-                        <button key={p.id} type="button"
-                          className={`raudit__check-item${selected ? ' is-selected' : ''}${maxed ? ' is-disabled' : ''}`}
-                          onClick={() => !maxed && toggleProblema(p.id)}>
-                          {p.label}
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
-
-                {/* IA maturity */}
-                <div className="raudit__field" style={{ marginTop: '28px' }}>
-                  <label>Já utilizam IA na empresa?</label>
-                  <div className="raudit__radio-stack">
-                    {IA_MATURIDADE.map(i => (
-                      <button key={i.id} type="button"
-                        className={`raudit__radio-item${values.ia_maturidade === i.id ? ' is-selected' : ''}`}
-                        onClick={() => set('ia_maturidade', i.id)}>
-                        <span className="raudit__radio-dot" />
-                        {i.label}
+                    {FONTES_LEADS.map(f => (
+                      <button key={f.id} type="button" className={`raudit__check-item${(values.fontes || []).includes(f.id) ? ' is-selected' : ''}`} onClick={() => toggleFonte(f.id)}>
+                        {f.label}
                       </button>
                     ))}
                   </div>
                 </div>
-
-                {/* Investment intent */}
                 <div className="raudit__field" style={{ marginTop: '28px' }}>
-                  <label>
-                    Se identificarmos uma oportunidade clara, estaria disposto a investir na implementação?
-                    <span style={{ color: 'var(--blue)' }}> *</span>
-                  </label>
-                  <div className="raudit__radio-stack">
-                    {INTENCAO.map(i => (
-                      <button key={i.id} type="button"
-                        className={`raudit__radio-item${values.intencao === i.id ? ' is-selected' : ''}`}
-                        onClick={() => set('intencao', i.id)}>
-                        <span className="raudit__radio-dot" />
-                        {i.label}
+                  <label>Qual é aproximadamente o valor médio de um novo cliente? <span style={{ color: 'var(--blue)' }}>*</span></label>
+                  <div className="raudit__card-grid raudit__card-grid--3">
+                    {VALOR_CLIENTE.map(v => (
+                      <button key={v.id} type="button" className={`raudit__card-opt${values.valor_cliente === v.id ? ' is-selected' : ''}`} onClick={() => set('valor_cliente', v.id)}>
+                        {v.label}
                       </button>
                     ))}
                   </div>
                 </div>
+              </>}
 
-                {/* Open field */}
-                <div className="raudit__field" style={{ marginTop: '28px' }}>
-                  <label>
-                    Se pudéssemos resolver uma única coisa na sua empresa nos próximos 90 dias, o que escolheria?
-                    <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}> (opcional)</span>
-                  </label>
-                  <textarea
-                    placeholder="Ex: Os comerciais passam demasiado tempo a responder a emails. / Temos 300 propostas em aberto sem follow-up. / A equipa perde horas a colocar informação no CRM..."
-                    value={values.prioridade || ''}
-                    onChange={e => set('prioridade', e.target.value)}
-                    style={{ resize: 'none', height: '110px' }}
-                  />
+              {/* ── BLOCO 3 — CONVERSÃO ── */}
+              {step === 2 && <>
+                <div className="raudit__field">
+                  <label>Quanto tempo demora normalmente até alguém contactar um novo lead? <span style={{ color: 'var(--blue)' }}>*</span></label>
+                  <div className="raudit__card-grid raudit__card-grid--3">
+                    {TEMPO_RESPOSTA.map(t => (
+                      <button key={t.id} type="button" className={`raudit__card-opt${values.tempo_resposta === t.id ? ' is-selected' : ''}`} onClick={() => set('tempo_resposta', t.id)}>
+                        {t.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
+                <div className="raudit__field" style={{ marginTop: '28px' }}>
+                  <label>Quem é responsável pelo primeiro contacto? <span style={{ color: 'var(--blue)' }}>*</span></label>
+                  <div className="raudit__radio-stack">
+                    {QUEM_CONTACTA.map(q => (
+                      <button key={q.id} type="button" className={`raudit__radio-item${values.quem_contacta === q.id ? ' is-selected' : ''}`} onClick={() => set('quem_contacta', q.id)}>
+                        <span className="raudit__radio-dot" />{q.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="raudit__field" style={{ marginTop: '28px' }}>
+                  <label>Quantas vezes fazem follow-up quando um lead não responde? <span style={{ color: 'var(--blue)' }}>*</span></label>
+                  <div className="raudit__radio-stack">
+                    {FOLLOWUP.map(f => (
+                      <button key={f.id} type="button" className={`raudit__radio-item${values.followup === f.id ? ' is-selected' : ''}`} onClick={() => set('followup', f.id)}>
+                        <span className="raudit__radio-dot" />{f.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="raudit__field" style={{ marginTop: '28px' }}>
+                  <label>Como qualificam os leads antes de marcar uma reunião? <span style={{ color: 'var(--blue)' }}>*</span></label>
+                  <div className="raudit__radio-stack">
+                    {QUALIFICACAO.map(q => (
+                      <button key={q.id} type="button" className={`raudit__radio-item${values.qualificacao === q.id ? ' is-selected' : ''}`} onClick={() => set('qualificacao', q.id)}>
+                        <span className="raudit__radio-dot" />{q.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="raudit__field" style={{ marginTop: '28px' }}>
+                  <label>Aproximadamente, que percentagem dos leads acaba por marcar uma reunião? <span style={{ color: 'var(--blue)' }}>*</span></label>
+                  <div className="raudit__card-grid raudit__card-grid--3">
+                    {TAXA_CONVERSAO.map(t => (
+                      <button key={t.id} type="button" className={`raudit__card-opt${values.taxa_conversao === t.id ? ' is-selected' : ''}`} onClick={() => set('taxa_conversao', t.id)}>
+                        {t.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>}
 
-                <div className="raudit__info-box" style={{ marginTop: '20px' }}>
-                  <p style={{ fontSize: '14px', color: '#1a4d8a', lineHeight: 1.55 }}>
-                    Após submeter, entramos em contacto em 24h úteis. O audit é uma conversa de 45–60 minutos
-                    — deve participar quem conhece os processos operacionais e toma decisões de investimento.
+              {/* ── BLOCO 4+5 — PROBLEMA + INTENÇÃO + CONTACTO ── */}
+              {step === 3 && <>
+                <div className="raudit__field">
+                  <label>Qual destas situações descreve melhor a sua empresa? <span style={{ color: 'var(--blue)' }}>*</span></label>
+                  <div className="raudit__radio-stack">
+                    {SITUACAO.map(s => (
+                      <button key={s.id} type="button" className={`raudit__radio-item${values.situacao === s.id ? ' is-selected' : ''}`} onClick={() => set('situacao', s.id)}>
+                        <span className="raudit__radio-dot" />{s.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="raudit__field" style={{ marginTop: '28px' }}>
+                  <label>Se identificarmos uma oportunidade clara, estaria interessado em testar um processo durante 30 dias? <span style={{ color: 'var(--blue)' }}>*</span></label>
+                  <div className="raudit__card-grid raudit__card-grid--3">
+                    {INTERESSE_PILOTO.map(ip => (
+                      <button key={ip.id} type="button" className={`raudit__card-opt${values.interesse_piloto === ip.id ? ' is-selected' : ''}`} onClick={() => set('interesse_piloto', ip.id)}>
+                        {ip.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div style={{ marginTop: '28px', padding: '20px 0', borderTop: '1px solid #eee' }}>
+                  <p style={{ fontSize: '13px', fontWeight: 600, color: '#0a1c42', marginBottom: '16px' }}>
+                    Para onde devemos enviar o seu Roadmap?
                   </p>
+                  <div className="raudit__field">
+                    <label>Nome <span style={{ color: 'var(--blue)' }}>*</span></label>
+                    <input type="text" placeholder="João Silva" value={values.nome || ''} onChange={e => set('nome', e.target.value)} />
+                  </div>
+                  <div className="raudit__field">
+                    <label>Cargo <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(opcional)</span></label>
+                    <input type="text" placeholder="CEO, Diretor Comercial..." value={values.cargo || ''} onChange={e => set('cargo', e.target.value)} />
+                  </div>
+                  <div className="raudit__field">
+                    <label>Email profissional <span style={{ color: 'var(--blue)' }}>*</span></label>
+                    <input type="email" placeholder="joão@empresa.pt" value={values.email || ''} onChange={e => set('email', e.target.value)} />
+                  </div>
                 </div>
               </>}
 
               {/* Navigation */}
               <div className="raudit__nav">
-                {step > 0
-                  ? <button className="raudit__back" onClick={() => setStep(s => s - 1)}>← Voltar</button>
-                  : <span />
-                }
+                {step > 0 ? <button className="raudit__back" onClick={() => setStep(s => s - 1)}>\u2190 Voltar</button> : <span />}
                 <button
                   className="r-btn r-btn--primary r-btn--lg"
                   onClick={handleNext}
                   disabled={!canProceed() || submitting}
                   style={{ opacity: canProceed() && !submitting ? 1 : 0.45 }}
                 >
-                  {submitting
-                    ? 'A enviar...'
-                    : step < STEPS.length - 1
-                    ? 'Continuar →'
-                    : 'Descobrir onde a IA pode ter maior impacto →'}
+                  {submitting ? 'A gerar roadmap...' : step < STEPS.length - 1 ? 'Continuar \u2192' : 'Receber o Meu Roadmap \u2192'}
                 </button>
               </div>
             </div>
           </div>
 
           <p style={{ textAlign: 'center', fontSize: '13px', color: 'var(--text-muted)', marginTop: '20px' }}>
-            Os seus dados são tratados com confidencialidade e utilizados apenas para preparar o audit.
+            Grátis \u00B7 Sem compromisso \u00B7 Resultados instantâneos
           </p>
         </div>
       </div>

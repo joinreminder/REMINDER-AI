@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const WELCOME    = 'Olá! Sou o Hermes, assistente da Remindr AI. Em que posso ajudar?'
-const BUBBLE_MSG = 'Tens alguma dúvida? Fala comigo 💬'
+const WELCOME    = 'Olá! Sou o Hermes, assistente da Reminder AI.\n\nPosso ajudá-lo a perceber se a sua empresa está a aproveitar ao máximo os leads que já recebe.\n\nPara começar: a sua empresa recebe leads regularmente e vende através de reuniões comerciais?'
+const BUBBLE_MSG = 'Está a converter os seus leads em reuniões?'
 
 export default function HermesChat() {
   const [open, setOpen]               = useState(false)
@@ -160,7 +160,7 @@ export default function HermesChat() {
             <div style={{ fontSize: '14px', fontWeight: 700, color: '#fff', fontFamily: 'Sora, sans-serif' }}>Hermes</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop: '2px' }}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', animation: 'hero-pulse 2s ease-in-out infinite' }} />
-              <span style={{ fontSize: '10.5px', color: '#4ade80', fontWeight: 600 }}>Online · Remindr AI</span>
+              <span style={{ fontSize: '10.5px', color: '#4ade80', fontWeight: 600 }}>Online · Reminder AI</span>
             </div>
           </div>
           <button
@@ -172,7 +172,7 @@ export default function HermesChat() {
               fontFamily: 'Sora, sans-serif', whiteSpace: 'nowrap',
             }}
           >
-            Diagnóstico →
+            Roadmap →
           </button>
         </div>
 
@@ -206,7 +206,7 @@ export default function HermesChat() {
                       fontFamily: 'Sora, sans-serif',
                     }}
                   >
-                    Quero o diagnóstico gratuito →
+                    Quero o meu roadmap gratuito →
                   </button>
                 )}
               </div>
@@ -273,7 +273,7 @@ export default function HermesChat() {
 
         <div style={{ padding: '6px 14px 10px', textAlign: 'center', flexShrink: 0 }}>
           <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.2)', fontFamily: 'Inter, sans-serif' }}>
-            Hermes · Remindr AI · Powered by Claude
+            Hermes · Reminder AI · Powered by Claude
           </span>
         </div>
       </div>

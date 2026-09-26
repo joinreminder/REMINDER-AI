@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 const NAV_LINKS = [
-  { href: '#audit',     label: 'Diagnóstico' },
-  { href: '#mechanism', label: 'Como construímos' },
-  { href: '#systems',   label: 'Sistemas' },
+  { href: '#mechanism', label: 'Como funciona' },
+  { href: '#audit',     label: 'As 5 Dimensões' },
+  { href: '#about',     label: 'Para quem é' },
   { href: '#faq',       label: 'FAQ' },
 ]
 
@@ -51,7 +51,7 @@ export default function AilyxNav() {
 
         {/* Desktop CTA */}
         <a href="/diagnostico" className="ayl-btn ayl-btn--nav ayl-nav__cta-desktop">
-          Diagnóstico Gratuito →
+          Roadmap Gratuito →
         </a>
 
         {/* Hamburger — mobile only */}
@@ -75,7 +75,7 @@ export default function AilyxNav() {
           ))}
         </div>
         <a href="/diagnostico" className="ayl-nav__mobile-cta" onClick={close}>
-          Diagnóstico Gratuito →
+          Roadmap Gratuito →
         </a>
       </div>
     </nav>

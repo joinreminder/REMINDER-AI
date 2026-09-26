@@ -35,7 +35,7 @@ export default function AilyxDemo() {
           Cada pedido segue um caminho até existir um resultado.
         </h2>
         <p style={{ color: '#555', maxWidth: '600px', marginBottom: '12px', lineHeight: 1.7, fontSize: '17px' }}>
-          A Remindr liga este processo entre os seus canais, a sua equipa e a IA.
+          A Reminder liga este processo entre os seus canais, a sua equipa e a IA.
         </p>
         <p style={{ color: '#888', maxWidth: '600px', marginBottom: '40px', lineHeight: 1.7, fontSize: '15px' }}>
           O objetivo não é enviar mais mensagens. É garantir que cada oportunidade tem um estado, um responsável e um próximo passo — até existir uma decisão.

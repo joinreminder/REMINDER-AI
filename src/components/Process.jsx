@@ -72,7 +72,7 @@ function ResultsDashboard() {
     <div className="proc-dashboard">
       <div className="proc-dashboard__header">
         <span className="proc-dashboard__dot" />
-        <span className="proc-dashboard__title">Relatório Mensal · Remindr</span>
+        <span className="proc-dashboard__title">Relatório Mensal · Reminder</span>
         <span className="proc-dashboard__live">ao vivo</span>
       </div>
       <div className="proc-dashboard__grid">

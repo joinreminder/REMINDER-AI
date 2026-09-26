@@ -105,7 +105,7 @@ export default function Footer() {
 
           <div className="footer2__bottom">
             <p className="footer2__copy">
-              © 2026 Remindr · Todos os direitos reservados · RGPD compliant
+              © 2026 Reminder · Todos os direitos reservados · RGPD compliant
             </p>
             <div className="footer2__legal">
               <a href="/privacy.html" className="footer2__legal-link" target="_blank">Política de Privacidade</a>
