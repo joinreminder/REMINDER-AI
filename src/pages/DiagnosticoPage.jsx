@@ -315,7 +315,7 @@ export default function DiagnosticoPage() {
       })
     } catch (_) {}
 
-    // 4. Send roadmap email via Resend
+    // 4. Send roadmap email with PDF via Resend
     try {
       fetch('/api/send-roadmap', {
         method: 'POST',
@@ -328,6 +328,14 @@ export default function DiagnosticoPage() {
           priorities: scoring.priorities,
           total:      scoring.total,
           maxTotal:   scoring.maxTotal,
+          profile: [
+            ['Leads/mês', LEADS_MES.find(l => l.id === values.leads_mes)?.label],
+            ['Valor médio', VALOR_CLIENTE.find(v => v.id === values.valor_cliente)?.label],
+            ['Resposta', TEMPO_RESPOSTA.find(t => t.id === values.tempo_resposta)?.label],
+            ['Follow-up', FOLLOWUP.find(f => f.id === values.followup)?.label],
+            ['Qualificação', QUALIFICACAO.find(q => q.id === values.qualificacao)?.label],
+            ['Taxa conversão', TAXA_CONVERSAO.find(t => t.id === values.taxa_conversao)?.label],
+          ],
         }),
       })
     } catch (_) {}

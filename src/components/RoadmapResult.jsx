@@ -232,7 +232,10 @@ export default function RoadmapResult({ scoring, profile, empresa, values }) {
           <h2 className="r-h2" style={{ color: '#fff', marginBottom: '8px' }}>
             O seu Roadmap de Conversão está pronto.
           </h2>
-          <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.45)', maxWidth: '440px', margin: '0 auto', lineHeight: 1.55 }}>
+          <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.45)', maxWidth: '480px', margin: '0 auto', lineHeight: 1.55 }}>
+            Enviámos o Roadmap completo em PDF para o seu email. Verifique a caixa de entrada (e spam).
+          </p>
+          <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.3)', maxWidth: '440px', margin: '8px auto 0', lineHeight: 1.55 }}>
             {empresa} {'\u00B7'} {new Date().toLocaleDateString('pt-PT')}
           </p>
         </div>
