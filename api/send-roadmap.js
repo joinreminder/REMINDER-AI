@@ -1,7 +1,7 @@
 import { Resend } from 'resend'
 import PDFDocument from 'pdfkit'
 
-/* ── Roadmap content per type ── */
+/* ── Conteúdo por tipo de roadmap ── */
 const TEMPLATES = {
   response: {
     title: 'Velocidade de Resposta',
@@ -18,7 +18,7 @@ const TEMPLATES = {
     metrics: [
       { label: 'Tempo médio de resposta', current: '> 30 min', target: '< 5 min' },
       { label: 'Taxa de contacto no mesmo dia', current: '~60%', target: '> 95%' },
-      { label: 'Conversão lead > conversa', current: 'Baseline', target: '+30-50%' },
+      { label: 'Conversão lead -> conversa', current: 'Variável', target: '+30-50%' },
     ],
     flow: ['Lead entra', 'Notificação imediata', 'Contacto < 5 min', 'Qualificação rápida'],
   },
@@ -39,7 +39,7 @@ const TEMPLATES = {
       { label: 'Touchpoints antes da resposta', current: '1', target: '3-4' },
       { label: 'Leads perdidos por falta de follow-up', current: 'Desconhecido', target: '0' },
     ],
-    flow: ['Primeiro contacto', 'Follow-up 1 (Dia 2)', 'Follow-up 2 (Dia 5)', 'Follow-up 3 (Dia 9)', 'Breakup (Dia 14)'],
+    flow: ['Primeiro contacto', 'Follow-up 1 (Dia 2)', 'Follow-up 2 (Dia 5)', 'Follow-up 3 (Dia 9)', 'Último contacto (Dia 14)'],
   },
   qualification: {
     title: 'Qualificação de Leads',
@@ -48,20 +48,20 @@ const TEMPLATES = {
     problem: 'Quando leads não qualificados chegam a reuniões, desperdiçam o tempo da equipa comercial. Sem critérios claros, a equipa marca reuniões com qualquer lead que mostre interesse, resultando em reuniões improdutivas e ciclos de venda longos.',
     actions: [
       { title: 'Definir 5-7 critérios de qualificação', desc: 'Budget, autoridade de decisão, necessidade real, timeline, e fit com o seu perfil ideal de cliente.' },
-      { title: 'Scorecard simples', desc: 'Crie um formulário de 5 perguntas que qualquer membro da equipa pode usar para avaliar um lead em menos de 10 minutos.' },
+      { title: 'Avaliação simples', desc: 'Crie um formulário de 5 perguntas que qualquer membro da equipa pode usar para avaliar um lead em menos de 10 minutos.' },
       { title: 'Gate antes da reunião', desc: 'Nenhuma reunião é marcada sem o lead passar pelo processo de qualificação. Isto protege o tempo da equipa.' },
-      { title: 'Perguntas de discovery', desc: 'Prepare um guião com as perguntas certas para identificar fit rapidamente, sem parecer um interrogatório.' },
+      { title: 'Perguntas de descoberta', desc: 'Prepare um guião com as perguntas certas para identificar fit rapidamente, sem parecer um interrogatório.' },
       { title: 'Classificação A/B/C', desc: 'Use um sistema de prioridade para alocar o tempo da equipa aos leads com maior potencial de fecho.' },
     ],
     metrics: [
-      { label: 'Taxa de fecho (leads qualificados)', current: 'Baseline', target: '> 30%' },
+      { label: 'Taxa de fecho (leads qualificados)', current: 'Variável', target: '> 30%' },
       { label: 'Reuniões sem resultado', current: '~50-60%', target: '< 20%' },
       { label: 'Tempo de qualificação', current: 'Variável', target: '< 10 min' },
     ],
-    flow: ['Contacto', 'Discovery', 'Scorecard', 'Qualified / Not Qualified', 'Reunião'],
+    flow: ['Contacto', 'Descoberta', 'Avaliação', 'Qualificado / Não Qualificado', 'Reunião'],
   },
   leadToMeeting: {
-    title: 'Conversão Lead > Reunião',
+    title: 'Conversão Lead para Reunião',
     subtitle: 'A passagem de leads qualificados para reuniões agendadas é o seu principal ponto de oportunidade.',
     insight: { stat: '150%', text: 'Reduzir o número de passos entre "interesse" e "reunião marcada" pode aumentar a taxa de agendamento em até 150%.', source: 'Chili Piper' },
     problem: 'Mesmo com leads qualificados e interessados, o processo de marcar uma reunião tem demasiada fricção. Vai-e-vem de emails, falta de disponibilidade visível, e propostas no momento errado fazem com que leads quentes arrefeçam.',
@@ -69,15 +69,15 @@ const TEMPLATES = {
       { title: 'Calendário online', desc: 'Use Calendly ou HubSpot Meetings para eliminar o vai-e-vem de agendamento. O lead escolhe o horário diretamente.' },
       { title: 'Timing da proposta', desc: 'Após 2-3 sinais de interesse, faça a proposta de reunião. Não espere demasiado (arrefece) nem force cedo demais (pressiona).' },
       { title: 'Proposta de valor clara', desc: '"15 minutos para analisar o seu processo de conversão" é melhor do que "vamos falar sobre os nossos serviços".' },
-      { title: 'Confirmação + reminders automáticos', desc: 'Email de confirmação imediato + reminder 24h antes + reminder 1h antes. Reduz no-shows drasticamente.' },
+      { title: 'Confirmação + lembretes automáticos', desc: 'Email de confirmação imediato + lembrete 24h antes + lembrete 1h antes. Reduz faltas drasticamente.' },
       { title: 'Reagendamento fácil', desc: 'Inclua opção de reagendar com um clique. Melhor reagendar do que não aparecer.' },
     ],
     metrics: [
-      { label: 'Taxa de agendamento', current: 'Baseline', target: '> 40%' },
-      { label: 'No-show rate', current: '~25-30%', target: '< 15%' },
+      { label: 'Taxa de agendamento', current: 'Variável', target: '> 40%' },
+      { label: 'Taxa de faltas', current: '~25-30%', target: '< 15%' },
       { label: 'Tempo até reunião', current: 'Variável', target: '< 72 horas' },
     ],
-    flow: ['Lead qualificado', 'Proposta de reunião', 'Agendamento online', 'Confirmação + Reminder', 'Reunião'],
+    flow: ['Lead qualificado', 'Proposta de reunião', 'Agendamento online', 'Confirmação + Lembrete', 'Reunião'],
   },
 }
 
@@ -85,7 +85,7 @@ const PRIORITY_LABELS = {
   response: 'Melhorar a velocidade de resposta',
   followup: 'Criar uma sequência estruturada de follow-up',
   qualification: 'Definir critérios de qualificação claros',
-  leadToMeeting: 'Medir e melhorar a conversão Lead > Reunião',
+  leadToMeeting: 'Medir e melhorar a conversão de leads em reuniões',
   consistency: 'Definir um processo e responsável claro',
 }
 
@@ -101,38 +101,42 @@ const GRAY = [102, 102, 102]
 const LIGHT_GRAY = [153, 153, 153]
 const WHITE = [255, 255, 255]
 
-/* ── PDF Generation ── */
-function generatePDF({ nome, empresa, roadmapKey, priorities, total, maxTotal, profile }) {
-  return new Promise((resolve, reject) => {
-    const t = TEMPLATES[roadmapKey]
-    if (!t) return reject(new Error('Invalid roadmapKey'))
+async function fetchLogo() {
+  try {
+    const res = await fetch('https://joinreminder.com/logotipo-editado.png')
+    if (res.ok) return Buffer.from(await res.arrayBuffer())
+  } catch (_) {}
+  return null
+}
 
-    const level = total <= 6 ? 'low' : total <= 13 ? 'mid' : 'high'
-    const date = new Date().toLocaleDateString('pt-PT')
+/* ── Geração do PDF ── */
+async function generatePDF({ nome, empresa, roadmapKey, priorities, total, maxTotal, profile }) {
+  const t = TEMPLATES[roadmapKey]
+  if (!t) throw new Error('Tipo de roadmap inválido')
+
+  const logoBuffer = await fetchLogo()
+  const level = total <= 6 ? 'low' : total <= 13 ? 'mid' : 'high'
+  const date = new Date().toLocaleDateString('pt-PT')
+
+  return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ size: 'A4', margins: { top: 50, bottom: 50, left: 50, right: 50 } })
     const chunks = []
-
     doc.on('data', c => chunks.push(c))
     doc.on('end', () => resolve(Buffer.concat(chunks)))
     doc.on('error', reject)
 
-    const W = 495 // usable width (595 - 50 - 50)
-    const pageBottom = 791 // 841 - 50
+    const W = 495
+    const pageBottom = 791
 
     function checkPageBreak(needed) {
-      if (doc.y + needed > pageBottom) {
-        doc.addPage()
-        return true
-      }
+      if (doc.y + needed > pageBottom) { doc.addPage(); return true }
       return false
     }
-
     function sectionLabel(text) {
       doc.fontSize(9).font('Helvetica-Bold').fillColor(LIGHT_GRAY)
       doc.text(text.toUpperCase(), { characterSpacing: 1.2 })
       doc.moveDown(0.6)
     }
-
     function drawHRule() {
       const y = doc.y
       doc.moveTo(50, y).lineTo(545, y).strokeColor([220, 220, 220]).lineWidth(0.5).stroke()
@@ -140,14 +144,21 @@ function generatePDF({ nome, empresa, roadmapKey, priorities, total, maxTotal, p
     }
 
     // ═══════════════════════════════════════
-    // COVER HEADER
+    // CABEÇALHO
     // ═══════════════════════════════════════
     doc.rect(0, 0, 595, 130).fill([6, 16, 42])
-    doc.fontSize(11).font('Helvetica-Bold').fillColor(BLUE).text('Reminder AI', 50, 35)
-    doc.fontSize(9).font('Helvetica').fillColor([144, 200, 255]).text('Lead Conversion', 50, 50)
+
+    let logoX = 50
+    if (logoBuffer) {
+      try {
+        doc.image(logoBuffer, 50, 30, { width: 24 })
+        logoX = 80
+      } catch (_) { logoX = 50 }
+    }
+    doc.fontSize(12).font('Helvetica-Bold').fillColor(BLUE).text('Reminder AI', logoX, 33)
+    doc.fontSize(9).font('Helvetica').fillColor([144, 200, 255]).text('Conversão de Leads', logoX, 48)
     doc.fontSize(22).font('Helvetica-Bold').fillColor(WHITE).text('Roadmap Personalizado de Conversão', 50, 75, { width: W })
     doc.fontSize(11).font('Helvetica').fillColor([144, 200, 255]).text(`${empresa}  ·  ${date}`, 50, 105)
-
     doc.y = 155
 
     // ═══════════════════════════════════════
@@ -169,7 +180,7 @@ function generatePDF({ nome, empresa, roadmapKey, priorities, total, maxTotal, p
     }
 
     doc.fontSize(9).font('Helvetica').fillColor(LIGHT_GRAY)
-      .text(`Score de oportunidade: `, { continued: true })
+      .text('Pontuação de oportunidade: ', { continued: true })
     doc.font('Helvetica-Bold').fillColor(BLUE).text(`${total}/${maxTotal}`)
     doc.moveDown(1.2)
     drawHRule()
@@ -184,7 +195,6 @@ function generatePDF({ nome, empresa, roadmapKey, priorities, total, maxTotal, p
     doc.fontSize(10).font('Helvetica').fillColor(GRAY).text(t.problem, { width: W, lineGap: 3 })
     doc.moveDown(0.8)
 
-    // Insight box
     const insightY = doc.y
     doc.rect(50, insightY, W, 70).fillAndStroke([240, 246, 255], [212, 229, 255])
     doc.fontSize(24).font('Helvetica-Bold').fillColor(BLUE).text(t.insight.stat, 65, insightY + 12, { width: 80 })
@@ -205,7 +215,6 @@ function generatePDF({ nome, empresa, roadmapKey, priorities, total, maxTotal, p
     ;(priorities || []).forEach((key, i) => {
       const y = doc.y
       const isFirst = i === 0
-      // Number circle
       doc.rect(50, y - 1, 20, 20).fillAndStroke(
         isFirst ? BLUE : [240, 240, 240],
         isFirst ? BLUE : [220, 220, 220]
@@ -229,7 +238,7 @@ function generatePDF({ nome, empresa, roadmapKey, priorities, total, maxTotal, p
     doc.fontSize(10).font('Helvetica').fillColor(GRAY).text(t.subtitle, { width: W, lineGap: 3 })
     doc.moveDown(0.8)
 
-    // Process flow - horizontal boxes
+    // Processo recomendado
     doc.fontSize(8).font('Helvetica-Bold').fillColor(LIGHT_GRAY).text('PROCESSO RECOMENDADO', { characterSpacing: 1 })
     doc.moveDown(0.5)
 
@@ -246,7 +255,6 @@ function generatePDF({ nome, empresa, roadmapKey, priorities, total, maxTotal, p
       doc.fontSize(7).font('Helvetica-Bold')
         .fillColor(isEnd ? WHITE : DARK)
         .text(step, x + 3, flowY + 9, { width: stepW - 6, align: 'center' })
-      // Arrow
       if (i < t.flow.length - 1) {
         const ax = x + stepW + 1
         doc.moveTo(ax, flowY + boxH / 2).lineTo(ax + 3, flowY + boxH / 2)
@@ -255,28 +263,30 @@ function generatePDF({ nome, empresa, roadmapKey, priorities, total, maxTotal, p
     })
     doc.y = flowY + boxH + 20
 
-    // Actions
-    doc.fontSize(8).font('Helvetica-Bold').fillColor(LIGHT_GRAY).text('AÇÕES RECOMENDADAS', { characterSpacing: 1 })
+    // Ações recomendadas
+    doc.fontSize(8).font('Helvetica-Bold').fillColor(LIGHT_GRAY)
+    doc.text('AÇÕES RECOMENDADAS', 50, doc.y, { characterSpacing: 1, width: W })
     doc.moveDown(0.5)
 
     t.actions.forEach((action, i) => {
       checkPageBreak(50)
       const y = doc.y
       const isFirst = i === 0
-      // Left border accent
       doc.rect(50, y, 3, 36).fill(isFirst ? BLUE : [220, 220, 220])
-      doc.fontSize(10).font('Helvetica-Bold').fillColor(DARK).text(`${i + 1}. ${action.title}`, 62, y, { width: W - 15 })
-      doc.fontSize(9).font('Helvetica').fillColor(GRAY).text(action.desc, 62, doc.y + 1, { width: W - 15, lineGap: 2 })
+      doc.fontSize(10).font('Helvetica-Bold').fillColor(DARK)
+        .text(`${i + 1}. ${action.title}`, 62, y, { width: W - 15 })
+      doc.fontSize(9).font('Helvetica').fillColor(GRAY)
+        .text(action.desc, 62, doc.y + 1, { width: W - 15, lineGap: 2 })
       doc.y = Math.max(doc.y, y + 38) + 6
     })
     doc.moveDown(0.6)
 
-    // Metrics table
+    // Métricas-alvo
     checkPageBreak(100)
-    doc.fontSize(8).font('Helvetica-Bold').fillColor(LIGHT_GRAY).text('MÉTRICAS-ALVO', { characterSpacing: 1 })
+    doc.fontSize(8).font('Helvetica-Bold').fillColor(LIGHT_GRAY)
+    doc.text('MÉTRICAS-ALVO', 50, doc.y, { characterSpacing: 1, width: W })
     doc.moveDown(0.4)
 
-    // Table header
     let ty = doc.y
     doc.fontSize(8).font('Helvetica-Bold').fillColor(LIGHT_GRAY)
     doc.text('Métrica', 50, ty, { width: 250 })
@@ -310,17 +320,17 @@ function generatePDF({ nome, empresa, roadmapKey, priorities, total, maxTotal, p
     doc.fontSize(9).font('Helvetica').fillColor(GRAY)
       .text('O Roadmap mostra o que melhorar. O 30-Day Pilot implementa e testa com a sua equipa e os seus leads reais, sem risco.', 65, nextY + 35, { width: W - 30, lineGap: 2 })
     doc.fontSize(9).font('Helvetica-Bold').fillColor(BLUE)
-      .text('Agendar conversa de 15 min → calendly.com/remindr/diagnostico', 65, nextY + 60, { width: W - 30 })
+      .text('Agendar conversa de 15 min -> calendly.com/remindr/diagnostico', 65, nextY + 60, { width: W - 30 })
     doc.y = nextY + 95
 
     // ═══════════════════════════════════════
-    // FOOTER
+    // RODAPÉ
     // ═══════════════════════════════════════
     doc.moveDown(2)
     doc.moveTo(50, doc.y).lineTo(545, doc.y).strokeColor([220, 220, 220]).lineWidth(0.5).stroke()
     doc.moveDown(0.5)
     doc.fontSize(8).font('Helvetica').fillColor(LIGHT_GRAY)
-      .text('Reminder AI  ·  Lead Conversion  ·  equipa@joinreminder.com  ·  joinreminder.com', { align: 'center', width: W })
+      .text('Reminder AI  ·  Conversão de Leads  ·  equipa@joinreminder.com  ·  joinreminder.com', { align: 'center', width: W })
     doc.fontSize(7).fillColor([200, 200, 200])
       .text(`Gerado automaticamente em ${date} para ${empresa}. Este documento é confidencial.`, { align: 'center', width: W })
 
@@ -331,6 +341,7 @@ function generatePDF({ nome, empresa, roadmapKey, priorities, total, maxTotal, p
 /* ── Email HTML ── */
 function buildEmailHtml(nome, empresa) {
   const firstName = (nome || 'Participante').split(' ')[0]
+  const safeEmpresa = (empresa || 'Empresa').replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '-')
   return `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
 <body style="margin:0;padding:0;background:#f5f5f5;font-family:Helvetica,Arial,sans-serif;">
@@ -338,14 +349,21 @@ function buildEmailHtml(nome, empresa) {
 <tr><td align="center">
 <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
 
-<!-- Header -->
+<!-- Cabeçalho -->
 <tr><td style="background:#06102a;padding:32px 40px;">
-  <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#217FF1;">Reminder AI</p>
-  <h1 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#fff;line-height:1.3;">O seu Roadmap de Conversão</h1>
+  <table cellpadding="0" cellspacing="0"><tr>
+    <td style="padding-right:12px;vertical-align:middle;">
+      <img src="https://joinreminder.com/logotipo-editado.png" alt="Reminder AI" width="28" height="28" style="display:block;border:0;" />
+    </td>
+    <td style="vertical-align:middle;">
+      <p style="margin:0;font-size:14px;font-weight:700;color:#217FF1;">Reminder AI</p>
+    </td>
+  </tr></table>
+  <h1 style="margin:16px 0 8px;font-size:22px;font-weight:700;color:#fff;line-height:1.3;">O seu Roadmap de Conversão</h1>
   <p style="margin:0;font-size:14px;color:rgba(255,255,255,0.5);">${empresa} · ${new Date().toLocaleDateString('pt-PT')}</p>
 </td></tr>
 
-<!-- Body -->
+<!-- Corpo -->
 <tr><td style="padding:32px 40px;">
   <p style="margin:0 0 20px;font-size:15px;color:#333;line-height:1.6;">
     Olá ${firstName},
@@ -378,7 +396,7 @@ function buildEmailHtml(nome, empresa) {
   <div style="background:#f0f6ff;border-radius:12px;padding:20px 24px;border:1px solid #d4e5ff;margin-bottom:24px;">
     <p style="margin:0 0 4px;font-size:12px;font-weight:700;color:#999;letter-spacing:0.05em;">ANEXO</p>
     <p style="margin:0;font-size:14px;color:#0a1c42;font-weight:700;">
-      📎 Roadmap-Conversao-${empresa.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '-')}.pdf
+      Roadmap-Conversao-${safeEmpresa}.pdf
     </p>
     <p style="margin:6px 0 0;font-size:13px;color:#666;">
       Abra o ficheiro em anexo para ver o roadmap completo com todas as recomendações.
@@ -392,18 +410,23 @@ function buildEmailHtml(nome, empresa) {
     <p style="margin:0 0 8px;font-size:15px;font-weight:700;color:#0a1c42;">Quer implementar este Roadmap?</p>
     <p style="margin:0 0 20px;font-size:14px;color:#666;line-height:1.6;">Testamos o processo com os seus leads reais durante 30 dias, sem risco.</p>
     <a href="https://calendly.com/remindr/diagnostico" style="display:inline-block;background:#217FF1;color:#fff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:10px;text-decoration:none;">
-      AGENDAR CONVERSA DE 15 MIN →
+      AGENDAR CONVERSA DE 15 MIN
     </a>
     <p style="margin:12px 0 0;font-size:12px;color:#999;">Sem compromisso</p>
   </div>
 </td></tr>
 
-<!-- Footer -->
+<!-- Rodapé -->
 <tr><td style="padding:24px 40px;border-top:1px solid #eee;">
-  <p style="margin:0;font-size:12px;color:#999;text-align:center;">
-    Reminder AI · Lead Conversion<br>
-    equipa@joinreminder.com · joinreminder.com
-  </p>
+  <table cellpadding="0" cellspacing="0" width="100%"><tr>
+    <td style="vertical-align:middle;">
+      <img src="https://joinreminder.com/logotipo-editado.png" alt="" width="18" height="18" style="display:inline-block;vertical-align:middle;border:0;margin-right:6px;" />
+      <span style="font-size:11px;color:#999;vertical-align:middle;">Reminder AI · Conversão de Leads</span>
+    </td>
+    <td style="text-align:right;">
+      <span style="font-size:11px;color:#999;">equipa@joinreminder.com</span>
+    </td>
+  </tr></table>
 </td></tr>
 
 </table>
@@ -430,7 +453,6 @@ export default async function handler(req, res) {
   if (!email || !roadmapKey) return res.status(400).json({ error: 'email and roadmapKey required' })
 
   try {
-    // Generate PDF
     const pdfBuffer = await generatePDF({
       nome: nome || 'Participante',
       empresa: empresa || 'A sua empresa',
@@ -443,7 +465,6 @@ export default async function handler(req, res) {
 
     const filename = `Roadmap-Conversao-${(empresa || 'Empresa').replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '-')}.pdf`
 
-    // Send email with PDF attached
     const resend = new Resend(apiKey)
     const html = buildEmailHtml(nome || 'Participante', empresa || 'A sua empresa')
 
@@ -452,10 +473,7 @@ export default async function handler(req, res) {
       to: email,
       subject: `O seu Roadmap de Conversão — ${empresa || 'Resultados'}`,
       html,
-      attachments: [{
-        filename,
-        content: pdfBuffer,
-      }],
+      attachments: [{ filename, content: pdfBuffer }],
     })
 
     if (error) {

@@ -49,7 +49,7 @@ export const ROADMAP_TEMPLATES = {
     metrics: [
       { label: 'Tempo médio de resposta', current: '> 30 min', target: '< 5 min' },
       { label: 'Taxa de contacto no mesmo dia', current: '~60%', target: '> 95%' },
-      { label: 'Conversão lead \u2192 conversa', current: 'Baseline', target: '+30-50%' },
+      { label: 'Conversão lead \u2192 conversa', current: 'Variável', target: '+30-50%' },
     ],
   },
 
@@ -106,7 +106,7 @@ export const ROADMAP_TEMPLATES = {
         desc: 'Budget, autoridade de decisão, necessidade real, timeline, e fit com o seu perfil ideal de cliente.',
       },
       {
-        title: 'Scorecard simples',
+        title: 'Avaliação simples',
         desc: 'Crie um formulário de 5 perguntas que qualquer membro da equipa pode usar para avaliar um lead em menos de 10 minutos.',
       },
       {
@@ -114,7 +114,7 @@ export const ROADMAP_TEMPLATES = {
         desc: 'Nenhuma reunião é marcada sem o lead passar pelo processo de qualificação. Isto protege o tempo da equipa.',
       },
       {
-        title: 'Perguntas de discovery',
+        title: 'Perguntas de descoberta',
         desc: 'Prepare um guião com as perguntas certas para identificar fit rapidamente, sem parecer um interrogatório.',
       },
       {
@@ -123,7 +123,7 @@ export const ROADMAP_TEMPLATES = {
       },
     ],
     metrics: [
-      { label: 'Taxa de fecho (leads qualificados)', current: 'Baseline', target: '> 30%' },
+      { label: 'Taxa de fecho (leads qualificados)', current: 'Variável', target: '> 30%' },
       { label: 'Reuniões sem resultado', current: '~50-60%', target: '< 20%' },
       { label: 'Tempo de qualificação', current: 'Variável', target: '< 10 min' },
     ],
@@ -161,8 +161,8 @@ export const ROADMAP_TEMPLATES = {
       },
     ],
     metrics: [
-      { label: 'Taxa de agendamento', current: 'Baseline', target: '> 40%' },
-      { label: 'No-show rate', current: '~25-30%', target: '< 15%' },
+      { label: 'Taxa de agendamento', current: 'Variável', target: '> 40%' },
+      { label: 'Taxa de no-show', current: '~25-30%', target: '< 15%' },
       { label: 'Tempo até reunião', current: 'Variável', target: '< 72 horas' },
     ],
   },

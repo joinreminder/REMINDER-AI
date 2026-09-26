@@ -9,9 +9,9 @@ import {
 
 const ROADMAP_FLOWS = {
   response:      ['Lead entra', 'Notificação imediata', 'Contacto < 5 min', 'Qualificação rápida'],
-  followup:      ['Primeiro contacto', 'Follow-up 1 (Dia 2)', 'Follow-up 2 (Dia 5)', 'Follow-up 3 (Dia 9)', 'Breakup (Dia 14)'],
-  qualification: ['Contacto', 'Discovery', 'Scorecard', 'Qualified / Not Qualified', 'Reunião'],
-  leadToMeeting: ['Lead qualificado', 'Proposta de reunião', 'Agendamento online', 'Confirmação + Reminder', 'Reunião'],
+  followup:      ['Primeiro contacto', 'Follow-up 1 (Dia 2)', 'Follow-up 2 (Dia 5)', 'Follow-up 3 (Dia 9)', 'Último contacto (Dia 14)'],
+  qualification: ['Contacto', 'Descoberta', 'Avaliação', 'Qualificado / Não Qualificado', 'Reunião'],
+  leadToMeeting: ['Lead qualificado', 'Proposta de reunião', 'Agendamento online', 'Confirmação + Lembrete', 'Reunião'],
 }
 
 const BLUE = '#217FF1'
@@ -170,7 +170,7 @@ function PdfContent({ template, profile, scoring, empresa }) {
 
       {/* Footer */}
       <div style={{ marginTop: '32px', paddingTop: '16px', borderTop: '1px solid #eee', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <p style={{ fontSize: '11px', color: '#aaa', margin: 0 }}>Reminder AI {'\u00B7'} Lead Conversion</p>
+        <p style={{ fontSize: '11px', color: '#aaa', margin: 0 }}>Reminder AI {'\u00B7'} Conversão de Leads</p>
         <p style={{ fontSize: '11px', color: '#aaa', margin: 0 }}>equipa@joinreminder.com</p>
       </div>
     </div>
