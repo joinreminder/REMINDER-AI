@@ -665,7 +665,7 @@ export default function DiagnosticoPage() {
           </div>
 
           <p style={{ textAlign: 'center', fontSize: '13px', color: 'var(--text-muted)', marginTop: '20px' }}>
-            Grátis \u00B7 Sem compromisso \u00B7 Resultados instantâneos
+            Grátis · Sem compromisso · Resultados instantâneos
           </p>
 
           </div>{/* end form-col */}
