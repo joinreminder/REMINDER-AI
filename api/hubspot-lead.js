@@ -16,6 +16,13 @@ export default async function handler(req, res) {
   const firstname = nameParts[0] || ''
   const lastname = nameParts.slice(1).join(' ') || ''
 
+  const ROADMAP_TYPE_MAP = {
+    response: 'RESPONSE',
+    followup: 'FOLLOW_UP',
+    qualification: 'QUALIFICATION',
+    leadToMeeting: 'APPOINTMENT',
+  }
+
   const properties = {
     firstname,
     lastname,
@@ -25,7 +32,7 @@ export default async function handler(req, res) {
     website: lead.website || '',
     industry: lead.setor || '',
     lifecyclestage: 'lead',
-    roadmap_type: scoring?.roadmapKey || '',
+    roadmap_type: ROADMAP_TYPE_MAP[scoring?.roadmapKey] || '',
     roadmap_score: scoring?.total ?? 0,
   }
 
