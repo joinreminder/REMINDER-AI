@@ -161,10 +161,10 @@ function PdfContent({ template, profile, scoring, empresa }) {
       {/* 05 — Próximo Passo */}
       <div style={{ background: '#f0f6ff', borderRadius: '12px', padding: '20px 24px', border: '1px solid #d4e5ff' }}>
         <p style={label}>05 — Próximo Passo</p>
-        <p style={{ ...h('', 15) }}>Testar este processo com leads reais durante 30 dias.</p>
-        <p style={p}>O Roadmap mostra o que melhorar. O 30-Day Pilot implementa e testa com a sua equipa e os seus leads reais, sem risco.</p>
+        <p style={{ ...h('', 15) }}>Queremos corrigir este gargalo gratuitamente durante 14 dias.</p>
+        <p style={p}>Identificámos o problema. Agora queremos corrigi-lo — sem custo, sem compromisso. Durante 14 dias, implementamos e testamos as correções com os seus leads reais.</p>
         <p style={{ fontSize: '13px', color: BLUE, fontWeight: 700, margin: '8px 0 0' }}>
-          {'\u2192'} joinreminder.com
+          Conversa de 15 min — joinreminder.com
         </p>
       </div>
 
@@ -219,6 +219,15 @@ export default function RoadmapResult({ scoring, profile, empresa, values }) {
       {/* ── Header ── */}
       <div className="raudit__header" style={{ paddingTop: 'calc(var(--nav-h, 72px) + 40px)' }}>
         <div className="r-container" style={{ textAlign: 'center' }}>
+          {/* Bird logo */}
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
+            <img src="/logotipo-editado.png" alt="" style={{ width: '32px', height: 'auto', filter: 'brightness(0) invert(1)', opacity: 0.9 }} />
+            <span style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+              <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '16px', color: '#fff', letterSpacing: '-0.02em' }}>Reminder</span>
+              <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 600, fontSize: '14px', color: '#5aabff' }}> AI</span>
+            </span>
+          </div>
+
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: '6px',
             background: 'rgba(74,222,128,0.15)', border: '1px solid rgba(74,222,128,0.3)',
@@ -425,17 +434,20 @@ export default function RoadmapResult({ scoring, profile, empresa, values }) {
           </Card>
 
           {/* 05 — Próximo Passo */}
-          <Card style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <Card style={{ background: 'rgba(33,127,241,0.1)', border: '1.5px solid rgba(33,127,241,0.25)' }}>
             <SectionLabel>05 — Próximo Passo</SectionLabel>
-            <p style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '16px', color: '#fff', margin: '0 0 8px' }}>
-              Testar este processo com leads reais durante 30 dias.
+            <p style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '18px', color: '#fff', margin: '0 0 12px' }}>
+              Queremos corrigir este gargalo gratuitamente durante 14 dias.
             </p>
-            <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, margin: 0 }}>
-              O Roadmap mostra <em>o que</em> melhorar. O 30-Day Pilot implementa e testa com a sua equipa e os seus leads reais, sem risco.
+            <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, margin: '0 0 8px' }}>
+              Identificámos o problema. Agora queremos corrigi-lo — sem custo, sem compromisso. Durante 14 dias, a nossa equipa implementa e testa as correções com os seus leads reais.
+            </p>
+            <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)', lineHeight: 1.55, margin: 0 }}>
+              Só precisamos de uma conversa de 15 minutos para perceber como ajudar. Se fizer sentido, avançamos.
             </p>
           </Card>
 
-          {/* CTA — 30-Day Pilot */}
+          {/* CTA — Free Fix 14 dias */}
           <div style={{ textAlign: 'center', marginBottom: '24px' }}>
             <a
               href="https://calendly.com/remindr/diagnostico"
@@ -452,10 +464,10 @@ export default function RoadmapResult({ scoring, profile, empresa, values }) {
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 14px 40px rgba(33,127,241,0.55)' }}
               onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 8px 32px rgba(33,127,241,0.45)' }}
             >
-              CANDIDATAR-ME AO 30-DAY PILOT {'\u2192'}
+              QUERO O FREE FIX DE 14 DIAS {'\u2192'}
             </a>
             <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)', marginTop: '12px' }}>
-              Conversa de 15 min {'\u00B7'} Sem compromisso
+              Conversa de 15 min {'\u00B7'} Sem compromisso {'\u00B7'} Sem custos
             </p>
           </div>
 
