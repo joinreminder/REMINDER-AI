@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
+import RoadmapResult from '../components/RoadmapResult'
 
 /* ── Form Data ── */
 const SETORES = [
@@ -314,6 +315,23 @@ export default function DiagnosticoPage() {
       })
     } catch (_) {}
 
+    // 4. Send roadmap email via Resend
+    try {
+      fetch('/api/send-roadmap', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nome:       values.nome,
+          email:      values.email,
+          empresa:    values.empresa,
+          roadmapKey: scoring.roadmapKey,
+          priorities: scoring.priorities,
+          total:      scoring.total,
+          maxTotal:   scoring.maxTotal,
+        }),
+      })
+    } catch (_) {}
+
     setResult(scoring)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -322,188 +340,22 @@ export default function DiagnosticoPage() {
      RESULTS PAGE
      ═══════════════════════════════════════════ */
   if (result) {
-    const roadmap = ROADMAP_TYPES[result.roadmapKey]
-    const flow = ROADMAP_FLOWS[result.roadmapKey]
+    const profileData = [
+      ['Leads/mês', LEADS_MES.find(l => l.id === values.leads_mes)?.label],
+      ['Valor médio', VALOR_CLIENTE.find(v => v.id === values.valor_cliente)?.label],
+      ['Resposta', TEMPO_RESPOSTA.find(t => t.id === values.tempo_resposta)?.label],
+      ['Follow-up', FOLLOWUP.find(f => f.id === values.followup)?.label],
+      ['Qualificação', QUALIFICACAO.find(q => q.id === values.qualificacao)?.label],
+      ['Taxa conversão', TAXA_CONVERSAO.find(t => t.id === values.taxa_conversao)?.label],
+    ]
 
     return (
-      <div className="raudit" style={{ background: '#06102a', minHeight: '100vh' }}>
-        <div className="raudit__header" style={{ paddingTop: 'calc(var(--nav-h, 72px) + 40px)' }}>
-          <div className="r-container" style={{ textAlign: 'center' }}>
-            <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: '6px',
-              background: 'rgba(74,222,128,0.15)', border: '1px solid rgba(74,222,128,0.3)',
-              borderRadius: '100px', padding: '5px 16px', marginBottom: '20px',
-            }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', animation: 'hero-pulse 2s ease-in-out infinite' }} />
-              <span style={{ fontSize: '11px', fontWeight: 700, color: '#4ade80', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                Roadmap pronto
-              </span>
-            </div>
-
-            <h2 className="r-h2" style={{ color: '#fff', marginBottom: '8px' }}>
-              O seu Roadmap está pronto.
-            </h2>
-          </div>
-        </div>
-
-        <div className="raudit__body" style={{ paddingBottom: '80px' }}>
-          <div style={{ maxWidth: '640px', margin: '0 auto', padding: '0 20px' }}>
-
-            {/* Main bottleneck */}
-            <div style={{
-              background: 'rgba(33,127,241,0.1)', border: '1.5px solid rgba(33,127,241,0.25)',
-              borderRadius: '20px', padding: '32px', marginBottom: '28px', textAlign: 'center',
-            }}>
-              <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 12px' }}>
-                O seu principal ponto de oportunidade
-              </p>
-              <h3 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '28px', color: '#5aabff', margin: '0 0 16px', letterSpacing: '-0.02em' }}>
-                {roadmap.name}
-              </h3>
-              <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, margin: 0 }}>
-                {roadmap.desc}
-              </p>
-            </div>
-
-            {/* Recommended flow */}
-            <div style={{
-              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-              borderRadius: '16px', padding: '24px 28px', marginBottom: '28px',
-            }}>
-              <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 16px' }}>
-                Processo recomendado
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0' }}>
-                {flow.map((s, i) => (
-                  <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <div style={{
-                      padding: '10px 24px',
-                      background: i === 0 || i === flow.length - 1 ? 'rgba(33,127,241,0.2)' : 'rgba(255,255,255,0.06)',
-                      border: `1px solid ${i === 0 || i === flow.length - 1 ? 'rgba(33,127,241,0.4)' : 'rgba(255,255,255,0.1)'}`,
-                      borderRadius: '10px', width: '100%', textAlign: 'center',
-                    }}>
-                      <span style={{
-                        fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '14px',
-                        color: i === 0 || i === flow.length - 1 ? '#5aabff' : 'rgba(255,255,255,0.7)',
-                      }}>
-                        {s}
-                      </span>
-                    </div>
-                    {i < flow.length - 1 && (
-                      <svg width="12" height="20" viewBox="0 0 12 20" fill="none" style={{ margin: '4px 0' }}>
-                        <path d="M6 0v16M2 12l4 4 4-4" stroke="rgba(33,127,241,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Profile summary */}
-            <div style={{
-              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-              borderRadius: '16px', padding: '24px 28px', marginBottom: '28px',
-            }}>
-              <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 16px' }}>
-                O seu perfil
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {[
-                  ['Leads/mês', LEADS_MES.find(l => l.id === values.leads_mes)?.label],
-                  ['Valor médio', VALOR_CLIENTE.find(v => v.id === values.valor_cliente)?.label],
-                  ['Resposta', TEMPO_RESPOSTA.find(t => t.id === values.tempo_resposta)?.label],
-                  ['Follow-up', FOLLOWUP.find(f => f.id === values.followup)?.label],
-                  ['Qualificação', QUALIFICACAO.find(q => q.id === values.qualificacao)?.label],
-                ].map(([label, value], i) => (
-                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: i < 4 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
-                    <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.45)', fontFamily: 'Sora, sans-serif' }}>{label}</span>
-                    <span style={{ fontSize: '14px', fontWeight: 600, color: 'rgba(255,255,255,0.85)', fontFamily: 'Sora, sans-serif' }}>{value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Priorities */}
-            <div style={{
-              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-              borderRadius: '16px', padding: '24px 28px', marginBottom: '28px',
-            }}>
-              <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 16px' }}>
-                As suas prioridades
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {result.priorities.map((key, i) => (
-                  <div key={key} style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-                    <span style={{
-                      width: '28px', height: '28px', borderRadius: '8px', flexShrink: 0,
-                      background: i === 0 ? 'rgba(33,127,241,0.2)' : 'rgba(255,255,255,0.06)',
-                      border: `1px solid ${i === 0 ? 'rgba(33,127,241,0.35)' : 'rgba(255,255,255,0.1)'}`,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '12px', fontWeight: 700, color: i === 0 ? '#5aabff' : 'rgba(255,255,255,0.5)',
-                      fontFamily: 'Sora, sans-serif',
-                    }}>
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <span style={{ fontSize: '14px', color: i === 0 ? '#fff' : 'rgba(255,255,255,0.65)', fontWeight: i === 0 ? 700 : 400, lineHeight: 1.5 }}>
-                      {PRIORITY_LABELS[key]}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Next step */}
-            <div style={{
-              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-              borderRadius: '16px', padding: '24px 28px', marginBottom: '32px',
-            }}>
-              <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, margin: '0 0 4px' }}>
-                <strong style={{ color: '#fff' }}>E depois:</strong>
-              </p>
-              <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, margin: 0 }}>
-                O próximo passo recomendado: testar este processo com leads reais durante 30 dias.
-              </p>
-            </div>
-
-            {/* CTA — 30-Day Pilot */}
-            <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-              <a
-                href="https://calendly.com/remindr/diagnostico"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '8px',
-                  background: '#217FF1', color: '#fff',
-                  fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '16px',
-                  padding: '18px 40px', borderRadius: '14px', textDecoration: 'none',
-                  boxShadow: '0 8px 32px rgba(33,127,241,0.45)',
-                  transition: 'transform 0.18s ease, box-shadow 0.18s ease',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 14px 40px rgba(33,127,241,0.55)' }}
-                onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 8px 32px rgba(33,127,241,0.45)' }}
-              >
-                CANDIDATAR-ME AO 30-DAY PILOT \u2192
-              </a>
-              <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)', marginTop: '12px' }}>
-                Conversa de 15 min \u00B7 Sem compromisso
-              </p>
-            </div>
-
-            <div style={{ textAlign: 'center' }}>
-              <a href="/" style={{
-                fontSize: '13px', color: 'rgba(255,255,255,0.4)', textDecoration: 'none',
-                fontFamily: 'Sora, sans-serif', transition: 'color 0.15s',
-              }}
-                onMouseEnter={e => e.currentTarget.style.color = '#fff'}
-                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.4)'}
-              >
-                \u2190 Voltar ao início
-              </a>
-            </div>
-
-          </div>
-        </div>
-      </div>
+      <RoadmapResult
+        scoring={result}
+        profile={profileData}
+        empresa={values.empresa}
+        values={values}
+      />
     )
   }
 

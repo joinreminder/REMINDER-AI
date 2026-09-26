@@ -209,6 +209,11 @@ app.post('/api/hubspot-lead', async (req, res) => {
   return hubspotHandler(req, res)
 })
 
+app.post('/api/send-roadmap', async (req, res) => {
+  const { default: sendRoadmapHandler } = await import('./send-roadmap.js')
+  return sendRoadmapHandler(req, res)
+})
+
 app.post('/api/chat', async (req, res) => {
   const { messages } = req.body
   if (!messages || !Array.isArray(messages)) {
