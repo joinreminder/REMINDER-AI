@@ -537,7 +537,16 @@ body {
 .raudit { min-height: 100vh; background: #F3F6FB; padding-top: var(--nav-h); }
 .raudit__header { padding: 60px 0 48px; text-align: center; background: #fff; border-bottom: 1px solid #e8edf5; }
 .raudit__header .r-h2 { margin-bottom: 12px; }
-.raudit__body { background: #F3F6FB; padding: 64px 0; }
+.raudit__body { background: #F3F6FB; padding: 48px 0; }
+
+/* Two-column layout: preview (left, sticky) + form (right) */
+.raudit__split { display: flex; gap: 32px; max-width: 1060px; margin: 0 auto; padding: 0 24px; align-items: flex-start; }
+.raudit__preview { position: sticky; top: calc(var(--nav-h, 72px) + 24px); width: 320px; flex-shrink: 0; }
+.raudit__form-col { flex: 1; min-width: 0; }
+@media (max-width: 900px) {
+  .raudit__split { flex-direction: column; max-width: 660px; gap: 20px; }
+  .raudit__preview { position: static; width: 100%; }
+}
 .raudit__form-wrap { max-width: 660px; margin: 0 auto; padding: 0 24px; }
 
 .raudit__progress-bar-wrap { margin-bottom: 32px; }

@@ -349,12 +349,17 @@ export default function DiagnosticoPage() {
      ═══════════════════════════════════════════ */
   if (result) {
     const profileData = [
+      ['Empresa', values.empresa],
+      ['Setor', values.setor],
       ['Leads/mês', LEADS_MES.find(l => l.id === values.leads_mes)?.label],
+      ['Fontes de leads', (values.fontes || []).map(id => FONTES_LEADS.find(f => f.id === id)?.label).filter(Boolean).join(', ')],
       ['Valor médio', VALOR_CLIENTE.find(v => v.id === values.valor_cliente)?.label],
-      ['Resposta', TEMPO_RESPOSTA.find(t => t.id === values.tempo_resposta)?.label],
+      ['Tempo de resposta', TEMPO_RESPOSTA.find(t => t.id === values.tempo_resposta)?.label],
+      ['Responsável', QUEM_CONTACTA.find(q => q.id === values.quem_contacta)?.label],
       ['Follow-up', FOLLOWUP.find(f => f.id === values.followup)?.label],
       ['Qualificação', QUALIFICACAO.find(q => q.id === values.qualificacao)?.label],
       ['Taxa conversão', TAXA_CONVERSAO.find(t => t.id === values.taxa_conversao)?.label],
+      ['Situação', SITUACAO.find(s => s.id === values.situacao)?.label],
     ]
 
     return (
@@ -377,6 +382,7 @@ export default function DiagnosticoPage() {
         borderBottom: '1px solid rgba(33,127,241,0.2)',
         position: 'relative',
         overflow: 'hidden',
+        padding: '36px 0 28px',
       }}>
         {/* Dot grid overlay */}
         <div style={{
@@ -384,32 +390,94 @@ export default function DiagnosticoPage() {
           backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)',
           backgroundSize: '28px 28px',
         }} />
-        {/* Glow */}
-        <div style={{
-          position: 'absolute', top: '-40%', left: '20%', width: '60%', height: '100%',
-          background: 'radial-gradient(ellipse, rgba(33,127,241,0.2) 0%, transparent 65%)',
-          filter: 'blur(60px)', pointerEvents: 'none',
-        }} />
         <div className="r-container" style={{ position: 'relative', zIndex: 1 }}>
           {/* Logo */}
-          <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', textDecoration: 'none', marginBottom: '28px' }}>
-            <img src="/logotipo-editado.png" alt="" style={{ width: '32px', height: 'auto', filter: 'brightness(0) invert(1)', opacity: 0.9 }} />
+          <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', textDecoration: 'none', marginBottom: '16px' }}>
+            <img src="/logotipo-editado.png" alt="" style={{ width: '28px', height: 'auto', filter: 'brightness(0) invert(1)', opacity: 0.9 }} />
             <span style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-              <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '16px', color: '#fff', letterSpacing: '-0.02em' }}>Reminder</span>
-              <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 600, fontSize: '14px', color: '#5aabff' }}> AI</span>
+              <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '15px', color: '#fff', letterSpacing: '-0.02em' }}>Reminder</span>
+              <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 600, fontSize: '13px', color: '#5aabff' }}> AI</span>
             </span>
           </a>
-          <h2 className="r-h2" style={{ marginBottom: '12px', color: '#fff' }}>
-            Roadmap Personalizado de Conversão <span style={{ color: '#5aabff' }}>— Grátis</span>
+          <h2 className="r-h2" style={{ marginBottom: '8px', color: '#fff', fontSize: '24px' }}>
+            Roadmap de Conversão <span style={{ color: '#5aabff' }}>— Grátis</span>
           </h2>
-          <p className="r-body" style={{ maxWidth: '520px', margin: '0 auto', color: 'rgba(255,255,255,0.5)' }}>
+          <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.5 }}>
             14 perguntas. Menos de 60 segundos. Resultados instantâneos.
           </p>
         </div>
       </div>
 
       <div className="raudit__body">
-        <div className="raudit__form-wrap">
+        <div className="raudit__split">
+
+          {/* ── LEFT: Sticky Roadmap Preview ── */}
+          <div className="raudit__preview">
+            <div style={{
+              background: '#fff', borderRadius: '16px', border: '1px solid #e0e7f0',
+              boxShadow: '0 4px 24px rgba(0,0,0,0.06)', overflow: 'hidden',
+            }}>
+              {/* Preview header */}
+              <div style={{ background: '#06102a', padding: '20px 24px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                  <img src="/logotipo-editado.png" alt="" style={{ width: '20px', height: 'auto', filter: 'brightness(0) invert(1)', opacity: 0.9 }} />
+                  <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '12px', color: '#5aabff' }}>Reminder AI</span>
+                </div>
+                <p style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '15px', color: '#fff', margin: 0, lineHeight: 1.3 }}>
+                  Roadmap Personalizado de Conversão
+                </p>
+              </div>
+              {/* Preview sections */}
+              <div style={{ padding: '20px 24px' }}>
+                <p style={{ fontSize: '10px', fontWeight: 700, color: '#999', letterSpacing: '0.08em', textTransform: 'uppercase', margin: '0 0 14px' }}>
+                  O que vai receber:
+                </p>
+                {[
+                  { n: '01', t: 'Perfil de Conversão', d: 'Visão geral do seu processo' },
+                  { n: '02', t: 'Principal Gargalo', d: 'A área com maior oportunidade' },
+                  { n: '03', t: 'Prioridades', d: 'O que corrigir primeiro' },
+                  { n: '04', t: 'Roadmap + Ações', d: 'Processo e ações concretas' },
+                  { n: '05', t: 'Próximo Passo', d: 'Free Fix gratuito de 14 dias' },
+                ].map((s, i) => (
+                  <div key={s.n} style={{
+                    display: 'flex', gap: '12px', alignItems: 'flex-start',
+                    padding: '10px 0',
+                    borderBottom: i < 4 ? '1px solid #f0f0f0' : 'none',
+                  }}>
+                    <span style={{
+                      width: '24px', height: '24px', borderRadius: '6px', flexShrink: 0,
+                      background: i === 0 ? '#217FF1' : '#f0f4fa',
+                      color: i === 0 ? '#fff' : '#666',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '10px', fontWeight: 700, fontFamily: 'Sora, sans-serif',
+                    }}>
+                      {s.n}
+                    </span>
+                    <div>
+                      <p style={{ fontSize: '13px', fontWeight: 700, color: '#0a1c42', margin: '0 0 1px' }}>{s.t}</p>
+                      <p style={{ fontSize: '11px', color: '#999', margin: 0, lineHeight: 1.4 }}>{s.d}</p>
+                    </div>
+                  </div>
+                ))}
+
+                {/* Free Fix CTA preview */}
+                <div style={{
+                  marginTop: '16px', background: '#f0f6ff', borderRadius: '10px',
+                  padding: '14px 16px', border: '1px solid #d4e5ff',
+                }}>
+                  <p style={{ fontSize: '12px', fontWeight: 700, color: '#217FF1', margin: '0 0 4px' }}>
+                    Free Fix — 14 Dias
+                  </p>
+                  <p style={{ fontSize: '11px', color: '#666', margin: 0, lineHeight: 1.4 }}>
+                    Corrigimos o principal gargalo gratuitamente. Sem custos, sem compromisso.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ── RIGHT: Form ── */}
+          <div className="raudit__form-col">
 
           {/* Progress */}
           <div className="raudit__progress-bar-wrap">
@@ -553,7 +621,7 @@ export default function DiagnosticoPage() {
                   </div>
                 </div>
                 <div className="raudit__field" style={{ marginTop: '28px' }}>
-                  <label>Se identificarmos uma oportunidade clara, estaria interessado em testar um processo durante 30 dias? <span style={{ color: 'var(--blue)' }}>*</span></label>
+                  <label>Se identificarmos o principal gargalo, gostaria que o corrigíssemos gratuitamente durante 14 dias? <span style={{ color: 'var(--blue)' }}>*</span></label>
                   <div className="raudit__card-grid raudit__card-grid--3">
                     {INTERESSE_PILOTO.map(ip => (
                       <button key={ip.id} type="button" className={`raudit__card-opt${values.interesse_piloto === ip.id ? ' is-selected' : ''}`} onClick={() => set('interesse_piloto', ip.id)}>
@@ -599,7 +667,9 @@ export default function DiagnosticoPage() {
           <p style={{ textAlign: 'center', fontSize: '13px', color: 'var(--text-muted)', marginTop: '20px' }}>
             Grátis \u00B7 Sem compromisso \u00B7 Resultados instantâneos
           </p>
-        </div>
+
+          </div>{/* end form-col */}
+        </div>{/* end split */}
       </div>
     </div>
   )

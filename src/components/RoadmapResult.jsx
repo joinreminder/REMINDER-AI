@@ -283,11 +283,18 @@ export default function RoadmapResult({ scoring, profile, empresa, values }) {
             <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, margin: '0 0 16px' }}>
               {PROFILE_SUMMARY[level]}
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.08em', textTransform: 'uppercase', margin: '0 0 12px' }}>
+              As suas respostas
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
               {profile.map(([label, value], i) => (
-                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: i < profile.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
-                  <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.45)', fontFamily: 'Sora, sans-serif' }}>{label}</span>
-                  <span style={{ fontSize: '14px', fontWeight: 600, color: 'rgba(255,255,255,0.85)', fontFamily: 'Sora, sans-serif' }}>{value}</span>
+                <div key={i} style={{
+                  display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px',
+                  padding: '10px 0',
+                  borderBottom: i < profile.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                }}>
+                  <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.45)', fontFamily: 'Sora, sans-serif', flexShrink: 0 }}>{label}</span>
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: 'rgba(255,255,255,0.85)', fontFamily: 'Sora, sans-serif', textAlign: 'right' }}>{value}</span>
                 </div>
               ))}
             </div>
