@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   ROADMAP_TEMPLATES,
   PROFILE_SUMMARY,
@@ -182,7 +182,43 @@ function PdfContent({ template, profile, scoring, empresa }) {
    ══════════════════════════════════════ */
 export default function RoadmapResult({ scoring, profile, empresa, values }) {
   const pdfRef = useRef(null)
+  const calendlyRef = useRef(null)
   const [downloading, setDownloading] = useState(false)
+  const [showCalendly, setShowCalendly] = useState(false)
+
+  // Load Calendly inline widget when user clicks "QUERO O FREE FIX"
+  useEffect(() => {
+    if (!showCalendly || !calendlyRef.current) return
+
+    // Scroll to the calendly section
+    setTimeout(() => {
+      calendlyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }, 100)
+
+    // Load Calendly script
+    const script = document.createElement('script')
+    script.src = 'https://assets.calendly.com/assets/external/widget.js'
+    script.async = true
+    script.onload = () => {
+      if (window.Calendly && calendlyRef.current) {
+        window.Calendly.initInlineWidget({
+          url: 'https://calendly.com/equipa-joinreminder/30min',
+          parentElement: calendlyRef.current,
+        })
+      }
+    }
+    document.head.appendChild(script)
+
+    // If script already loaded
+    if (window.Calendly) {
+      window.Calendly.initInlineWidget({
+        url: 'https://calendly.com/equipa-joinreminder/30min',
+        parentElement: calendlyRef.current,
+      })
+    }
+
+    return () => { script.remove() }
+  }, [showCalendly])
 
   const template = ROADMAP_TEMPLATES[scoring.roadmapKey]
   const flow = ROADMAP_FLOWS[scoring.roadmapKey]
@@ -454,32 +490,63 @@ export default function RoadmapResult({ scoring, profile, empresa, values }) {
             </p>
           </Card>
 
-          {/* CTA — Free Fix */}
-          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-            <a
-              href="https://calendly.com/remindr/diagnostico"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: '8px',
-                background: BLUE, color: '#fff',
-                fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '16px',
-                padding: '18px 40px', borderRadius: '14px', textDecoration: 'none',
-                boxShadow: '0 8px 32px rgba(33,127,241,0.45)',
-                transition: 'transform 0.18s ease, box-shadow 0.18s ease',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 14px 40px rgba(33,127,241,0.55)' }}
-              onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 8px 32px rgba(33,127,241,0.45)' }}
-            >
-              QUERO O FREE FIX {'\u2192'}
-            </a>
-            <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)', marginTop: '12px' }}>
-              Conversa de 15 min {'\u00B7'} Sem compromisso {'\u00B7'} Sem custos
-            </p>
-          </div>
+          {/* CTA — Two-step Free Fix */}
+          {!showCalendly ? (
+            <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+              <button
+                onClick={() => setShowCalendly(true)}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '8px',
+                  background: BLUE, color: '#fff', border: 'none',
+                  fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '16px',
+                  padding: '18px 40px', borderRadius: '14px', cursor: 'pointer',
+                  boxShadow: '0 8px 32px rgba(33,127,241,0.45)',
+                  transition: 'transform 0.18s ease, box-shadow 0.18s ease',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 14px 40px rgba(33,127,241,0.55)' }}
+                onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 8px 32px rgba(33,127,241,0.45)' }}
+              >
+                QUERO O FREE FIX {'\u2192'}
+              </button>
+              <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)', marginTop: '12px' }}>
+                Sem compromisso · Sem custos
+              </p>
+            </div>
+          ) : (
+            <Card style={{ background: 'rgba(33,127,241,0.06)', border: '1.5px solid rgba(33,127,241,0.2)' }}>
+              {/* Confirmation */}
+              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                <div style={{
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                  width: '40px', height: '40px', borderRadius: '50%',
+                  background: 'rgba(74,222,128,0.15)', border: '1px solid rgba(74,222,128,0.3)',
+                  marginBottom: '12px',
+                }}>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M5 10l3.5 3.5L15 7" stroke="#4ade80" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <p style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '18px', color: '#fff', margin: '0 0 8px' }}>
+                  Excelente escolha.
+                </p>
+                <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, margin: 0, maxWidth: '420px', marginLeft: 'auto', marginRight: 'auto' }}>
+                  Para avançar com o Free Fix, só precisamos de uma conversa de 15 minutos para perceber como implementar na sua empresa.
+                </p>
+              </div>
 
-          {/* Download PDF again */}
-          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+              {/* Calendly inline embed */}
+              <div
+                ref={calendlyRef}
+                style={{
+                  minHeight: '660px', borderRadius: '12px', overflow: 'hidden',
+                  background: '#fff',
+                }}
+              />
+            </Card>
+          )}
+
+          {/* Download PDF + back */}
+          <div style={{ textAlign: 'center', marginTop: '24px', marginBottom: '24px' }}>
             <button
               onClick={downloadPDF}
               disabled={downloading}
