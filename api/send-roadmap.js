@@ -196,11 +196,16 @@ async function generatePDF({ nome, empresa, roadmapKey, priorities, total, maxTo
     doc.moveDown(0.8)
 
     const insightY = doc.y
-    doc.rect(50, insightY, W, 70).fillAndStroke([240, 246, 255], [212, 229, 255])
-    doc.fontSize(24).font('Helvetica-Bold').fillColor(BLUE).text(t.insight.stat, 65, insightY + 12, { width: 80 })
-    doc.fontSize(9).font('Helvetica').fillColor(DARK).text(t.insight.text, 155, insightY + 10, { width: W - 120, lineGap: 2 })
-    doc.fontSize(7).font('Helvetica-Oblique').fillColor(LIGHT_GRAY).text(`Fonte: ${t.insight.source}`, 155, insightY + 52)
-    doc.y = insightY + 85
+    // Measure text height first to size the box dynamically
+    const insightTextW = W - 30
+    const textH = doc.fontSize(9).font('Helvetica').heightOfString(t.insight.text, { width: insightTextW, lineGap: 2 })
+    const boxH = Math.max(70, 12 + 22 + textH + 16 + 12)
+    doc.rect(50, insightY, W, boxH).fillAndStroke([240, 246, 255], [212, 229, 255])
+    doc.fontSize(22).font('Helvetica-Bold').fillColor(BLUE).text(t.insight.stat, 65, insightY + 12, { width: insightTextW })
+    const statBottom = doc.y + 4
+    doc.fontSize(9).font('Helvetica').fillColor(DARK).text(t.insight.text, 65, statBottom, { width: insightTextW, lineGap: 2 })
+    doc.fontSize(7).font('Helvetica-Oblique').fillColor(LIGHT_GRAY).text(`Fonte: ${t.insight.source}`, 65, doc.y + 4, { width: insightTextW })
+    doc.y = insightY + boxH + 15
     doc.moveDown(0.8)
     drawHRule()
 
