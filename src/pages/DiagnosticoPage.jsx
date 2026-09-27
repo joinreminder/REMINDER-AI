@@ -437,7 +437,7 @@ export default function DiagnosticoPage() {
                   { n: '02', t: 'Principal Gargalo', d: 'A área com maior oportunidade' },
                   { n: '03', t: 'Prioridades', d: 'O que corrigir primeiro' },
                   { n: '04', t: 'Roadmap + Ações', d: 'Processo e ações concretas' },
-                  { n: '05', t: 'Próximo Passo', d: 'Free Fix gratuito de 14 dias' },
+                  { n: '05', t: 'Próximo Passo', d: 'Free Fix gratuito por período limitado' },
                 ].map((s, i) => (
                   <div key={s.n} style={{
                     display: 'flex', gap: '12px', alignItems: 'flex-start',
@@ -466,10 +466,10 @@ export default function DiagnosticoPage() {
                   padding: '14px 16px', border: '1px solid #d4e5ff',
                 }}>
                   <p style={{ fontSize: '12px', fontWeight: 700, color: '#217FF1', margin: '0 0 4px' }}>
-                    Free Fix — 14 Dias
+                    Free Fix — Período Limitado
                   </p>
                   <p style={{ fontSize: '11px', color: '#666', margin: 0, lineHeight: 1.4 }}>
-                    Corrigimos o principal gargalo gratuitamente. Sem custos, sem compromisso.
+                    Corrigimos o principal gargalo gratuitamente, pelo tempo necessário para medir o resultado.
                   </p>
                 </div>
               </div>
@@ -621,7 +621,7 @@ export default function DiagnosticoPage() {
                   </div>
                 </div>
                 <div className="raudit__field" style={{ marginTop: '28px' }}>
-                  <label>Se identificarmos o principal gargalo, gostaria que o corrigíssemos gratuitamente durante 14 dias? <span style={{ color: 'var(--blue)' }}>*</span></label>
+                  <label>Se identificarmos o principal gargalo, gostaria que o corrigíssemos gratuitamente? <span style={{ color: 'var(--blue)' }}>*</span></label>
                   <div className="raudit__card-grid raudit__card-grid--3">
                     {INTERESSE_PILOTO.map(ip => (
                       <button key={ip.id} type="button" className={`raudit__card-opt${values.interesse_piloto === ip.id ? ' is-selected' : ''}`} onClick={() => set('interesse_piloto', ip.id)}>

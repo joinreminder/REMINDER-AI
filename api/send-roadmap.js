@@ -316,9 +316,9 @@ async function generatePDF({ nome, empresa, roadmapKey, priorities, total, maxTo
     const nextY = doc.y
     doc.rect(50, nextY, W, 90).fillAndStroke([240, 246, 255], [212, 229, 255])
     doc.fontSize(12).font('Helvetica-Bold').fillColor(DARK)
-      .text('Queremos corrigir este gargalo gratuitamente durante 14 dias.', 65, nextY + 15, { width: W - 30 })
+      .text('Queremos corrigir este gargalo gratuitamente.', 65, nextY + 15, { width: W - 30 })
     doc.fontSize(9).font('Helvetica').fillColor(GRAY)
-      .text('Identificámos o problema. Agora queremos corrigi-lo — sem custo, sem compromisso. Durante 14 dias, a nossa equipa implementa e testa as correções com os seus leads reais.', 65, nextY + 35, { width: W - 30, lineGap: 2 })
+      .text('Identificámos o problema. Agora queremos corrigi-lo — sem custo, sem compromisso. Pelo tempo necessário para medir o resultado, a nossa equipa implementa e testa as correções com os seus leads reais.', 65, nextY + 35, { width: W - 30, lineGap: 2 })
     doc.fontSize(9).font('Helvetica-Bold').fillColor(BLUE)
       .text('Conversa de 15 min -> calendly.com/remindr/diagnostico', 65, nextY + 68, { width: W - 30 })
     doc.y = nextY + 105
@@ -408,9 +408,9 @@ function buildEmailHtml(nome, empresa) {
 <tr><td style="padding:0 40px 32px;">
   <div style="background:#f9f9f9;border-radius:12px;padding:24px;text-align:center;">
     <p style="margin:0 0 8px;font-size:15px;font-weight:700;color:#0a1c42;">Queremos corrigir este gargalo gratuitamente.</p>
-    <p style="margin:0 0 20px;font-size:14px;color:#666;line-height:1.6;">Durante 14 dias, a nossa equipa implementa e testa as correções com os seus leads reais — sem custo, sem compromisso.</p>
+    <p style="margin:0 0 20px;font-size:14px;color:#666;line-height:1.6;">Pelo tempo necessário para medir o resultado, a nossa equipa implementa e testa as correções com os seus leads reais — sem custo, sem compromisso.</p>
     <a href="https://calendly.com/remindr/diagnostico" style="display:inline-block;background:#217FF1;color:#fff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:10px;text-decoration:none;">
-      QUERO O FREE FIX DE 14 DIAS
+      QUERO O FREE FIX
     </a>
     <p style="margin:12px 0 0;font-size:12px;color:#999;">Conversa de 15 min · Sem compromisso · Sem custos</p>
   </div>

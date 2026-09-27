@@ -161,8 +161,8 @@ function PdfContent({ template, profile, scoring, empresa }) {
       {/* 05 — Próximo Passo */}
       <div style={{ background: '#f0f6ff', borderRadius: '12px', padding: '20px 24px', border: '1px solid #d4e5ff' }}>
         <p style={label}>05 — Próximo Passo</p>
-        <p style={{ ...h('', 15) }}>Queremos corrigir este gargalo gratuitamente durante 14 dias.</p>
-        <p style={p}>Identificámos o problema. Agora queremos corrigi-lo — sem custo, sem compromisso. Durante 14 dias, implementamos e testamos as correções com os seus leads reais.</p>
+        <p style={{ ...h('', 15) }}>Queremos corrigir este gargalo gratuitamente.</p>
+        <p style={p}>Identificámos o problema. Agora queremos corrigi-lo — sem custo, sem compromisso. Pelo tempo necessário para medir o resultado, implementamos e testamos as correções com os seus leads reais.</p>
         <p style={{ fontSize: '13px', color: BLUE, fontWeight: 700, margin: '8px 0 0' }}>
           Conversa de 15 min — joinreminder.com
         </p>
@@ -444,17 +444,17 @@ export default function RoadmapResult({ scoring, profile, empresa, values }) {
           <Card style={{ background: 'rgba(33,127,241,0.1)', border: '1.5px solid rgba(33,127,241,0.25)' }}>
             <SectionLabel>05 — Próximo Passo</SectionLabel>
             <p style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '18px', color: '#fff', margin: '0 0 12px' }}>
-              Queremos corrigir este gargalo gratuitamente durante 14 dias.
+              Queremos corrigir este gargalo gratuitamente.
             </p>
             <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, margin: '0 0 8px' }}>
-              Identificámos o problema. Agora queremos corrigi-lo — sem custo, sem compromisso. Durante 14 dias, a nossa equipa implementa e testa as correções com os seus leads reais.
+              Identificámos o problema. Agora queremos corrigi-lo — sem custo, sem compromisso. Pelo tempo necessário para medir o resultado, a nossa equipa implementa e testa as correções com os seus leads reais.
             </p>
             <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)', lineHeight: 1.55, margin: 0 }}>
               Só precisamos de uma conversa de 15 minutos para perceber como ajudar. Se fizer sentido, avançamos.
             </p>
           </Card>
 
-          {/* CTA — Free Fix 14 dias */}
+          {/* CTA — Free Fix */}
           <div style={{ textAlign: 'center', marginBottom: '24px' }}>
             <a
               href="https://calendly.com/remindr/diagnostico"
@@ -471,7 +471,7 @@ export default function RoadmapResult({ scoring, profile, empresa, values }) {
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 14px 40px rgba(33,127,241,0.55)' }}
               onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 8px 32px rgba(33,127,241,0.45)' }}
             >
-              QUERO O FREE FIX DE 14 DIAS {'\u2192'}
+              QUERO O FREE FIX {'\u2192'}
             </a>
             <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)', marginTop: '12px' }}>
               Conversa de 15 min {'\u00B7'} Sem compromisso {'\u00B7'} Sem custos
