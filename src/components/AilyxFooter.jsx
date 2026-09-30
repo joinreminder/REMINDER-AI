@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export default function AilyxFooter() {
   const year = new Date().getFullYear()
   return (
@@ -6,43 +8,41 @@ export default function AilyxFooter() {
 
         <div className="ayl-footer__top">
           <span className="ayl-footer__logo-wrap">
-            <img src="/logotipo-editado.png" alt="" className="ayl-footer__logo-bird" />
+            <img src="/logotipo-editado.png" alt="" width={310} height={306} className="ayl-footer__logo-bird" />
             <span className="ayl-footer__logo-mark">
               <span className="ayl-footer__logo-remindr">Reminder</span>
-              <span className="ayl-footer__logo-ai"> AI</span>
             </span>
           </span>
-          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '14px', marginTop: '12px' }}>
-            Transforme mais leads em oportunidades comerciais.
+          <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '14px', marginTop: '16px', fontWeight: 700 }}>
+            Reuniões Qualificadas com IA para empresas B2B.
           </p>
-          <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '13px', marginTop: '6px' }}>
-            A sua equipa fecha. Nós fazemos o trabalho antes da reunião.
+          <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '13px', marginTop: '6px', lineHeight: 1.6 }}>
+            Transforme mais oportunidades em reuniões qualificadas.
           </p>
         </div>
 
         <div className="ayl-footer__nav">
           <div className="ayl-footer__col">
             <div className="ayl-footer__col-title">Começar</div>
-            <a href="/diagnostico" className="ayl-footer__link">Roadmap Gratuito</a>
-            <a href="/diagnostico" className="ayl-footer__link">Falar com a equipa</a>
+            <a href="#como-funciona" className="ayl-footer__link">Como funciona</a>
+            <Link to="/roadmap" className="ayl-footer__link">Roadmap Gratuito</Link>
+            <a href="mailto:equipa@joinreminder.com" className="ayl-footer__link">Contacto</a>
           </div>
           <div className="ayl-footer__col">
-            <div className="ayl-footer__col-title">O que fazemos</div>
-            <a href="#mechanism" className="ayl-footer__link">Como funciona</a>
-            <a href="#audit" className="ayl-footer__link">As 5 Dimensões</a>
-            <a href="#about" className="ayl-footer__link">Para quem é</a>
+            <div className="ayl-footer__col-title">Empresa</div>
+            <a href="#como-funciona" className="ayl-footer__link">Como funciona</a>
+            <a href="#para-quem" className="ayl-footer__link">Para quem é</a>
             <a href="#faq" className="ayl-footer__link">FAQ</a>
           </div>
           <div className="ayl-footer__col">
             <div className="ayl-footer__col-title">Legal</div>
-            <a href="/privacy.html" className="ayl-footer__link">Política de Privacidade</a>
-            <a href="/terms.html" className="ayl-footer__link">Termos e Condições</a>
+            <Link to="/privacidade" className="ayl-footer__link">Política de Privacidade</Link>
+            <Link to="/cookies" className="ayl-footer__link">Política de Cookies</Link>
           </div>
         </div>
 
         <div className="ayl-footer__bottom">
-          <span className="ayl-footer__copy">Reminder AI {year}. Todos os direitos reservados.</span>
-          <span className="ayl-footer__design">A sua equipa fecha. Nós fazemos o trabalho antes da reunião.</span>
+          <span className="ayl-footer__copy">Reminder · {year}</span>
         </div>
 
       </div>

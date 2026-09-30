@@ -14,7 +14,7 @@ export default function LogoTicker() {
         <div className="logo-ticker__track">
           {items.map((l, i) => (
             <div key={i} className="logo-ticker__item">
-              <img src={l.src} alt={l.alt} className="logo-ticker__img" />
+              <img src={l.src} alt={l.alt} loading="lazy" decoding="async" className="logo-ticker__img" />
             </div>
           ))}
         </div>

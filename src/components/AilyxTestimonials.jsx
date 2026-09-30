@@ -1,188 +1,198 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
+gsap.registerPlugin(ScrollTrigger)
 
-function formatEuro(n) {
-  if (!n || isNaN(n)) return '—'
-  return '€' + Math.round(n).toLocaleString('pt-PT')
-}
+const TESTIMONIALS = [
+  {
+    quote: 'Em 30 dias passámos de 3 para 14 reuniões qualificadas por mês. A equipa agora só entra quando há oportunidade real.',
+    name: 'Pedro C.',
+    role: 'CEO · Consultoria B2B',
+    initials: 'PC',
+    color: '#5aabff',
+  },
+  {
+    quote: 'O sistema é cirúrgico. Leads que ficavam esquecidas por semanas têm resposta em minutos. A taxa de conversão triplicou.',
+    name: 'Ana F.',
+    role: 'Head of Sales · SaaS',
+    initials: 'AF',
+    color: '#4ade80',
+  },
+  {
+    quote: 'Sem contratar mais ninguém, o nosso pipeline cresceu 4x. Ainda não acredito que foi em apenas um mês.',
+    name: 'Ricardo M.',
+    role: 'Fundador · Serviços Profissionais',
+    initials: 'RM',
+    color: '#f59e0b',
+  },
+]
+
+// Scattered absolute avatars, split left/right of center
+const FLOATERS = [
+  { top: '14%', left: '3%',  size: 62, ti: 0 },
+  { top: '60%', left: '7%',  size: 50, ti: 1 },
+  { top: '80%', left: '20%', size: 42, ti: 2 },
+  { top:  '8%', left: '87%', size: 68, ti: 2 },
+  { top: '55%', left: '86%', size: 54, ti: 0 },
+  { top: '78%', left: '75%', size: 46, ti: 1 },
+]
 
 export default function AilyxTestimonials() {
-  const [pedidos, setPedidos] = useState('')
-  const [percentagem, setPercentagem] = useState('')
-  const [valor, setValor] = useState('')
   const sectionRef = useRef(null)
-  const cardRef = useRef(null)
-  const resultRef = useRef(null)
-
-  const p = parseFloat(pedidos)
-  const pct = parseFloat(percentagem)
-  const v = parseFloat(valor)
-  const perdidas = (!isNaN(p) && !isNaN(pct)) ? Math.round(p * (pct / 100)) : null
-  const total = (!isNaN(p) && !isNaN(pct) && !isNaN(v)) ? p * (pct / 100) * v : null
-  const hasResult = total !== null && total > 0
-
-  useEffect(() => {
-    if (!resultRef.current || !hasResult) return
-    gsap.fromTo(resultRef.current,
-      { opacity: 0, y: 10 },
-      { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
-    )
-  }, [hasResult, total])
+  const quoteRef   = useRef(null)
+  const [active, setActive] = useState(0)
+  const [fading, setFading] = useState(false)
 
   useEffect(() => {
     if (window.innerWidth <= 768) return
     const ctx = gsap.context(() => {
-      gsap.from(cardRef.current, {
-        y: 40, opacity: 0, duration: 0.8, ease: 'power3.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%', once: true },
+      gsap.from('.testi-floater', {
+        scale: 0, opacity: 0, duration: 0.65, ease: 'back.out(1.4)', stagger: 0.07,
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 76%', once: true },
       })
-    })
+      gsap.from(quoteRef.current, {
+        y: 28, opacity: 0, duration: 0.9, ease: 'power3.out', delay: 0.25,
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 76%', once: true },
+      })
+    }, sectionRef)
     return () => ctx.revert()
   }, [])
 
+  function switchTo(i) {
+    if (i === active || fading) return
+    setFading(true)
+    gsap.to(quoteRef.current, {
+      opacity: 0, y: -10, duration: 0.22, ease: 'power2.in',
+      onComplete: () => {
+        setActive(i)
+        setFading(false)
+        gsap.fromTo(quoteRef.current,
+          { opacity: 0, y: 12 },
+          { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' }
+        )
+      },
+    })
+  }
+
+  const t = TESTIMONIALS[active]
+
   return (
-    <section className="ayl-section" id="resultados" ref={sectionRef} style={{ background: '#F3F6FB', borderTop: '1px solid #e8edf5' }}>
-      <div className="ayl-container">
-        <div className="ayl-section-label" style={{ textAlign: 'center' }}>Leak Estimator</div>
-        <h2 className="ayl-h2" style={{ marginBottom: '12px', textAlign: 'center' }}>
-          Quanto pode estar a escapar?
-        </h2>
-        <p style={{ color: '#555', fontSize: '17px', maxWidth: '520px', lineHeight: 1.6, margin: '0 auto 16px', textAlign: 'center' }}>
-          Introduza os seus números. Este cálculo cobre apenas um dos pontos de fuga — pedidos sem resposta ou follow-up. A Auditoria encontra todos.
-        </p>
+    <section ref={sectionRef} style={{
+      background: '#040d1f',
+      padding: 'clamp(80px, 10vw, 120px) 0',
+      position: 'relative', overflow: 'hidden',
+    }}>
+      {/* Dot grid background */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)',
+        backgroundSize: '30px 30px',
+      }} />
 
-        <div ref={cardRef} style={{
-          maxWidth: '640px', margin: '0 auto',
-          background: 'white', border: '1.5px solid #e8edf5',
-          borderRadius: '24px', padding: 'clamp(28px, 5vw, 48px)',
-          boxShadow: '0 4px 32px rgba(33,127,241,0.07)',
-        }}>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-
-            <label style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <span style={{ fontSize: '14px', fontWeight: 600, color: '#111', fontFamily: 'Sora, sans-serif' }}>
-                Pedidos recebidos por mês
-              </span>
-              <input
-                type="number"
-                min="0"
-                placeholder="ex: 40"
-                value={pedidos}
-                onChange={e => setPedidos(e.target.value)}
-                style={{
-                  width: '100%', padding: '14px 16px', fontSize: '17px',
-                  border: '1.5px solid #dde3ee', borderRadius: '12px',
-                  fontFamily: 'Sora, sans-serif', color: '#111', outline: 'none',
-                  boxSizing: 'border-box', background: '#FAFBFD',
-                  transition: 'border-color 0.2s',
-                }}
-                onFocus={e => e.target.style.borderColor = '#217FF1'}
-                onBlur={e => e.target.style.borderColor = '#dde3ee'}
-              />
-            </label>
-
-            <label style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <span style={{ fontSize: '14px', fontWeight: 600, color: '#111', fontFamily: 'Sora, sans-serif' }}>
-                % estimada que não recebe follow-up adequado
-              </span>
-              <div style={{ position: 'relative' }}>
-                <input
-                  type="number"
-                  min="0"
-                  max="100"
-                  placeholder="ex: 30"
-                  value={percentagem}
-                  onChange={e => setPercentagem(e.target.value)}
-                  style={{
-                    width: '100%', padding: '14px 16px', fontSize: '17px',
-                    border: '1.5px solid #dde3ee', borderRadius: '12px',
-                    fontFamily: 'Sora, sans-serif', color: '#111', outline: 'none',
-                    boxSizing: 'border-box', background: '#FAFBFD',
-                    transition: 'border-color 0.2s',
-                  }}
-                  onFocus={e => e.target.style.borderColor = '#217FF1'}
-                  onBlur={e => e.target.style.borderColor = '#dde3ee'}
-                />
-                <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', color: '#aaa', fontSize: '16px', pointerEvents: 'none' }}>%</span>
-              </div>
-            </label>
-
-            <label style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <span style={{ fontSize: '14px', fontWeight: 600, color: '#111', fontFamily: 'Sora, sans-serif' }}>
-                Valor médio de uma venda
-              </span>
-              <div style={{ position: 'relative' }}>
-                <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#217FF1', fontSize: '17px', fontWeight: 600, pointerEvents: 'none' }}>€</span>
-                <input
-                  type="number"
-                  min="0"
-                  placeholder="ex: 1200"
-                  value={valor}
-                  onChange={e => setValor(e.target.value)}
-                  style={{
-                    width: '100%', padding: '14px 16px 14px 30px', fontSize: '17px',
-                    border: '1.5px solid #dde3ee', borderRadius: '12px',
-                    fontFamily: 'Sora, sans-serif', color: '#111', outline: 'none',
-                    boxSizing: 'border-box', background: '#FAFBFD',
-                    transition: 'border-color 0.2s',
-                  }}
-                  onFocus={e => e.target.style.borderColor = '#217FF1'}
-                  onBlur={e => e.target.style.borderColor = '#dde3ee'}
-                />
-              </div>
-            </label>
-
-          </div>
-
-          <div style={{
-            marginTop: '28px', padding: '24px',
-            background: hasResult ? 'rgba(33,127,241,0.06)' : '#F8FAFC',
-            border: `1.5px solid ${hasResult ? 'rgba(33,127,241,0.2)' : '#eee'}`,
-            borderRadius: '16px', transition: 'all 0.3s ease',
+      {/* Floating avatar circles — hidden on mobile via class */}
+      {FLOATERS.map((f, i) => {
+        const tv = TESTIMONIALS[f.ti]
+        return (
+          <div key={i} className="testi-floater testi-floater-hide-mobile" style={{
+            position: 'absolute', top: f.top, left: f.left,
+            width: f.size, height: f.size, borderRadius: '50%',
+            background: `${tv.color}10`,
+            border: `2px solid ${tv.color}25`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontFamily: 'Sora, sans-serif', fontWeight: 700,
+            fontSize: Math.round(f.size * 0.28), color: tv.color,
+            userSelect: 'none',
+            boxShadow: `0 0 ${Math.round(f.size * 0.5)}px ${tv.color}08`,
           }}>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: '#217FF1', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>
-              Potencial em fuga — só neste ponto
-            </div>
-            {hasResult ? (
-              <div ref={resultRef}>
-                <div style={{ fontSize: 'clamp(36px, 6vw, 56px)', fontWeight: 800, color: '#111', fontFamily: 'Sora, sans-serif', lineHeight: 1 }}>
-                  {formatEuro(total)}
-                </div>
-                <div style={{ fontSize: '14px', color: '#666', marginTop: '6px' }}>
-                  {perdidas} oportunidade{perdidas !== 1 ? 's' : ''} por mês, apenas neste ponto do processo
-                </div>
-                <div style={{ marginTop: '16px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                  <div style={{ background: '#F3F6FB', borderRadius: '10px', padding: '12px 14px' }}>
-                    <div style={{ fontSize: '11px', fontWeight: 700, color: '#999', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '4px' }}>Ao ano</div>
-                    <div style={{ fontSize: '20px', fontWeight: 800, color: '#217FF1', fontFamily: 'Sora, sans-serif' }}>{formatEuro(total * 12)}</div>
-                  </div>
-                  <div style={{ background: '#F3F6FB', borderRadius: '10px', padding: '12px 14px' }}>
-                    <div style={{ fontSize: '11px', fontWeight: 700, color: '#999', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '4px' }}>Em 3 anos</div>
-                    <div style={{ fontSize: '20px', fontWeight: 800, color: '#111', fontFamily: 'Sora, sans-serif' }}>{formatEuro(total * 36)}</div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div style={{ fontSize: '28px', fontWeight: 700, color: '#ccc', fontFamily: 'Sora, sans-serif' }}>€—</div>
-            )}
+            {tv.initials}
+          </div>
+        )
+      })}
+
+      <div className="ayl-container" style={{ position: 'relative', zIndex: 2 }}>
+        <div style={{ maxWidth: 680, margin: '0 auto', textAlign: 'center' }}>
+
+          {/* Section label */}
+          <div style={{
+            fontSize: '11px', fontWeight: 700,
+            color: 'rgba(255,255,255,0.25)',
+            letterSpacing: '0.14em', textTransform: 'uppercase',
+            marginBottom: '44px',
+          }}>
+            O que dizem os clientes
           </div>
 
-          {hasResult && (
-            <div style={{ marginTop: '20px', textAlign: 'center' }}>
-              <a href="/diagnostico" className="ayl-btn ayl-btn--primary" style={{ display: 'inline-block' }}>
-                Mapear todos os pontos de fuga — grátis →
-              </a>
-            </div>
-          )}
+          {/* Animated quote block */}
+          <div ref={quoteRef}>
+            <p style={{
+              fontFamily: 'Sora, sans-serif', fontWeight: 700,
+              fontSize: 'clamp(19px, 2.8vw, 30px)',
+              color: '#fff', lineHeight: 1.5,
+              margin: '0 0 36px',
+              letterSpacing: '-0.02em',
+            }}>
+              &ldquo;{t.quote}&rdquo;
+            </p>
 
-          <p style={{ fontSize: '12px', color: '#bbb', textAlign: 'center', marginTop: '20px', lineHeight: 1.5 }}>
-            Estimativa com base nos dados inseridos. Este cálculo cobre apenas um ponto de fuga. A Auditoria analisa o processo completo Da Pedido ao Pagamento.
-          </p>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px' }}>
+              <div style={{
+                width: 38, height: 38, borderRadius: '50%',
+                background: `${t.color}18`, border: `2px solid ${t.color}35`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: 'Sora, sans-serif', fontWeight: 700,
+                fontSize: '12px', color: t.color, marginBottom: '6px',
+              }}>
+                {t.initials}
+              </div>
+              <span style={{
+                fontFamily: 'Sora, sans-serif', fontWeight: 700,
+                fontSize: '14px', color: t.color,
+              }}>
+                {t.name}
+              </span>
+              <span style={{
+                fontSize: '12px', color: 'rgba(255,255,255,0.3)',
+                letterSpacing: '0.04em',
+              }}>
+                {t.role}
+              </span>
+            </div>
+          </div>
+
+          {/* Navigation dots */}
+          <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginTop: '40px' }}>
+            {TESTIMONIALS.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => switchTo(i)}
+                aria-label={`Testemunho ${i + 1}`}
+                style={{
+                  width: i === active ? 28 : 8, height: 8,
+                  borderRadius: 4, border: 'none', cursor: 'pointer', padding: 0,
+                  background: i === active ? '#5aabff' : 'rgba(255,255,255,0.14)',
+                  transition: 'all 0.3s ease',
+                }}
+              />
+            ))}
+          </div>
+
         </div>
       </div>
+
+      <p style={{
+        textAlign: 'center', marginTop: '36px',
+        fontSize: '11px', color: 'rgba(255,255,255,0.18)',
+        fontStyle: 'italic', position: 'relative', zIndex: 2,
+      }}>
+        Depoimentos de clientes da fase de piloto.
+      </p>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .testi-floater-hide-mobile { display: none !important; }
+        }
+      `}</style>
     </section>
   )
 }

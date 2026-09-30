@@ -4,12 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const STEPS = [
-  { num: '01', label: 'Responda', desc: 'Responda a 14 perguntas sobre a sua empresa e o seu processo atual. Leva menos de 60 segundos.' },
-  { num: '02', label: 'Receba', desc: 'As suas respostas são analisadas para identificar os principais pontos de oportunidade.' },
-  { num: '03', label: 'Descubra', desc: 'Receba o seu Roadmap Personalizado e veja onde deve concentrar os seus esforços primeiro.' },
-]
-
 export default function AilyxTeam() {
   const sectionRef = useRef(null)
   const contentRef = useRef(null)
@@ -28,65 +22,48 @@ export default function AilyxTeam() {
   return (
     <section ref={sectionRef} style={{ background: '#fff', padding: 'clamp(80px, 10vw, 120px) 0', borderTop: '1px solid #e8edf5' }}>
       <div className="ayl-container">
-        <div ref={contentRef} style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '0' }}>
+        <div ref={contentRef} style={{ maxWidth: '640px', margin: '0 auto', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
-          {/* Badge */}
-          <div style={{ marginBottom: '16px' }}>
-            <div className="ayl-section-label" style={{ display: 'inline-block' }}>3 passos</div>
-          </div>
-
-          {/* Title */}
-          <h2 className="ayl-h2" style={{ color: '#0a1c42', marginBottom: '40px' }}>
-            Como funciona
+          <h2 className="ayl-h2" style={{ color: '#0a1c42', marginBottom: '0' }}>
+            Já está a gerar leads. O próximo crescimento pode estar aqui.
           </h2>
 
-          {/* Steps */}
-          {STEPS.map((step, i) => (
-            <div key={step.num} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div style={{
-                width: '100%',
-                padding: '28px 28px',
-                background: '#F8FAFF',
-                border: '1.5px solid #e8edf5',
-                borderRadius: '16px',
-                textAlign: 'center',
-              }}>
-                <div style={{
-                  fontFamily: 'Sora, sans-serif', fontWeight: 800,
-                  fontSize: '12px', letterSpacing: '0.1em',
-                  color: '#217FF1', marginBottom: '8px',
-                }}>
-                  {step.num}
-                </div>
-                <div style={{
-                  fontFamily: 'Sora, sans-serif', fontWeight: 700,
-                  fontSize: 'clamp(17px, 2vw, 20px)',
-                  color: '#0a1c42', marginBottom: '8px',
-                }}>
-                  {step.label}
-                </div>
-                <p style={{
-                  fontSize: '14px', color: '#666',
-                  lineHeight: 1.55, margin: 0,
-                  maxWidth: '400px', marginLeft: 'auto', marginRight: 'auto',
-                }}>
-                  {step.desc}
-                </p>
-              </div>
-
-              {/* Arrow between steps */}
-              {i < STEPS.length - 1 && (
-                <svg width="16" height="28" viewBox="0 0 16 28" fill="none" style={{ margin: '8px 0' }}>
-                  <path d="M8 0v22M3 18l5 5 5-5" stroke="#217FF1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.4" />
-                </svg>
-              )}
-            </div>
-          ))}
-
-          {/* Footer */}
-          <p style={{ color: '#999', fontSize: '15px', lineHeight: 1.55, margin: '32px 0 0' }}>
-            Sem chamada obrigatória. Sem cartão de crédito. Sem compromisso.
+          <p style={{ fontSize: '16px', color: '#555', lineHeight: 1.7, margin: 0 }}>
+            Imagine que, sempre que uma lead entra:
           </p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxWidth: '480px', margin: '0 auto' }}>
+            {[
+              'É contactada rapidamente.',
+              'Recebe follow-up sem depender da sua equipa.',
+              'É qualificada.',
+              'É acompanhada até estar pronta.',
+              'E, quando existe uma oportunidade real, marca uma reunião.',
+            ].map((s, i) => (
+              <p key={i} style={{ fontSize: '15px', color: '#0a1c42', lineHeight: 1.6, margin: 0, fontWeight: 700 }}>{s}</p>
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxWidth: '480px', margin: '0 auto' }}>
+            <p style={{ fontSize: '15px', color: '#888', lineHeight: 1.6, margin: 0 }}>Sem depender de alguém se lembrar.</p>
+            <p style={{ fontSize: '15px', color: '#888', lineHeight: 1.6, margin: 0 }}>Sem deixar leads esquecidas no CRM.</p>
+            <p style={{ fontSize: '15px', color: '#888', lineHeight: 1.6, margin: 0 }}>Sem obrigar a equipa comercial a passar o dia a perseguir oportunidades.</p>
+          </div>
+
+          <div style={{
+            marginTop: '8px', padding: '20px 28px',
+            background: '#06142e', border: '1px solid rgba(33,127,241,0.2)',
+            borderRadius: '14px',
+          }}>
+            <p style={{
+              fontFamily: 'Sora, sans-serif', fontWeight: 700,
+              fontSize: '15px', color: 'rgba(255,255,255,0.5)',
+              lineHeight: 1.6, margin: 0,
+            }}>
+              Mais leads não são necessariamente a resposta.<br />
+              <span style={{ color: '#5aabff' }}>Mais reuniões a partir dos leads que já gera podem ser.</span>
+            </p>
+          </div>
 
         </div>
       </div>

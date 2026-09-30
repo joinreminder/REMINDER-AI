@@ -115,7 +115,7 @@ async function generatePDF({ nome, empresa, roadmapKey, priorities, total, maxTo
   if (!t) throw new Error('Tipo de roadmap inválido')
 
   const logoBuffer = await fetchLogo()
-  const level = total <= 6 ? 'low' : total <= 13 ? 'mid' : 'high'
+  const level = total <= 5 ? 'low' : total <= 10 ? 'mid' : 'high'
   const date = new Date().toLocaleDateString('pt-PT')
 
   return new Promise((resolve, reject) => {

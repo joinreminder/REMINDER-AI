@@ -12,6 +12,7 @@ const ROADMAP_FLOWS = {
   followup:      ['Primeiro contacto', 'Follow-up 1 (Dia 2)', 'Follow-up 2 (Dia 5)', 'Follow-up 3 (Dia 9)', 'Último contacto (Dia 14)'],
   qualification: ['Contacto', 'Descoberta', 'Avaliação', 'Qualificado / Não Qualificado', 'Reunião'],
   leadToMeeting: ['Lead qualificado', 'Proposta de reunião', 'Agendamento online', 'Confirmação + Lembrete', 'Reunião'],
+  outbound:      ['Definir ICP', 'Construir lista', 'Sequência multicanal', 'Qualificação', 'Reunião marcada'],
 }
 
 const BLUE = '#217FF1'
@@ -161,8 +162,8 @@ function PdfContent({ template, profile, scoring, empresa }) {
       {/* 05 — Próximo Passo */}
       <div style={{ background: '#f0f6ff', borderRadius: '12px', padding: '20px 24px', border: '1px solid #d4e5ff' }}>
         <p style={label}>05 — Próximo Passo</p>
-        <p style={{ ...h('', 15) }}>Queremos corrigir este gargalo gratuitamente.</p>
-        <p style={p}>Identificámos o problema. Agora queremos corrigi-lo — sem custo, sem compromisso. Pelo tempo necessário para medir o resultado, implementamos e testamos as correções com os seus leads reais.</p>
+        <p style={{ ...h('', 15) }}>Queremos implementar o Método Reminder™ na sua empresa — sem custo.</p>
+        <p style={p}>Identificámos as lacunas. Agora queremos provar que as conseguimos resolver com os seus leads reais, sem qualquer investimento da sua parte. É um Piloto Gratuito: nós trabalhamos, vocês medem os resultados. Em troca, só pedimos o seu feedback depois de ver os resultados.</p>
         <p style={{ fontSize: '13px', color: BLUE, fontWeight: 700, margin: '8px 0 0' }}>
           Conversa de 15 min — joinreminder.com
         </p>
@@ -170,7 +171,7 @@ function PdfContent({ template, profile, scoring, empresa }) {
 
       {/* Footer */}
       <div style={{ marginTop: '32px', paddingTop: '16px', borderTop: '1px solid #eee', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <p style={{ fontSize: '11px', color: '#aaa', margin: 0 }}>Reminder AI {'\u00B7'} Conversão de Leads</p>
+        <p style={{ fontSize: '11px', color: '#aaa', margin: 0 }}>Reminder {'\u00B7'} Reuniões Qualificadas com IA para empresas B2B</p>
         <p style={{ fontSize: '11px', color: '#aaa', margin: 0 }}>equipa@joinreminder.com</p>
       </div>
     </div>
@@ -192,32 +193,37 @@ export default function RoadmapResult({ scoring, profile, empresa, values }) {
 
     // Scroll to the calendly section
     setTimeout(() => {
-      calendlyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    }, 100)
+      calendlyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 200)
 
-    // Load Calendly script
-    const script = document.createElement('script')
-    script.src = 'https://assets.calendly.com/assets/external/widget.js'
-    script.async = true
-    script.onload = () => {
+    // Load Calendly CSS
+    const link = document.createElement('link')
+    link.rel = 'stylesheet'
+    link.href = 'https://assets.calendly.com/assets/external/widget.css'
+    document.head.appendChild(link)
+
+    const initWidget = () => {
       if (window.Calendly && calendlyRef.current) {
+        calendlyRef.current.innerHTML = ''
         window.Calendly.initInlineWidget({
-          url: 'https://calendly.com/equipa-joinreminder/30min',
+          url: 'https://calendly.com/equipa-joinreminder/sales-process-ai-discovery-call',
           parentElement: calendlyRef.current,
         })
       }
     }
-    document.head.appendChild(script)
 
-    // If script already loaded
+    // Load Calendly script
     if (window.Calendly) {
-      window.Calendly.initInlineWidget({
-        url: 'https://calendly.com/equipa-joinreminder/30min',
-        parentElement: calendlyRef.current,
-      })
+      initWidget()
+    } else {
+      const script = document.createElement('script')
+      script.src = 'https://assets.calendly.com/assets/external/widget.js'
+      script.async = true
+      script.onload = initWidget
+      document.head.appendChild(script)
     }
 
-    return () => { script.remove() }
+    return () => { link.remove() }
   }, [showCalendly])
 
   const template = ROADMAP_TEMPLATES[scoring.roadmapKey]
@@ -253,10 +259,10 @@ export default function RoadmapResult({ scoring, profile, empresa, values }) {
       </div>
 
       {/* ── Header ── */}
-      <div className="raudit__header" style={{ paddingTop: 'calc(var(--nav-h, 72px) + 40px)' }}>
-        <div className="r-container" style={{ textAlign: 'center' }}>
+      <div style={{ padding: '48px 0 40px', textAlign: 'center' }}>
+        <div style={{ maxWidth: '640px', margin: '0 auto', padding: '0 20px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
           {/* Bird logo */}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
             <img src="/logotipo-editado.png" alt="" style={{ width: '32px', height: 'auto', filter: 'brightness(0) invert(1)', opacity: 0.9 }} />
             <span style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
               <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '16px', color: '#fff', letterSpacing: '-0.02em' }}>Reminder</span>
@@ -267,27 +273,31 @@ export default function RoadmapResult({ scoring, profile, empresa, values }) {
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: '6px',
             background: 'rgba(74,222,128,0.15)', border: '1px solid rgba(74,222,128,0.3)',
-            borderRadius: '100px', padding: '5px 16px', marginBottom: '20px',
+            borderRadius: '100px', padding: '5px 16px',
           }}>
             <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', animation: 'hero-pulse 2s ease-in-out infinite' }} />
             <span style={{ fontSize: '11px', fontWeight: 700, color: '#4ade80', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
               Roadmap pronto
             </span>
           </div>
-          <h2 className="r-h2" style={{ color: '#fff', marginBottom: '8px' }}>
+          <h2 style={{
+            fontFamily: 'Sora, sans-serif', fontWeight: 700,
+            fontSize: 'clamp(22px, 3vw, 32px)',
+            color: '#fff', lineHeight: 1.15, letterSpacing: '-0.03em', margin: 0,
+          }}>
             O seu Roadmap de Conversão está pronto.
           </h2>
-          <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.45)', maxWidth: '480px', margin: '0 auto', lineHeight: 1.55 }}>
+          <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.45)', maxWidth: '480px', margin: 0, lineHeight: 1.55 }}>
             Enviámos o Roadmap completo em PDF para o seu email. Verifique a caixa de entrada (e spam).
           </p>
-          <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.3)', maxWidth: '440px', margin: '8px auto 0', lineHeight: 1.55 }}>
+          <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.3)', margin: 0 }}>
             {empresa} {'\u00B7'} {new Date().toLocaleDateString('pt-PT')}
           </p>
         </div>
       </div>
 
       {/* ── Body ── */}
-      <div className="raudit__body" style={{ paddingBottom: '80px' }}>
+      <div className="raudit__body" style={{ paddingBottom: '80px', background: 'transparent' }}>
         <div style={{ maxWidth: '640px', margin: '0 auto', padding: '0 20px' }}>
 
           {/* Download PDF button */}
@@ -480,13 +490,13 @@ export default function RoadmapResult({ scoring, profile, empresa, values }) {
           <Card style={{ background: 'rgba(33,127,241,0.1)', border: '1.5px solid rgba(33,127,241,0.25)' }}>
             <SectionLabel>05 — Próximo Passo</SectionLabel>
             <p style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '18px', color: '#fff', margin: '0 0 12px' }}>
-              Queremos corrigir este gargalo gratuitamente.
+              Queremos implementar o Método Reminder™ na sua empresa — sem custo.
             </p>
             <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, margin: '0 0 8px' }}>
-              Identificámos o problema. Agora queremos corrigi-lo — sem custo, sem compromisso. Pelo tempo necessário para medir o resultado, a nossa equipa implementa e testa as correções com os seus leads reais.
+              Identificámos as lacunas. Agora queremos provar que as conseguimos resolver — com os seus leads reais, sem qualquer investimento da sua parte. É um Piloto Gratuito: nós trabalhamos, vocês medem os resultados.
             </p>
             <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)', lineHeight: 1.55, margin: 0 }}>
-              Só precisamos de uma conversa de 15 minutos para perceber como ajudar. Se fizer sentido, avançamos.
+              Em troca, só pedimos o seu feedback depois de ver os resultados. Mas primeiro: uma conversa de 15 minutos para perceber como avançar.
             </p>
           </Card>
 
@@ -494,7 +504,18 @@ export default function RoadmapResult({ scoring, profile, empresa, values }) {
           {!showCalendly ? (
             <div style={{ textAlign: 'center', marginBottom: '24px' }}>
               <button
-                onClick={() => setShowCalendly(true)}
+                onClick={() => {
+                  setShowCalendly(true)
+                  fetch('/api/hubspot-pilot', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      email: values?.email,
+                      nome: values?.nome,
+                      empresa,
+                    }),
+                  }).catch(() => {})
+                }}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: '8px',
                   background: BLUE, color: '#fff', border: 'none',
@@ -506,7 +527,7 @@ export default function RoadmapResult({ scoring, profile, empresa, values }) {
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 14px 40px rgba(33,127,241,0.55)' }}
                 onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 8px 32px rgba(33,127,241,0.45)' }}
               >
-                QUERO O FREE FIX {'\u2192'}
+                QUERO O PILOTO GRATUITO {'\u2192'}
               </button>
               <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)', marginTop: '12px' }}>
                 Sem compromisso · Sem custos
@@ -530,16 +551,17 @@ export default function RoadmapResult({ scoring, profile, empresa, values }) {
                   Excelente escolha.
                 </p>
                 <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, margin: 0, maxWidth: '420px', marginLeft: 'auto', marginRight: 'auto' }}>
-                  Para avançar com o Free Fix, só precisamos de uma conversa de 15 minutos para perceber como implementar na sua empresa.
+                  Para avançar com o Piloto Gratuito, só precisamos de uma conversa de 15 minutos para perceber como implementar o Método Reminder™ na sua empresa.
                 </p>
               </div>
 
               {/* Calendly inline embed */}
               <div
                 ref={calendlyRef}
+                className="calendly-inline-widget"
                 style={{
-                  minHeight: '660px', borderRadius: '12px', overflow: 'hidden',
-                  background: '#fff',
+                  minWidth: '320px', height: '700px',
+                  borderRadius: '12px', overflow: 'hidden',
                 }}
               />
             </Card>

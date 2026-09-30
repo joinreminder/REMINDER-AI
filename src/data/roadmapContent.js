@@ -9,8 +9,8 @@ export const PROFILE_SUMMARY = {
 }
 
 export function getProfileLevel(total) {
-  if (total <= 6) return 'low'
-  if (total <= 13) return 'mid'
+  if (total <= 5) return 'low'
+  if (total <= 10) return 'mid'
   return 'high'
 }
 
@@ -166,6 +166,44 @@ export const ROADMAP_TEMPLATES = {
       { label: 'Tempo até reunião', current: 'Variável', target: '< 72 horas' },
     ],
   },
+
+  outbound: {
+    title: 'Geração de Pipeline',
+    subtitle: 'O vosso principal desafio é gerar leads e oportunidades qualificadas de forma consistente e previsível.',
+    insight: {
+      stat: '68%',
+      text: '68% das empresas B2B dizem que gerar leads de qualidade é o maior desafio comercial — acima de fechar negócios.',
+      source: 'HubSpot State of Marketing Report',
+    },
+    problem: 'Sem um processo de outbound estruturado, a empresa depende de referências e sorte. Uma máquina de prospeção bem calibrada gera pipeline previsível — independente de sazonalidade ou da agenda da equipa.',
+    actions: [
+      {
+        title: 'Definir o ICP com precisão',
+        desc: 'Cargo, indústria, dimensão da empresa, sinais de compra. Quanto mais específico o perfil, maior a taxa de resposta.',
+      },
+      {
+        title: 'Construir listas de qualidade',
+        desc: 'Ferramentas como Apollo ou LinkedIn Sales Navigator para identificar prospects que correspondem ao ICP — com emails verificados.',
+      },
+      {
+        title: 'Sequência de outreach multicanal',
+        desc: 'Email + LinkedIn + chamada. 5–7 touchpoints ao longo de 2–3 semanas, com mensagem diferente em cada canal.',
+      },
+      {
+        title: 'Mensagem focada no problema do prospect',
+        desc: 'Não fale sobre a sua empresa — fale sobre o problema do prospect. A primeira linha tem que ser sobre eles, não sobre vocês.',
+      },
+      {
+        title: 'Sistema de tracking e optimização',
+        desc: 'Taxa de abertura, resposta e reunião por mensagem. Testar subject lines e CTAs com base em dados reais.',
+      },
+    ],
+    metrics: [
+      { label: 'Taxa de resposta outbound', current: '< 2%', target: '8–15%' },
+      { label: 'Prospects contactados/mês', current: 'Irregular', target: '100–200' },
+      { label: 'Reuniões geradas/mês', current: '0–2', target: '8–15' },
+    ],
+  },
 }
 
 export const DIM_LABELS = {
@@ -174,6 +212,7 @@ export const DIM_LABELS = {
   qualification: 'Qualificação',
   leadToMeeting: 'Conversão Lead \u2192 Reunião',
   consistency:   'Consistência do processo',
+  outbound:      'Geração de Pipeline',
 }
 
 export const PRIORITY_LABELS = {
@@ -182,4 +221,5 @@ export const PRIORITY_LABELS = {
   qualification: 'Definir critérios de qualificação claros',
   leadToMeeting: 'Medir e melhorar a conversão Lead \u2192 Reunião',
   consistency:   'Definir um processo e responsável claro',
+  outbound:      'Construir um processo de prospeção outbound',
 }

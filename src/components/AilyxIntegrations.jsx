@@ -4,144 +4,110 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const DELIVERABLES = [
-  { num: '01', title: 'Perfil de Conversão', desc: 'Uma visão geral do seu processo atual de conversão.' },
-  { num: '02', title: 'Principal Gargalo', desc: 'Identificamos a área que apresenta maior oportunidade de melhoria.' },
-  { num: '03', title: 'Prioridades', desc: 'Descubra o que deve corrigir primeiro — em vez de tentar melhorar tudo ao mesmo tempo.' },
-  { num: '04', title: 'Roadmap de Conversão', desc: 'Receba as etapas recomendadas para melhorar o caminho: Lead → Contacto → Follow-up → Qualificação → Reunião' },
-  { num: '05', title: 'Próximo Passo', desc: 'Uma recomendação clara sobre o que faz sentido testar a seguir.' },
+const CATEGORIES = [
+  { title: 'OUTBOUND', tools: 'Apollo · Clay · Smartlead · LinkedIn', color: '#5aabff' },
+  { title: 'CRM', tools: 'HubSpot · Salesforce · Pipedrive', color: '#a78bfa' },
+  { title: 'COMUNICACAO', tools: 'Gmail · Outlook · Email', color: '#4ade80' },
+  { title: 'CALENDARIO', tools: 'Calendly · Google Calendar · Outlook Calendar', color: '#f59e0b' },
 ]
 
 export default function AilyxIntegrations() {
   const sectionRef = useRef(null)
-  const itemsRef = useRef([])
+  const headRef = useRef(null)
+  const gridRef = useRef(null)
 
   useEffect(() => {
     if (window.innerWidth <= 768) return
     const ctx = gsap.context(() => {
-      itemsRef.current.filter(Boolean).forEach((item, i) => {
-        gsap.from(item, {
-          y: 20, opacity: 0, duration: 0.5, ease: 'power2.out',
-          delay: i * 0.1,
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 78%', once: true },
-        })
+      gsap.from(headRef.current.children, {
+        y: 28, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1,
+        scrollTrigger: { trigger: headRef.current, start: 'top 78%', once: true },
       })
+      if (gridRef.current) {
+        gsap.from(gridRef.current.children, {
+          y: 24, opacity: 0, duration: 0.6, ease: 'power2.out', stagger: 0.1,
+          scrollTrigger: { trigger: gridRef.current, start: 'top 80%', once: true },
+        })
+      }
     })
     return () => ctx.revert()
   }, [])
 
   return (
-    <section
-      ref={sectionRef}
-      style={{
-        background: '#06142e',
-        padding: 'clamp(64px, 8vw, 100px) 0',
-        borderTop: '1px solid rgba(33,127,241,0.15)',
-      }}
-    >
+    <section ref={sectionRef} style={{ background: '#F3F6FB', padding: 'clamp(80px, 10vw, 120px) 0', borderTop: '1px solid #e8edf5' }}>
       <div className="ayl-container">
 
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: '6px',
-            background: 'rgba(33,127,241,0.18)', border: '1px solid rgba(33,127,241,0.3)',
-            borderRadius: '100px', padding: '5px 14px', marginBottom: '16px',
-          }}>
-            <span style={{ fontSize: '11px', fontWeight: 700, color: '#90c8ff', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-              Incluído no roadmap
-            </span>
-          </div>
-          <h2 style={{
-            fontFamily: 'Sora, sans-serif', fontWeight: 700,
-            fontSize: 'clamp(22px, 2.8vw, 36px)',
-            color: '#fff', letterSpacing: '-0.03em',
-            lineHeight: 1.15, margin: '0 0 10px',
-          }}>
-            O que recebe gratuitamente
+        <div ref={headRef} style={{ textAlign: 'center', marginBottom: '48px' }}>
+          <div className="ayl-section-label" style={{ marginBottom: '16px', display: 'inline-block' }}>Integracoes</div>
+          <h2 className="ayl-h2" style={{ color: '#0a1c42', marginBottom: '12px' }}>
+            Trabalhamos com as ferramentas que ja utiliza.
           </h2>
-          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '15px', maxWidth: '460px', margin: '0 auto', lineHeight: 1.55 }}>
-            O seu Roadmap Personalizado de Conversão
+          <p style={{ fontSize: '15px', color: '#666', lineHeight: 1.6, maxWidth: '500px', margin: '0 auto' }}>
+            Nao precisa de reconstruir a sua operacao comercial.
           </p>
         </div>
 
-        {/* Deliverables list */}
-        <div style={{
-          display: 'flex', flexDirection: 'column',
-          gap: '12px', maxWidth: '600px', margin: '0 auto',
-        }}>
-          {DELIVERABLES.map((item, i) => (
-            <div
-              key={i}
-              ref={el => itemsRef.current[i] = el}
-              style={{
-                display: 'flex', alignItems: 'flex-start', gap: '16px',
-                padding: '20px 24px',
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                borderRadius: '12px',
-              }}
-            >
-              {/* Checkmark + number */}
+        <div ref={gridRef} style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', maxWidth: '700px', margin: '0 auto 40px' }} className="ayl-stack-grid">
+          {CATEGORIES.map((cat, i) => (
+            <div key={i} style={{
+              padding: '24px 20px',
+              background: '#fff',
+              border: '1.5px solid #e8edf5',
+              borderRadius: '16px',
+              textAlign: 'center',
+            }}>
               <div style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                width: '36px', height: '36px', flexShrink: 0,
-                background: 'rgba(33,127,241,0.2)',
-                border: '1px solid rgba(33,127,241,0.35)',
-                borderRadius: '10px',
+                fontFamily: 'Sora, sans-serif', fontWeight: 700,
+                fontSize: '12px', color: cat.color,
+                letterSpacing: '0.08em', marginBottom: '10px',
               }}>
-                <span style={{
-                  fontFamily: 'Sora, sans-serif', fontWeight: 800,
-                  fontSize: '13px', color: '#90c8ff',
-                }}>
-                  {item.num}
-                </span>
+                {cat.title}
               </div>
-
-              <div>
-                <div style={{
-                  fontFamily: 'Sora, sans-serif', fontWeight: 700,
-                  fontSize: '15px', color: '#fff', marginBottom: '4px',
-                }}>
-                  {item.title}
-                </div>
-                <p style={{
-                  fontSize: '13.5px', color: 'rgba(255,255,255,0.5)',
-                  lineHeight: 1.5, margin: 0,
-                }}>
-                  {item.desc}
-                </p>
-              </div>
+              <p style={{ fontSize: '14px', color: '#555', lineHeight: 1.6, margin: 0 }}>
+                {cat.tools}
+              </p>
             </div>
           ))}
         </div>
 
-        {/* Price */}
-        <p style={{
-          textAlign: 'center', marginTop: '36px',
-          fontFamily: 'Sora, sans-serif', fontWeight: 700,
-          fontSize: 'clamp(18px, 2.2vw, 24px)',
-          color: '#fff', lineHeight: 1.4,
-        }}>
-          Tudo por {'\u20AC'}0.
-        </p>
-
-        {/* CTA */}
-        <div style={{ textAlign: 'center', marginTop: '24px' }}>
-          <a href="/diagnostico" style={{
-            background: '#217FF1', color: '#fff',
+        {/* Visual flow */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', maxWidth: '320px', margin: '0 auto' }}>
+          <div style={{
+            padding: '10px 20px', background: 'rgba(33,127,241,0.08)',
+            border: '1px solid rgba(33,127,241,0.18)', borderRadius: '10px',
+            fontSize: '13px', color: '#555', fontWeight: 500, textAlign: 'center',
+          }}>
+            Apollo / Clay / Smartlead
+          </div>
+          <svg width="12" height="24" viewBox="0 0 12 24" fill="none">
+            <path d="M6 0v18M2 14l4 4 4-4" stroke="#217FF1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.35" />
+          </svg>
+          <div style={{
+            padding: '14px 24px', background: '#217FF1',
+            borderRadius: '12px', boxShadow: '0 4px 16px rgba(33,127,241,0.35)',
             fontFamily: 'Sora, sans-serif', fontWeight: 700,
-            fontSize: '15px', padding: '16px 32px',
-            borderRadius: '14px', textDecoration: 'none',
-            display: 'inline-flex', alignItems: 'center',
-            boxShadow: '0 8px 32px rgba(33,127,241,0.45)',
-            transition: 'transform 0.18s ease, box-shadow 0.18s ease',
-          }}
-            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 14px 40px rgba(33,127,241,0.55)' }}
-            onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 8px 32px rgba(33,127,241,0.45)' }}
-          >
-            QUERO O MEU ROADMAP GRÁTIS {'\u2192'}
-          </a>
+            fontSize: '15px', color: '#fff',
+          }}>
+            REMINDER
+          </div>
+          <svg width="12" height="24" viewBox="0 0 12 24" fill="none">
+            <path d="M6 0v18M2 14l4 4 4-4" stroke="#217FF1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.35" />
+          </svg>
+          <div style={{
+            padding: '10px 20px', background: 'rgba(33,127,241,0.08)',
+            border: '1px solid rgba(33,127,241,0.18)', borderRadius: '10px',
+            fontSize: '13px', color: '#555', fontWeight: 500, textAlign: 'center',
+          }}>
+            CRM / Calendar / Sales Team
+          </div>
         </div>
+
+        <p style={{
+          textAlign: 'center', fontFamily: 'Sora, sans-serif', fontWeight: 700,
+          fontSize: '15px', color: '#0a1c42', margin: '36px 0 0',
+        }}>
+          As ferramentas sao a infraestrutura. Nos construimos o sistema a volta delas.
+        </p>
 
       </div>
     </section>

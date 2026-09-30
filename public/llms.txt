@@ -1,37 +1,33 @@
-# Reminder AI
+# Reminder
 
-> Sistemas de IA que assumem o trabalho manual da sua empresa — para crescer sem contratar mais pessoas.
+> Reminder transforma leads e prospects em reuniões qualificadas para empresas B2B — sem aumentar a equipa comercial.
 
-A Reminder AI é uma empresa portuguesa de automação de processos com inteligência artificial. Trabalhamos com empresas de serviços, comércio e operações que querem crescer sem aumentar a equipa ao mesmo ritmo.
+A Reminder contacta, acompanha e qualifica os seus leads com IA. A equipa comercial só entra quando há oportunidade real.
 
-## O que fazemos
+## Método Reminder™
 
-- Identificamos os processos que consomem mais tempo e dinheiro em cada empresa
-- Construímos sistemas de IA que executam esses processos automaticamente
-- Medimos o impacto real antes e depois da implementação
+- Receber — captura e centralização de leads (inbound e outbound)
+- Contactar — primeiro contacto personalizado em menos de 5 minutos
+- Desenvolver — follow-up multi-step automatizado
+- Qualificar — filtragem e scoring de leads com critérios do cliente
+- Marcar — agendamento automático de reunião qualificada
 
-## Como funciona
+## Oferta
 
-1. **Diagnóstico de Execução** (gratuito, 60 min): mapeamos eventos que geram trabalho manual recorrente
-2. **Priorização**: calculamos impacto e complexidade de cada fluxo
-3. **Construção**: implementamos o sistema de ponta a ponta — a equipa não toca em nada técnico
-4. **Medição**: comparamos antes vs. depois em tempo recuperado e receita protegida
+- Reminder Lead Conversion™ — serviço done-for-you de conversão de leads em reuniões qualificadas
+- Roadmap Personalizado Gratuito — diagnóstico do processo comercial em 60 segundos
+- Piloto Gratuito — implementação piloto sem custo, em troca de testemunho
 
-## Exemplos de automações
+## Para quem é
 
-- Follow-up automático de propostas e orçamentos
-- Resposta a leads em segundos, sem intervenção humana
-- Agendamento automático de reuniões
-- Relatórios e faturas gerados automaticamente após conclusão de trabalhos
-- Sequências de reativação de clientes inativos
+Empresas B2B de serviços e consultoria em Portugal com:
+- Ticket médio acima de €5.000
+- Equipa comercial ativa
+- Leads inbound ou pipeline outbound
+- Processo comercial que passa por reunião qualificada
 
-## Clientes
+## Links
 
-Empresas como RD Power Nutrition, NR Techsolución, JPC Rodrigues e J&J Bespoke Travel já trabalham com a Reminder AI.
-
-## Contacto e diagnóstico gratuito
-
-- Website: https://remindr-ai.com
-- Diagnóstico gratuito: https://remindr-ai.com/diagnostico
-- País: Portugal
-- Idioma: Português (Portugal)
+- Homepage: https://joinreminder.com
+- Roadmap gratuito: https://joinreminder.com/roadmap
+- Email: equipa@joinreminder.com

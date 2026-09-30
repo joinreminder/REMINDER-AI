@@ -17,10 +17,11 @@ export default async function handler(req, res) {
   const lastname = nameParts.slice(1).join(' ') || ''
 
   const ROADMAP_TYPE_MAP = {
-    response: 'RESPONSE',
-    followup: 'FOLLOW_UP',
+    response:      'RESPONSE',
+    followup:      'FOLLOW_UP',
     qualification: 'QUALIFICATION',
     leadToMeeting: 'APPOINTMENT',
+    outbound:      'OUTBOUND',
   }
 
   const properties = {
@@ -28,9 +29,6 @@ export default async function handler(req, res) {
     lastname,
     email: lead.email,
     company: lead.empresa || '',
-    jobtitle: lead.cargo || '',
-    website: lead.website || '',
-    industry: lead.setor || '',
     lifecyclestage: 'lead',
     roadmap_type: ROADMAP_TYPE_MAP[scoring?.roadmapKey] || '',
     roadmap_score: scoring?.total ?? 0,
@@ -74,26 +72,27 @@ export default async function handler(req, res) {
     // Create a note with full scoring details
     if (scoring) {
       const noteBody = [
-        `Roadmap Personalizado de Conversão`,
+        `Roadmap Personalizado — Reminder`,
         `Tipo: ${scoring.roadmapName || scoring.roadmapKey}`,
         `Score: ${scoring.total}/${scoring.maxTotal}`,
+        `Grade: ${scoring.grade || '—'}`,
+        `---`,
+        `Problema principal: ${lead.problema || ''}`,
+        `Tentativas anteriores: ${lead.tentativas || ''}`,
+        `---`,
+        `Leads/mês: ${lead.leads_mes || ''}`,
+        `Valor cliente: ${lead.valor_cliente || ''}`,
+        `Reuniões/mês (atual): ${lead.reunioes_mes || ''}`,
+        `Objetivo reuniões/mês: ${lead.objetivo_reunioes || ''}`,
+        `Tempo resposta: ${lead.tempo_resposta || ''}`,
+        `Follow-up: ${lead.followup || ''}`,
+        `Qualificação: ${lead.qualificacao || ''}`,
+        `Urgência: ${lead.urgencia || ''}`,
         `---`,
         `Response: ${scoring.scores?.response}/4`,
         `Follow-up: ${scoring.scores?.followup}/4`,
         `Qualification: ${scoring.scores?.qualification}/4`,
         `Lead>Meeting: ${scoring.scores?.leadToMeeting}/4`,
-        `Consistency: ${scoring.scores?.consistency}/4`,
-        `---`,
-        `Leads/mês: ${lead.leads_mes || ''}`,
-        `Fontes: ${lead.fontes || ''}`,
-        `Valor cliente: ${lead.valor_cliente || ''}`,
-        `Tempo resposta: ${lead.tempo_resposta || ''}`,
-        `Quem contacta: ${lead.quem_contacta || ''}`,
-        `Follow-up: ${lead.followup || ''}`,
-        `Qualificação: ${lead.qualificacao || ''}`,
-        `Taxa conversão: ${lead.taxa_conversao || ''}`,
-        `Situação: ${lead.situacao || ''}`,
-        `Interesse piloto: ${lead.interesse_piloto || ''}`,
       ].join('\n')
 
       await fetch('https://api.hubapi.com/crm/v3/objects/notes', {

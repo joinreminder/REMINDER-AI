@@ -4,132 +4,128 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const FLOW_STEPS = [
-  'Lead recebida',
-  'Contacto iniciado',
-  'Follow-up executado',
-  'Lead qualificada',
-  'Reunião marcada',
+const STEPS = [
+  { num: '01', title: 'Diagnosticar', desc: 'Mapeamos o processo e identificamos os principais gargalos.' },
+  { num: '02', title: 'Construir', desc: 'Definimos logica, mensagens, qualificacao, automacoes e integracoes.' },
+  { num: '03', title: 'Implementar', desc: 'Ligamos o sistema as ferramentas que ja utiliza.' },
+  { num: '04', title: 'Operar', desc: 'Executamos o processo e acompanhamos as conversas.' },
+  { num: '05', title: 'Otimizar', desc: 'Medimos os resultados e melhoramos continuamente.' },
 ]
 
+const TIMELINE = ['Diagnostico', 'Build', 'Launch', 'Operacao', 'Optimizacao']
+
 export default function AilyxIncludes() {
-  const headRef  = useRef(null)
-  const cardsRef = useRef([])
+  const contentRef = useRef(null)
+  const gridRef = useRef(null)
 
   useEffect(() => {
     if (window.innerWidth <= 768) return
     const ctx = gsap.context(() => {
-      gsap.from(headRef.current.children, {
-        y: 20, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1,
-        scrollTrigger: { trigger: headRef.current, start: 'top 78%', once: true },
+      gsap.from(contentRef.current.children, {
+        y: 28, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1,
+        scrollTrigger: { trigger: contentRef.current, start: 'top 78%', once: true },
       })
-      cardsRef.current.filter(Boolean).forEach((card, i) => {
-        gsap.from(card, {
-          y: 32, opacity: 0, duration: 0.65, ease: 'power3.out', delay: i * 0.09,
-          scrollTrigger: { trigger: headRef.current, start: 'top 72%', once: true },
+      if (gridRef.current) {
+        gsap.from(gridRef.current.children, {
+          y: 24, opacity: 0, duration: 0.6, ease: 'power2.out', stagger: 0.1,
+          scrollTrigger: { trigger: gridRef.current, start: 'top 82%', once: true },
         })
-      })
+      }
     })
     return () => ctx.revert()
   }, [])
 
   return (
-    <section style={{ background: '#fff', padding: 'clamp(80px, 10vw, 120px) 0', borderTop: '1px solid #e8edf5' }} id="systems">
+    <section style={{ background: '#06142e', padding: 'clamp(80px, 10vw, 120px) 0', borderTop: '1px solid rgba(33,127,241,0.15)' }}>
       <div className="ayl-container">
+        <div ref={contentRef} style={{ maxWidth: '680px', margin: '0 auto 48px', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-        {/* Header */}
-        <div ref={headRef} style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <div className="ayl-section-label" style={{ marginBottom: '16px', display: 'inline-block' }}>O mecanismo</div>
-          <h2 className="ayl-h2" style={{ marginBottom: '12px' }}>
-            O caminho entre uma lead e uma reunião
+          <div style={{
+            alignSelf: 'center', display: 'inline-flex', alignItems: 'center', gap: '6px',
+            background: 'rgba(33,127,241,0.18)', border: '1px solid rgba(33,127,241,0.3)',
+            borderRadius: '100px', padding: '5px 14px',
+          }}>
+            <span style={{ fontSize: '11px', fontWeight: 700, color: '#90c8ff', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+              Done-for-you
+            </span>
+          </div>
+
+          <h2 style={{
+            fontFamily: 'Sora, sans-serif', fontWeight: 700,
+            fontSize: 'clamp(22px, 2.8vw, 38px)',
+            color: '#fff', lineHeight: 1.12, letterSpacing: '-0.04em', margin: 0,
+          }}>
+            Nao precisa de aprender IA. Nos fazemos o trabalho.
           </h2>
-          <p style={{ fontSize: '16px', color: '#666', lineHeight: 1.65, maxWidth: '520px', margin: '0 auto' }}>
-            Uma conversão não acontece num único passo.
+
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '15px', lineHeight: 1.7, margin: 0 }}>
+            A Reminder nao e mais uma ferramenta para a sua equipa configurar e gerir. Nos construimos, operamos e otimizamos o sistema.
           </p>
         </div>
 
-        {/* Conversion flow */}
-        <div style={{
-          display: 'flex', flexDirection: 'column', alignItems: 'center',
-          gap: '0', maxWidth: '480px', margin: '0 auto',
+        <div ref={gridRef} style={{
+          display: 'flex', flexDirection: 'column',
+          gap: '12px', maxWidth: '640px', margin: '0 auto 40px',
         }}>
-          {FLOW_STEPS.map((step, i) => (
-            <div key={i} ref={el => cardsRef.current[i] = el} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div style={{
-                width: '100%',
-                padding: '18px 24px',
-                background: i === FLOW_STEPS.length - 1 ? '#EEF4FF' : '#F8FAFF',
-                border: `1.5px solid ${i === FLOW_STEPS.length - 1 ? 'rgba(33,127,241,0.3)' : '#e8edf5'}`,
-                borderRadius: '12px',
-                textAlign: 'center',
+          {STEPS.map((item, i) => (
+            <div key={i} style={{
+              padding: '22px 24px',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '14px',
+              display: 'flex', alignItems: 'flex-start', gap: '16px',
+            }}>
+              <span style={{
+                fontFamily: 'Sora, sans-serif', fontWeight: 800,
+                fontSize: '14px', color: '#5aabff',
+                minWidth: '28px', flexShrink: 0,
               }}>
-                <span style={{
+                {item.num}
+              </span>
+              <div>
+                <h3 style={{
                   fontFamily: 'Sora, sans-serif', fontWeight: 700,
-                  fontSize: i === FLOW_STEPS.length - 1 ? '16px' : '14px',
-                  color: i === FLOW_STEPS.length - 1 ? '#217FF1' : '#0a1c42',
+                  fontSize: '16px', color: '#fff', margin: '0 0 4px',
                 }}>
-                  {step}
-                </span>
+                  {item.title}
+                </h3>
+                <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.6, margin: 0 }}>
+                  {item.desc}
+                </p>
               </div>
-              {i < FLOW_STEPS.length - 1 && (
-                <svg width="12" height="24" viewBox="0 0 12 24" fill="none" style={{ margin: '6px 0' }}>
-                  <path d="M6 0v18M2 14l4 4 4-4" stroke="#217FF1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.35" />
+            </div>
+          ))}
+        </div>
+
+        {/* Timeline visual */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '32px' }}>
+          {TIMELINE.map((label, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{
+                padding: '6px 14px',
+                background: 'rgba(90,171,255,0.1)',
+                border: '1px solid rgba(90,171,255,0.2)',
+                borderRadius: '100px',
+                fontFamily: 'Sora, sans-serif', fontWeight: 600,
+                fontSize: '11px', color: '#5aabff',
+              }}>
+                {label}
+              </span>
+              {i < TIMELINE.length - 1 && (
+                <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+                  <path d="M1 5h12M10 1l4 4-4 4" stroke="#5aabff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.3" />
                 </svg>
               )}
             </div>
           ))}
         </div>
 
-        {/* Statement box: what the team should focus on */}
-        <div style={{
-          marginTop: '48px', textAlign: 'center',
-          padding: '24px 28px',
-          background: '#F8FAFF',
-          border: '1.5px solid #e8edf5',
-          borderRadius: '14px',
-          maxWidth: '600px', margin: '48px auto 0',
-        }}>
-          <p style={{
-            fontSize: '15px', color: '#666', lineHeight: 1.6, margin: '0 0 12px',
-          }}>
-            A sua equipa comercial deve concentrar-se onde cria mais valor:
-          </p>
-          <p style={{
-            fontFamily: 'Sora, sans-serif', fontWeight: 700,
-            fontSize: 'clamp(17px, 2vw, 22px)',
-            color: '#217FF1', lineHeight: 1.4, margin: 0,
-          }}>
-            Reuniões {'\u00B7'} Propostas {'\u00B7'} Negociação {'\u00B7'} Closing
-          </p>
-        </div>
-
-        {/* Supporting text */}
         <p style={{
-          textAlign: 'center', marginTop: '28px',
-          fontSize: '15px', color: '#666', lineHeight: 1.6,
-          maxWidth: '520px', margin: '28px auto 0',
+          textAlign: 'center', fontFamily: 'Sora, sans-serif', fontWeight: 700,
+          fontSize: '15px', color: 'rgba(255,255,255,0.6)', margin: 0,
         }}>
-          O processo anterior à reunião precisa de acontecer de forma consistente.
+          Nao precisa de construir a infraestrutura. Nos tratamos disso.
         </p>
-
-        {/* Tagline */}
-        <div style={{
-          marginTop: '32px', textAlign: 'center',
-          padding: '20px 28px',
-          background: '#06142e',
-          border: '1px solid rgba(33,127,241,0.2)',
-          borderRadius: '14px',
-          maxWidth: '600px', margin: '32px auto 0',
-        }}>
-          <p style={{
-            fontFamily: 'Sora, sans-serif', fontWeight: 700,
-            fontSize: 'clamp(15px, 1.8vw, 18px)',
-            color: '#5aabff', lineHeight: 1.5, margin: 0,
-          }}>
-            A sua equipa vende. Nós fazemos o trabalho antes da reunião.
-          </p>
-        </div>
-
       </div>
     </section>
   )
