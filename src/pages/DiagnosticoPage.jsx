@@ -6,156 +6,144 @@ import AilyxFooter from '../components/AilyxFooter'
 /* ─── Options ─────────────────────────────────────────────────────── */
 
 const PROBLEMA = [
-  { id: 'leads-nao-convertem', label: 'Temos leads, mas poucos chegam a reuniões qualificadas' },
-  { id: 'sem-leads',           label: 'Temos dificuldade em gerar leads suficientes' },
-  { id: 'falta-followup',      label: 'Temos leads, mas falta follow-up consistente' },
-  { id: 'equipa-prospecta',    label: 'A equipa comercial passa demasiado tempo a prospectar' },
-  { id: 'varios',              label: 'Temos vários destes problemas' },
+  { id: 'pipeline-insuficiente',     label: 'Não temos pipeline suficiente ou previsível' },
+  { id: 'equipa-prospecta',          label: 'A equipa comercial passa demasiado tempo a prospectar' },
+  { id: 'dependencia-referencias',   label: 'Dependemos demasiado de referências ou inbound' },
+  { id: 'reunioes-nao-qualificadas', label: 'Temos reuniões, mas poucas são realmente qualificadas' },
+  { id: 'volume-inconsistente',      label: 'O número de reuniões varia demasiado de mês para mês' },
+  { id: 'varios',                    label: 'Vários destes problemas' },
 ]
 
-const PROCESSO = [
-  { id: 'manual',                    label: 'É maioritariamente manual',                                   score: 4 },
-  { id: 'algumas-automacoes',        label: 'Temos algumas automações, mas muita coisa continua manual',   score: 3 },
-  { id: 'estruturado-inconsistente', label: 'Temos um processo estruturado, mas não é consistente',       score: 2 },
-  { id: 'bem-definido',              label: 'Temos automações e processos bem definidos',                  score: 0 },
-  { id: 'sem-processo',              label: 'Não temos um processo claro',                                score: 4 },
+const ORIGEM_OPORTUNIDADES = [
+  { id: 'referencias',      label: 'Referências / network' },
+  { id: 'inbound',          label: 'Inbound — website, LinkedIn, conteúdo, eventos, etc.' },
+  { id: 'outbound',         label: 'Outbound — prospecção activa' },
+  { id: 'misto',            label: 'Uma combinação de inbound e outbound' },
+  { id: 'sem-visibilidade', label: 'Não temos visibilidade clara sobre a origem' },
 ]
 
-const TEMPO_RESPOSTA = [
-  { id: '<5min',    label: 'Menos de 5 minutos', score: 0 },
-  { id: '5-30min',  label: '5–30 minutos',        score: 1 },
-  { id: '30m-2h',   label: '30 min–2 horas',      score: 2 },
-  { id: '2-24h',    label: '2–24 horas',           score: 3 },
-  { id: '>24h',     label: 'Mais de 24 horas',     score: 4 },
-  { id: 'nao-sabe', label: 'Não sabemos',          score: 4 },
+const ESTADO_OUTBOUND = [
+  { id: 'nao-fazemos',            label: 'Não fazemos outbound',                                          score: 4 },
+  { id: 'ocasional',              label: 'Fazemos outbound ocasionalmente, sem processo consistente',      score: 3 },
+  { id: 'processo-inconsistente', label: 'Temos um processo, mas é difícil manter a consistência',        score: 2 },
+  { id: 'estruturado',            label: 'Temos uma operação estruturada e consistente',                   score: 0 },
+  { id: 'estruturado-mais',       label: 'Temos uma operação estruturada, mas queremos aumentar o volume', score: 1 },
 ]
 
-const FOLLOWUP = [
-  { id: 'nao-ha-contacto',  label: 'Normalmente não há novo contacto',          score: 4 },
-  { id: '1-2-manual',       label: 'Fazemos 1–2 follow-ups manualmente',         score: 3 },
-  { id: 'sequencia-manual', label: 'Temos uma sequência manual de 3+ contactos', score: 1 },
-  { id: 'automatizado',     label: 'Temos follow-ups automatizados',             score: 0 },
-  { id: 'depende-vendedor', label: 'Depende do vendedor',                        score: 3 },
-  { id: 'nao-sabe',         label: 'Não sabemos',                               score: 4 },
+const QUEM_PROSPECTA = [
+  { id: 'fundador',      label: 'Fundador / CEO',                                              score: 3 },
+  { id: 'equipa-divide', label: 'A equipa comercial divide o tempo entre prospecção e vendas', score: 4 },
+  { id: 'dedicado',      label: 'Temos uma pessoa/equipa dedicada à prospecção',               score: 1 },
+  { id: 'agencia',       label: 'Agência / parceiro externo',                                  score: 2 },
+  { id: 'nao-fazemos',   label: 'Não fazemos prospecção activa',                               score: 4 },
 ]
 
-const QUALIFICACAO = [
-  { id: 'sem-criterios',             label: 'Não temos critérios definidos',                      score: 4 },
-  { id: 'cada-vendedor',             label: 'Cada vendedor decide individualmente',               score: 3 },
-  { id: 'criterios-inconsistentes',  label: 'Temos critérios, mas nem sempre são seguidos',      score: 2 },
-  { id: 'criterios-claros',          label: 'Temos critérios claros e um processo consistente',  score: 0 },
-  { id: 'parcialmente-auto',         label: 'A qualificação já é parcialmente automatizada',     score: 0 },
-]
-
-const REUNIOES_MES = [
-  { id: '0-2',      label: '0–2',         score: 4 },
-  { id: '3-5',      label: '3–5',         score: 3 },
-  { id: '6-10',     label: '6–10',        score: 2 },
-  { id: '11-20',    label: '11–20',       score: 1 },
-  { id: '20+',      label: '20+',         score: 0 },
-  { id: 'nao-mede', label: 'Não medimos', score: 4 },
-]
-
-const OBJETIVO_REUNIOES = [
-  { id: '3-5',      label: '3–5' },
-  { id: '6-10',     label: '6–10' },
-  { id: '11-20',    label: '11–20' },
-  { id: '20-50',    label: '20–50' },
-  { id: '50+',      label: '50+' },
-  { id: 'nao-sabe', label: 'Ainda não sabemos' },
+const ICP_DEFINIDO = [
+  { id: 'nao-definido',           label: 'Não temos um ICP definido',                                        score: 4 },
+  { id: 'ideia-nao-documentada',  label: 'Temos uma ideia do nosso cliente ideal, mas não está documentada',  score: 3 },
+  { id: 'definido-inconsistente', label: 'Temos um ICP definido, mas não é seguido consistentemente',         score: 2 },
+  { id: 'claro-seguido',          label: 'Temos um ICP claro e a prospecção é baseada nele',                  score: 0 },
 ]
 
 const VALOR_CLIENTE = [
-  { id: '<1000',       label: '< €1.000' },
-  { id: '1000-3000',   label: '€1.000–€3.000' },
-  { id: '3000-10000',  label: '€3.000–€10.000' },
+  { id: '<2500',       label: '< €2.500' },
+  { id: '2500-5000',   label: '€2.500–€5.000' },
+  { id: '5000-10000',  label: '€5.000–€10.000' },
   { id: '10000-25000', label: '€10.000–€25.000' },
   { id: '25000+',      label: '€25.000+' },
-  { id: 'varia',       label: 'Varia muito / não sabemos' },
 ]
 
 const CAPACIDADE = [
-  { id: 'sim-capacidade',   label: 'Sim, temos capacidade' },
-  { id: 'sim-algumas-mais', label: 'Sim, mas apenas mais algumas' },
-  { id: 'reforcar-equipa',  label: 'Teríamos de reforçar a equipa' },
-  { id: 'sem-capacidade',   label: 'Não temos capacidade neste momento' },
-  { id: 'nao-sabe',         label: 'Não sabemos' },
+  { id: 'sim-bastante', label: 'Sim, temos bastante capacidade' },
+  { id: 'sim-limite',   label: 'Sim, mas estamos perto do limite' },
+  { id: 'reorganizar',  label: 'Teríamos de reorganizar a equipa' },
+  { id: 'nao-agora',    label: 'Não neste momento' },
 ]
 
 const EQUIPA_COMERCIAL = [
-  { id: '1-2',  label: '1–2 pessoas' },
-  { id: '3-5',  label: '3–5 pessoas' },
+  { id: '1',    label: '1 pessoa' },
+  { id: '2-3',  label: '2–3 pessoas' },
+  { id: '4-5',  label: '4–5 pessoas' },
   { id: '6-10', label: '6–10 pessoas' },
-  { id: '11-20',label: '11–20 pessoas' },
-  { id: '20+',  label: '20+ pessoas' },
+  { id: '10+',  label: '10+ pessoas' },
+]
+
+const PROSPECTS_MES = [
+  { id: '<100',      label: 'Menos de 100' },
+  { id: '100-500',   label: '100–500' },
+  { id: '500-1000',  label: '500–1.000' },
+  { id: '1000-5000', label: '1.000–5.000' },
+  { id: '5000+',     label: 'Mais de 5.000' },
+  { id: 'nao-sabe',  label: 'Não sabemos' },
 ]
 
 const URGENCIA = [
-  { id: 'urgente',   label: 'O mais rapidamente possível',  score:  2 },
-  { id: '1-3-meses', label: 'Nos próximos 1–3 meses',       score:  1 },
-  { id: '3-6-meses', label: 'Nos próximos 3–6 meses',       score:  0 },
-  { id: 'avaliar',   label: 'Estamos a avaliar opções',      score:  0 },
-  { id: 'explorar',  label: 'Estamos apenas a explorar',     score: -2 },
+  { id: 'urgente',   label: 'O mais rapidamente possível', score:  2 },
+  { id: '30-dias',   label: 'Nos próximos 30 dias',        score:  1 },
+  { id: '2-3-meses', label: 'Nos próximos 2–3 meses',      score:  0 },
+  { id: 'explorar',  label: 'Estamos apenas a explorar',   score: -2 },
 ]
 
-/* ─── Questions (9 slides + 1 contact = 10 total) ──────────────────── */
+/* ─── Questions ─────────────────────────────────────────────────────── */
 
 const QUESTIONS = [
   {
     key: 'problema',
     n: '01',
-    text: 'Onde sente que está a perder mais oportunidades comerciais?',
-    hint: 'A sua resposta determina que tipo de Roadmap recebe.',
+    text: 'Qual é o principal desafio comercial neste momento?',
+    hint: 'A sua resposta determina o tipo de Roadmap que recebe.',
     options: PROBLEMA,
     type: 'stack',
   },
   {
-    key: 'processo',
+    key: 'origem_oportunidades',
     n: '02',
-    text: 'Como é feito actualmente o trabalho entre o primeiro contacto e a reunião?',
+    text: 'De onde vêm actualmente a maioria das vossas oportunidades comerciais?',
     hint: null,
-    options: PROCESSO,
+    options: ORIGEM_OPORTUNIDADES,
     type: 'stack',
   },
   {
-    key: 'tempo_resposta',
+    key: 'estado_outbound',
     n: '03',
-    text: 'Quando entra um novo lead, quanto tempo demora normalmente até alguém o contactar?',
-    hint: '78% dos negócios B2B são fechados pelo primeiro fornecedor a responder.',
-    options: TEMPO_RESPOSTA,
+    text: 'Como está actualmente estruturado o vosso outbound?',
+    hint: null,
+    options: ESTADO_OUTBOUND,
     type: 'stack',
   },
   {
-    key: 'followup',
+    key: 'quem_prospecta',
     n: '04',
-    text: 'Quando um potencial cliente não responde ao primeiro contacto, o que acontece?',
-    hint: '80% das vendas requerem 5+ follow-ups. 44% dos vendedores desistem após o primeiro.',
-    options: FOLLOWUP,
+    text: 'Quem trata actualmente da prospecção?',
+    hint: null,
+    options: QUEM_PROSPECTA,
     type: 'stack',
   },
   {
-    key: 'qualificacao',
+    key: 'icp_definido',
     n: '05',
-    text: 'Como decidem se um potencial cliente está pronto para falar com um vendedor?',
-    hint: null,
-    options: QUALIFICACAO,
+    text: 'Quão definido está o vosso ICP (perfil de cliente ideal)?',
+    hint: 'O ICP é a base de qualquer operação de outbound eficiente.',
+    options: ICP_DEFINIDO,
     type: 'stack',
   },
   {
-    key: 'reunioes_mes',
+    key: 'reunioes_atual',
     n: '06',
-    text: 'Quantas reuniões comerciais qualificadas conseguem gerar actualmente por mês?',
+    text: 'Quantas reuniões qualificadas geram actualmente por mês?',
     hint: null,
-    options: REUNIOES_MES,
-    type: 'grid',
+    type: 'number',
+    placeholder: 'ex: 5',
+    unit: 'reuniões / mês',
   },
   {
-    key: 'objetivo_reunioes',
+    key: 'reunioes_objetivo',
     n: '07',
     text: 'Quantas reuniões qualificadas gostariam de gerar por mês?',
-    hint: 'A diferença entre o estado actual e este objectivo é o gap que o Roadmap vai quantificar.',
-    options: OBJETIVO_REUNIOES,
-    type: 'grid',
+    hint: 'A diferença entre este número e o actual é o gap que o Roadmap vai quantificar.',
+    type: 'number',
+    placeholder: 'ex: 20',
+    unit: 'reuniões / mês',
   },
   {
     key: 'valor_cliente',
@@ -168,7 +156,7 @@ const QUESTIONS = [
   {
     key: 'capacidade',
     n: '09',
-    text: 'Se começassem a receber mais reuniões qualificadas amanhã, conseguiriam absorvê-las?',
+    text: 'Se começassem a gerar mais reuniões qualificadas, a equipa conseguiria absorvê-las?',
     hint: null,
     options: CAPACIDADE,
     type: 'stack',
@@ -176,22 +164,30 @@ const QUESTIONS = [
   {
     key: 'equipa_comercial',
     n: '10',
-    text: 'Quantas pessoas tem actualmente a equipa comercial?',
+    text: 'Quantas pessoas fazem actualmente parte da equipa comercial?',
     hint: null,
     options: EQUIPA_COMERCIAL,
     type: 'grid',
   },
   {
-    key: 'urgencia',
+    key: 'prospects_mes',
     n: '11',
-    text: 'Quando gostariam de melhorar este processo?',
+    text: 'Quantos prospects conseguem contactar actualmente por mês?',
+    hint: null,
+    options: PROSPECTS_MES,
+    type: 'grid',
+  },
+  {
+    key: 'urgencia',
+    n: '12',
+    text: 'Quando gostariam de resolver isto?',
     hint: null,
     options: URGENCIA,
     type: 'stack',
   },
 ]
 
-const TOTAL_SLIDES = QUESTIONS.length + 1 // 10 questions + 1 contact = 11 slides
+const TOTAL_SLIDES = QUESTIONS.length + 1 // 12 questions + 1 contact = 13 slides
 
 /* ─── Scoring ─────────────────────────────────────────────────────── */
 
@@ -204,49 +200,37 @@ const ROADMAP_TYPES = {
 }
 
 function calcScore(v) {
-  const response      = TEMPO_RESPOSTA.find(t => t.id === v.tempo_resposta)?.score ?? 0
-  const followup      = FOLLOWUP.find(f => f.id === v.followup)?.score ?? 0
-  const qualification = QUALIFICACAO.find(q => q.id === v.qualificacao)?.score ?? 0
-  const leadToMeeting = REUNIOES_MES.find(r => r.id === v.reunioes_mes)?.score ?? 0
+  const outboundMaturity = ESTADO_OUTBOUND.find(e => e.id === v.estado_outbound)?.score ?? 0
+  const icpClarity       = ICP_DEFINIDO.find(e => e.id === v.icp_definido)?.score ?? 0
+  const prospectionGap   = QUEM_PROSPECTA.find(e => e.id === v.quem_prospecta)?.score ?? 0
+
+  // Meetings gap score — higher gap = higher score (more opportunity)
+  const atual    = parseInt(v.reunioes_atual, 10) || 0
+  const objetivo = parseInt(v.reunioes_objetivo, 10) || 0
+  const gap      = Math.max(0, objetivo - atual)
+  const meetingsGap = gap >= 20 ? 4 : gap >= 10 ? 3 : gap >= 5 ? 2 : gap >= 1 ? 1 : 0
 
   const urgencyScore = URGENCIA.find(u => u.id === v.urgencia)?.score ?? 0
 
-  const scores = { response, followup, qualification, leadToMeeting }
-  const total  = response + followup + qualification + leadToMeeting + urgencyScore
+  const scores = { outboundMaturity, icpClarity, prospectionGap, meetingsGap }
+  const total  = outboundMaturity + icpClarity + prospectionGap + meetingsGap + urgencyScore
 
-  // Outbound routing: sem leads ou equipa presa em prospeção
-  if (v.problema === 'sem-leads' || v.problema === 'equipa-prospecta') {
-    return {
-      scores, total, maxTotal: 18,
-      roadmapKey: 'outbound',
-      priorities: ['response', 'followup', 'qualification', 'leadToMeeting'],
-      urgencyScore, problema: v.problema,
-    }
+  // Routing
+  let roadmapKey = 'outbound'
+
+  if (v.problema === 'reunioes-nao-qualificadas') {
+    roadmapKey = 'qualification'
+  } else if (v.estado_outbound === 'processo-inconsistente') {
+    roadmapKey = 'followup'
+  } else if ((v.estado_outbound === 'estruturado' || v.estado_outbound === 'estruturado-mais') && meetingsGap > 0) {
+    roadmapKey = 'leadToMeeting'
+  } else {
+    roadmapKey = 'outbound'
   }
 
-  // Follow-up routing: problema explicitamente de follow-up
-  if (v.problema === 'falta-followup') {
-    const priorities = Object.entries(scores).sort((a, b) => b[1] - a[1]).map(([k]) => k)
-    return {
-      scores, total, maxTotal: 18,
-      roadmapKey: 'followup',
-      priorities,
-      urgencyScore, problema: v.problema,
-    }
-  }
+  const priorities = Object.entries(scores).sort((a, b) => b[1] - a[1]).map(([k]) => k)
 
-  // Inbound / vários → maior gargalo
-  let roadmapKey = 'response'
-  let maxScore = -1
-  for (const [key, val] of Object.entries(scores)) {
-    if (val > maxScore) { maxScore = val; roadmapKey = key }
-  }
-
-  const priorities = Object.entries(scores)
-    .sort((a, b) => b[1] - a[1])
-    .map(([key]) => key)
-
-  return { scores, total, maxTotal: 18, roadmapKey, priorities, urgencyScore, problema: v.problema }
+  return { scores, total, maxTotal: 18, roadmapKey, priorities, urgencyScore, problema: v.problema, gap }
 }
 
 /* ─── Component ───────────────────────────────────────────────────── */
@@ -285,21 +269,23 @@ export default function DiagnosticoPage() {
     if (!canSubmit() || submitting) return
     setSubmitting(true)
     const scoring = calcScore(values)
-    const isDisqualified = values.valor_cliente === '<1000'
+    const isDisqualified = values.valor_cliente === '<2500'
     const grade = isDisqualified ? 'C' : scoring.total >= 11 ? 'A' : scoring.total >= 6 ? 'B' : 'C'
 
     const profileLabels = [
-      ['Problema principal',     PROBLEMA.find(p => p.id === values.problema)?.label || ''],
-      ['Processo actual',        PROCESSO.find(p => p.id === values.processo)?.label || ''],
-      ['Tempo de resposta',      TEMPO_RESPOSTA.find(t => t.id === values.tempo_resposta)?.label || ''],
-      ['Follow-up',              FOLLOWUP.find(f => f.id === values.followup)?.label || ''],
-      ['Qualificação',           QUALIFICACAO.find(q => q.id === values.qualificacao)?.label || ''],
-      ['Reuniões/mês (actual)',  REUNIOES_MES.find(r => r.id === values.reunioes_mes)?.label || ''],
-      ['Objectivo reuniões/mês', OBJETIVO_REUNIOES.find(o => o.id === values.objetivo_reunioes)?.label || ''],
-      ['Valor médio/cliente',    VALOR_CLIENTE.find(v => v.id === values.valor_cliente)?.label || ''],
-      ['Capacidade de absorção', CAPACIDADE.find(c => c.id === values.capacidade)?.label || ''],
-      ['Equipa comercial',       EQUIPA_COMERCIAL.find(e => e.id === values.equipa_comercial)?.label || ''],
-      ['Urgência',               URGENCIA.find(u => u.id === values.urgencia)?.label || ''],
+      ['Desafio principal',       PROBLEMA.find(p => p.id === values.problema)?.label || ''],
+      ['Origem das oportunidades',ORIGEM_OPORTUNIDADES.find(o => o.id === values.origem_oportunidades)?.label || ''],
+      ['Estado do outbound',      ESTADO_OUTBOUND.find(e => e.id === values.estado_outbound)?.label || ''],
+      ['Quem prospecta',          QUEM_PROSPECTA.find(e => e.id === values.quem_prospecta)?.label || ''],
+      ['ICP definido',            ICP_DEFINIDO.find(e => e.id === values.icp_definido)?.label || ''],
+      ['Reuniões/mês (actual)',   values.reunioes_atual ? `${values.reunioes_atual} reuniões` : ''],
+      ['Objectivo reuniões/mês',  values.reunioes_objetivo ? `${values.reunioes_objetivo} reuniões` : ''],
+      ['Gap de reuniões',         scoring.gap != null ? `+${scoring.gap} reuniões/mês` : ''],
+      ['Valor médio/cliente',     VALOR_CLIENTE.find(v => v.id === values.valor_cliente)?.label || ''],
+      ['Capacidade de absorção',  CAPACIDADE.find(c => c.id === values.capacidade)?.label || ''],
+      ['Equipa comercial',        EQUIPA_COMERCIAL.find(e => e.id === values.equipa_comercial)?.label || ''],
+      ['Prospects/mês',           PROSPECTS_MES.find(p => p.id === values.prospects_mes)?.label || ''],
+      ['Urgência',                URGENCIA.find(u => u.id === values.urgencia)?.label || ''],
     ]
 
     try {
@@ -309,12 +295,12 @@ export default function DiagnosticoPage() {
         body: JSON.stringify({
           lead: {
             nome: values.nome, email: values.email, empresa: values.empresa,
-            website:        values.website || '',
-            tempo_resposta: TEMPO_RESPOSTA.find(t => t.id === values.tempo_resposta)?.label || '',
-            followup:       FOLLOWUP.find(f => f.id === values.followup)?.label || '',
-            qualificacao:   QUALIFICACAO.find(q => q.id === values.qualificacao)?.label || '',
-            valor_cliente:  VALOR_CLIENTE.find(v => v.id === values.valor_cliente)?.label || '',
-            equipa_comercial: EQUIPA_COMERCIAL.find(e => e.id === values.equipa_comercial)?.label || '',
+            website:             values.website || '',
+            estado_outbound:     ESTADO_OUTBOUND.find(e => e.id === values.estado_outbound)?.label || '',
+            icp_definido:        ICP_DEFINIDO.find(e => e.id === values.icp_definido)?.label || '',
+            quem_prospecta:      QUEM_PROSPECTA.find(e => e.id === values.quem_prospecta)?.label || '',
+            valor_cliente:       VALOR_CLIENTE.find(v => v.id === values.valor_cliente)?.label || '',
+            equipa_comercial:    EQUIPA_COMERCIAL.find(e => e.id === values.equipa_comercial)?.label || '',
           },
           scoring: {
             roadmapKey: scoring.roadmapKey,
@@ -349,18 +335,20 @@ export default function DiagnosticoPage() {
         body: JSON.stringify({
           lead: {
             nome: values.nome, email: values.email, empresa: values.empresa,
-            website:           values.website || '',
-            problema:          PROBLEMA.find(p => p.id === values.problema)?.label || '',
-            processo:          PROCESSO.find(p => p.id === values.processo)?.label || '',
-            tempo_resposta:    TEMPO_RESPOSTA.find(t => t.id === values.tempo_resposta)?.label || '',
-            followup:          FOLLOWUP.find(f => f.id === values.followup)?.label || '',
-            qualificacao:      QUALIFICACAO.find(q => q.id === values.qualificacao)?.label || '',
-            reunioes_mes:      REUNIOES_MES.find(r => r.id === values.reunioes_mes)?.label || '',
-            objetivo_reunioes: OBJETIVO_REUNIOES.find(o => o.id === values.objetivo_reunioes)?.label || '',
-            valor_cliente:     VALOR_CLIENTE.find(v => v.id === values.valor_cliente)?.label || '',
-            capacidade:        CAPACIDADE.find(c => c.id === values.capacidade)?.label || '',
-            equipa_comercial:  EQUIPA_COMERCIAL.find(e => e.id === values.equipa_comercial)?.label || '',
-            urgencia:          URGENCIA.find(u => u.id === values.urgencia)?.label || '',
+            website:              values.website || '',
+            problema:             PROBLEMA.find(p => p.id === values.problema)?.label || '',
+            origem_oportunidades: ORIGEM_OPORTUNIDADES.find(o => o.id === values.origem_oportunidades)?.label || '',
+            estado_outbound:      ESTADO_OUTBOUND.find(e => e.id === values.estado_outbound)?.label || '',
+            quem_prospecta:       QUEM_PROSPECTA.find(e => e.id === values.quem_prospecta)?.label || '',
+            icp_definido:         ICP_DEFINIDO.find(e => e.id === values.icp_definido)?.label || '',
+            reunioes_atual:       values.reunioes_atual || '',
+            reunioes_objetivo:    values.reunioes_objetivo || '',
+            gap_reunioes:         scoring.gap != null ? String(scoring.gap) : '',
+            valor_cliente:        VALOR_CLIENTE.find(v => v.id === values.valor_cliente)?.label || '',
+            capacidade:           CAPACIDADE.find(c => c.id === values.capacidade)?.label || '',
+            equipa_comercial:     EQUIPA_COMERCIAL.find(e => e.id === values.equipa_comercial)?.label || '',
+            prospects_mes:        PROSPECTS_MES.find(p => p.id === values.prospects_mes)?.label || '',
+            urgencia:             URGENCIA.find(u => u.id === values.urgencia)?.label || '',
           },
           scoring: {
             roadmapKey: scoring.roadmapKey,
@@ -399,16 +387,17 @@ export default function DiagnosticoPage() {
         profile={[
           ['Empresa', values.empresa],
           ...([
-            ['Problema principal',     PROBLEMA.find(p => p.id === values.problema)?.label],
-            ['Processo actual',        PROCESSO.find(p => p.id === values.processo)?.label],
-            ['Tempo de resposta',      TEMPO_RESPOSTA.find(t => t.id === values.tempo_resposta)?.label],
-            ['Follow-up',              FOLLOWUP.find(f => f.id === values.followup)?.label],
-            ['Qualificação',           QUALIFICACAO.find(q => q.id === values.qualificacao)?.label],
-            ['Reuniões/mês (actual)',  REUNIOES_MES.find(r => r.id === values.reunioes_mes)?.label],
-            ['Objectivo reuniões/mês', OBJETIVO_REUNIOES.find(o => o.id === values.objetivo_reunioes)?.label],
-            ['Valor médio/cliente',    VALOR_CLIENTE.find(v => v.id === values.valor_cliente)?.label],
-            ['Capacidade de absorção', CAPACIDADE.find(c => c.id === values.capacidade)?.label],
-            ['Equipa comercial',       EQUIPA_COMERCIAL.find(e => e.id === values.equipa_comercial)?.label],
+            ['Desafio principal',        PROBLEMA.find(p => p.id === values.problema)?.label],
+            ['Origem das oportunidades', ORIGEM_OPORTUNIDADES.find(o => o.id === values.origem_oportunidades)?.label],
+            ['Estado do outbound',       ESTADO_OUTBOUND.find(e => e.id === values.estado_outbound)?.label],
+            ['Quem prospecta',           QUEM_PROSPECTA.find(e => e.id === values.quem_prospecta)?.label],
+            ['ICP definido',             ICP_DEFINIDO.find(e => e.id === values.icp_definido)?.label],
+            ['Reuniões/mês (actual)',    values.reunioes_atual ? `${values.reunioes_atual} reuniões` : undefined],
+            ['Objectivo reuniões/mês',   values.reunioes_objetivo ? `${values.reunioes_objetivo} reuniões` : undefined],
+            ['Gap de reuniões',          scoring.gap != null ? `+${scoring.gap} reuniões/mês` : undefined],
+            ['Valor médio/cliente',      VALOR_CLIENTE.find(v => v.id === values.valor_cliente)?.label],
+            ['Capacidade de absorção',   CAPACIDADE.find(c => c.id === values.capacidade)?.label],
+            ['Equipa comercial',         EQUIPA_COMERCIAL.find(e => e.id === values.equipa_comercial)?.label],
           ]),
         ]}
         empresa={values.empresa}
@@ -493,7 +482,7 @@ export default function DiagnosticoPage() {
             Roadmap de Conversão <span style={{ color: '#5aabff' }}>— Grátis</span>
           </h1>
           <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.5 }}>
-            11 perguntas · Menos de 60 segundos · Resultados instantâneos
+            12 perguntas · Menos de 60 segundos · Resultados instantâneos
           </p>
         </div>
       </div>
@@ -580,7 +569,45 @@ export default function DiagnosticoPage() {
                   )}
                   {!q.hint && <div style={{ marginBottom: 28 }} />}
 
-                  {q.type === 'grid' ? (
+                  {q.type === 'number' ? (
+                    <div>
+                      <div style={{ position: 'relative', maxWidth: 240 }}>
+                        <input
+                          className="dq-input"
+                          type="number"
+                          min="0"
+                          placeholder={q.placeholder}
+                          value={values[q.key] || ''}
+                          onChange={e => set(q.key, e.target.value)}
+                          onKeyDown={e => { if (e.key === 'Enter' && values[q.key] !== undefined && values[q.key] !== '') goTo(slide + 1, 1) }}
+                          style={{ fontSize: '22px', textAlign: 'center', padding: '18px', fontFamily: 'Sora, sans-serif', fontWeight: 700 }}
+                          autoFocus
+                        />
+                      </div>
+                      {q.unit && (
+                        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)', margin: '8px 0 24px', fontFamily: 'Sora, sans-serif' }}>
+                          {q.unit}
+                        </p>
+                      )}
+                      <button
+                        onClick={() => { if (values[q.key] !== undefined && values[q.key] !== '') goTo(slide + 1, 1) }}
+                        disabled={!values[q.key] && values[q.key] !== '0'}
+                        style={{
+                          padding: '14px 32px',
+                          background: values[q.key] ? '#217FF1' : 'rgba(33,127,241,0.25)',
+                          border: 'none', borderRadius: 12,
+                          fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: 14,
+                          color: '#fff', cursor: values[q.key] ? 'pointer' : 'not-allowed',
+                          transition: 'background 0.2s',
+                        }}
+                      >
+                        Continuar →
+                      </button>
+                      <p style={{ marginTop: 12, fontSize: 12, color: 'rgba(255,255,255,0.2)', fontFamily: 'Sora, sans-serif' }}>
+                        Pode colocar 0 se não geram actualmente
+                      </p>
+                    </div>
+                  ) : q.type === 'grid' ? (
                     <div className="dq-grid">
                       {q.options.map(opt => (
                         <button
@@ -786,12 +813,17 @@ export default function DiagnosticoPage() {
                 Respostas até agora
               </p>
               {QUESTIONS.slice(0, slide).map(q => {
-                const selected = q.options.find(o => o.id === values[q.key])
-                if (!selected) return null
+                let label
+                if (q.type === 'number') {
+                  label = values[q.key] !== undefined && values[q.key] !== '' ? `${values[q.key]} ${q.unit || ''}` : null
+                } else {
+                  label = q.options?.find(o => o.id === values[q.key])?.label
+                }
+                if (!label) return null
                 return (
                   <div key={q.key} style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginBottom: 6, fontSize: 12 }}>
                     <span style={{ color: 'rgba(255,255,255,0.3)' }}>{q.n}</span>
-                    <span style={{ color: 'rgba(255,255,255,0.7)', textAlign: 'right', flex: 1 }}>{selected.label}</span>
+                    <span style={{ color: 'rgba(255,255,255,0.7)', textAlign: 'right', flex: 1 }}>{label}</span>
                   </div>
                 )
               })}
