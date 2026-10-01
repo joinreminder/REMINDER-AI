@@ -28,9 +28,9 @@ const CONSEQUENCES = [
 ]
 
 const CARDS = [
-  { label: 'OUTBOUND', desc: 'Prospects que nunca chegam a uma conversa.', color: '#5aabff' },
-  { label: 'INBOUND', desc: 'Leads que entram mas não avançam.', color: '#4ade80' },
-  { label: 'CRM', desc: 'Oportunidades que ficaram para trás.', color: '#f59e0b' },
+  { label: 'PROSPEÇÃO', desc: 'Decisores certos que nunca foram contactados.', color: '#5aabff' },
+  { label: 'FOLLOW-UP', desc: 'Prospects que responderam mas ficaram sem acompanhamento.', color: '#4ade80' },
+  { label: 'PIPELINE', desc: 'Oportunidades qualificadas que nunca chegam ao calendário.', color: '#f59e0b' },
 ]
 
 export default function AilyxServices() {
@@ -93,11 +93,11 @@ export default function AilyxServices() {
               fontSize: 'clamp(22px, 2.8vw, 38px)',
               color: '#fff', lineHeight: 1.12, letterSpacing: '-0.04em', margin: 0,
             }}>
-              A oportunidade perde-se antes de chegar ao comercial.
+              A sua equipa comercial não devia passar o dia a prospectar.
             </h2>
 
             <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', lineHeight: 1.7, margin: 0 }}>
-              Entre o primeiro contacto e a reunião existem dezenas de pequenas tarefas:
+              Antes de uma reunião existir, há dezenas de tarefas operacionais que alguém tem de executar:
             </p>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 12px' }}>
@@ -107,7 +107,7 @@ export default function AilyxServices() {
             </div>
 
             <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px', lineHeight: 1.65, margin: 0 }}>
-              Quando tudo depende da equipa comercial, alguma coisa fica inevitavelmente para trás.
+              Quando a equipa comercial trata de tudo — prospeção, follow-up e qualificação — o tempo disponível para fechar reduz.
             </p>
 
             <div style={{
@@ -127,7 +127,7 @@ export default function AilyxServices() {
             </div>
 
             <p style={{ color: '#5aabff', fontSize: '14px', fontWeight: 700, margin: 0, fontFamily: 'Sora, sans-serif' }}>
-              O problema não é ter mais leads. É garantir que as oportunidades certas avançam até à reunião.
+              O problema não é a capacidade de venda da equipa. É o trabalho operacional que acontece antes de a reunião existir.
             </p>
           </div>
 

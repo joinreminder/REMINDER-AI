@@ -181,11 +181,13 @@ function IlluOptimize() {
 /* ─── Data ───────────────────────────────────────────────────────────── */
 
 const STEPS = [
-  { num: '01', title: 'Encontrar',  desc: 'Identificamos empresas e decisores dentro do seu perfil de cliente ideal.', Illu: IlluDiagnose },
-  { num: '02', title: 'Contactar',  desc: 'Iniciamos o contacto através dos canais mais adequados, com mensagens relevantes para cada prospect.', Illu: IlluBuild },
-  { num: '03', title: 'Follow-up',  desc: 'Mantemos cada oportunidade acompanhada sem depender da memória ou disponibilidade da equipa comercial.', Illu: IlluOperate },
-  { num: '04', title: 'Qualificar', desc: 'Aplicamos os critérios comerciais definidos consigo e filtramos as oportunidades com verdadeiro potencial.', Illu: IlluDeliver },
-  { num: '05', title: 'Marcar',     desc: 'Quando existe uma oportunidade real, a reunião é marcada e entregue à equipa comercial.', Illu: IlluOptimize },
+  { num: '01', title: 'ICP & Targeting',  desc: 'Definimos as empresas e os decisores que correspondem ao seu perfil de cliente ideal. É o alicerce de toda a operação — sem um ICP claro, o outbound desperdiça esforço.', Illu: IlluDiagnose },
+  { num: '02', title: 'Research',         desc: 'Encontramos informação relevante sobre cada prospect. O suficiente para uma mensagem que não pareça automática e que chegue ao decisor certo.', Illu: IlluBuild },
+  { num: '03', title: 'Outreach',         desc: 'Iniciamos o contacto através dos canais adequados, com mensagens personalizadas que abrem conversas em vez de gerar ruído.', Illu: IlluOperate },
+  { num: '04', title: 'Follow-up',        desc: 'A maioria das reuniões não nasce no primeiro contacto. Mantemos cada prospect acompanhado com uma cadência definida, sem depender da equipa comercial.', Illu: IlluBuild },
+  { num: '05', title: 'Qualificação',     desc: 'Avaliamos cada oportunidade segundo os critérios definidos consigo. Só avançam os prospects que cumprem os requisitos mínimos para uma reunião ter valor.', Illu: IlluDeliver },
+  { num: '06', title: 'Booking',          desc: 'Quando existe uma oportunidade real, agendamos a reunião directamente no calendário da equipa comercial. Sem vai-e-vem, sem fricção.', Illu: IlluOperate },
+  { num: '07', title: 'Optimização',      desc: 'Medimos o que funciona, testamos o que não funciona e melhoramos continuamente a operação. A cada ciclo, o sistema fica mais eficiente.', Illu: IlluOptimize },
 ]
 
 const TOOLS = ['HubSpot', 'Salesforce', 'Pipedrive', 'Apollo', 'Gmail', 'Calendly']
@@ -224,13 +226,13 @@ export default function AilyxAudit() {
             </span>
           </div>
           <h2 className="ayl-h2" style={{ marginBottom: '12px', color: '#0a1c42' }}>
-            Encontrar. Activar. Desenvolver. Qualificar. Entregar.
+            Do primeiro nome à reunião marcada. Feito por nós.
           </h2>
           <p style={{ fontSize: '16px', color: '#555', lineHeight: 1.6, maxWidth: '560px', margin: '0 auto 10px' }}>
-            Construímos e operamos o sistema comercial que transforma prospects e leads em reuniões qualificadas.
+            Construímos e operamos o motor de outbound da sua empresa. Da identificação do prospect à reunião agendada — sem que a equipa comercial tenha de tocar no processo.
           </p>
           <p style={{ fontSize: '15px', color: '#777', lineHeight: 1.6, maxWidth: '520px', margin: '0 auto' }}>
-            Não precisa de aprender IA, configurar automações ou gerir dezenas de ferramentas. Nós construímos, operamos e optimizamos tudo por si.
+            A sua equipa não precisa de aprender ferramentas, configurar sequências ou gerir follow-ups. Nós construímos, operamos e optimizamos tudo.
           </p>
         </div>
       </div>

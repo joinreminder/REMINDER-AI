@@ -86,12 +86,11 @@ export default function AilyxHero() {
                 color: '#fff', margin: 0,
               }}>
                 Mais reuniões qualificadas.{' '}
-                <span style={{ color: '#5aabff' }}>Sem contratar mais vendedores.</span>
+                <span style={{ color: '#5aabff' }}>Sem aumentar a sua equipa comercial.</span>
               </h1>
 
               <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', lineHeight: 1.7, maxWidth: '520px', margin: 0 }}>
-                A Reminder constrói e opera o sistema que encontra, contacta, acompanha e qualifica os seus melhores prospects — até à reunião.
-                {' '}A IA trata da execução. A sua equipa trata do fecho.
+                A Reminder constrói e opera o seu motor de outbound — encontra os decisores certos, contacta-os, faz o follow-up e agenda reuniões qualificadas directamente no calendário da sua equipa.
               </p>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
@@ -101,7 +100,7 @@ export default function AilyxHero() {
               </div>
 
               <span style={{ fontSize: '12.5px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.04em', lineHeight: 1.6 }}>
-                Gratuito · 60 segundos · Sem compromisso
+                Gratuito · 60 segundos · Diagnóstico personalizado · Sem compromisso
               </span>
 
             </div>
@@ -216,7 +215,7 @@ export default function AilyxHero() {
             color: 'rgba(255,255,255,0.85)', fontSize: '15px', lineHeight: 1.65,
             maxWidth: '580px', margin: '36px auto 0', fontWeight: 600, textAlign: 'center',
           }}>
-            Nós tratamos do caminho até à reunião. A sua equipa trata do negócio.
+            Nós tratamos de tudo antes da reunião. A sua equipa entra para vender.
           </p>
         </div>
       </div>

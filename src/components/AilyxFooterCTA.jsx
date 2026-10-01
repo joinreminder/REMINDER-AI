@@ -129,11 +129,11 @@ export default function AilyxFooterCTA() {
           </h2>
 
           <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', margin: 0, lineHeight: 1.65 }}>
-            Descubra onde o seu processo comercial está a perder prospects e quanto potencial de reuniões pode existir sem contratar mais vendedores.
+            Descubra onde o seu outbound está a perder oportunidades e o que é preciso para gerar mais reuniões qualificadas sem aumentar a equipa comercial.
           </p>
 
           <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '14px', margin: 0, lineHeight: 1.65 }}>
-            Receba um roadmap personalizado do seu processo comercial.
+            Receba um roadmap personalizado com os principais gargalos da sua operação comercial.
           </p>
 
           <a href="/roadmap" className="ayl-btn ayl-btn--primary" style={{ fontSize: '15px', padding: '18px 36px', marginTop: '4px' }}>
